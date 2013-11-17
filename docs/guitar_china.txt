@@ -1,0 +1,42 @@
+app_json/
+index.php?action=login
+index.php?action=login
+index.php?action=my
+index.php
+index.php?action=forum&fid=1&page=0
+index.php?action=forum&fid=1&page=2
+index.php?action=thread&tid=1144210&page=0
+
+
+{
+  "folder": "",
+  "fid": "127",
+  "todayposts": "0",
+  "threads": "0",
+  "description": "",
+  "name": "木吉他中国",
+  "moderators": "",
+  "lastpost": "",
+  "posts": "0",
+  "permission": 2,
+  "fup": "0",
+  "viewperm": "",
+  "type": "group"
+}
+
+{
+  "folder": "",
+  "fid": "1",
+  "todayposts": "83",
+  "threads": "37017",
+  "description": "探讨古典吉他知识，交流研琴心得，结交知音，共同学习，与琴同乐",
+  "name": "古典吉他论坛",
+  "moderators": "",
+  "lastpost": "",
+  "posts": "481110",
+  "permission": 2,
+  "fup": "127",
+  "viewperm": "",
+  "type": "forum"
+}
+
