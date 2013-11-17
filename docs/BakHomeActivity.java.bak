@@ -1,0 +1,448 @@
+/**
+ *  ClassName: HomeActivity.java
+ *  created on 2012-2-23
+ *  Copyrights 2011-2012 qjyong All rights reserved.
+ *  site: http://blog.csdn.net/qjyong
+ *  email: qjyong@gmail.com
+ */
+package net.shopnc.android.ui;
+
+import java.util.ArrayList;
+
+import net.shopnc.android.R;
+import net.shopnc.android.adapter.FocusListViewAdapter;
+import net.shopnc.android.adapter.HeadlinesListViewAdapter;
+import net.shopnc.android.adapter.TopicListViewAdapter;
+import net.shopnc.android.common.Constants;
+import net.shopnc.android.common.MyApp;
+import net.shopnc.android.handler.RemoteDataLoader2;
+import net.shopnc.android.model.PushData;
+import net.shopnc.android.model.Topic;
+import net.shopnc.android.ui.forum.TopicDetailActivity;
+import net.shopnc.android.widget.MyFooterListView;
+
+import org.apache.http.HttpStatus;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+/**
+ * 首页
+ * @author qjyong
+ */
+public class BakHomeActivity extends BaseActivity {
+	private ImageButton btn_right;
+	private ImageButton btn_left;
+	
+	/** 头条 */
+	private RadioButton btn_home_headlines;
+	/** 茶座 */
+	private RadioButton btn_home_teahouse;
+	/** 焦点 */
+	private RadioButton btn_home_focus;
+	/** 娱乐 */
+	private RadioButton btn_home_entertainment;
+	/** 情感 */
+	private RadioButton btn_home_emotional;
+	
+	/** 当前选中的二级栏目ID*/
+	private int curr_banner_id;
+	
+	/*** ListView&Adapter*/
+	private RelativeLayout layout_headlines;
+	private MyFooterListView lv_topics;
+	private HeadlinesListViewAdapter adapter_headlines;
+	private TopicListViewAdapter adapter_teahouse;
+	private FocusListViewAdapter adapter_focus;
+	private TopicListViewAdapter adapter_entertainment;
+	private TopicListViewAdapter adapter_emotional;
+
+	private MyApp myApp;
+	private int pagesize;
+	private int headlines_pageno = 1;
+	private int teahouse_pageno = 1;
+	private int focus_pageno = 1;
+	private int entertainment_pageno = 1;
+	private int emotional_pageno = 1;
+	private boolean img_invisible;
+	
+	/** 头条大图对象 */
+	private PushData top;
+	private ArrayList<PushData> topsDatas = new ArrayList<PushData>();
+	private ArrayList<PushData> focusDatas = new ArrayList<PushData>();
+	private ArrayList<Topic> teahouseDatas = new ArrayList<Topic>();
+	private ArrayList<Topic> entertainmentDatas = new ArrayList<Topic>();
+	private ArrayList<Topic> emotionalDatas = new ArrayList<Topic>();
+	
+	private RemoteDataLoader2 handler = new RemoteDataLoader2(){
+		@Override
+		public void handleMessage(Message msg) {
+			progressDialog.dismiss();
+			lv_topics.setLoadingStop(); //停止"网络数据请求"文字提示
+			if(HttpStatus.SC_NOT_MODIFIED == msg.what){ //再次查看原来查看过的二级栏目时
+				switch(curr_banner_id){
+				case R.id.btn_home_headlines:
+					lv_topics.setAdapter(adapter_headlines);
+					break;
+				case R.id.btn_home_teahouse:
+					lv_topics.setAdapter(adapter_teahouse);
+					break;
+				case R.id.btn_home_focus:
+					lv_topics.setAdapter(adapter_focus);
+					break;
+				case R.id.btn_home_entertainment:
+					lv_topics.setAdapter(adapter_entertainment);
+					break;
+				case R.id.btn_home_emotional:
+					lv_topics.setAdapter(adapter_emotional);
+					break;
+				}
+				
+			}else if(HttpStatus.SC_OK == msg.what){
+				String jsonDatas = (String)msg.obj;
+				
+				switch(curr_banner_id){
+				case R.id.btn_home_headlines:
+					//if(null == top){ //获取头条第一个带配图的数据
+					//	top = PushData.newInstance(jsonDatas);
+					//}else{
+						if(headlines_pageno > 1){ 
+							topsDatas.addAll(PushData.newInstanceList(jsonDatas));
+						}else{ //刷新时显示的是第一页
+							topsDatas = PushData.newInstanceList(jsonDatas);
+						}
+						adapter_headlines = new HeadlinesListViewAdapter(BakHomeActivity.this,lv_topics, topsDatas);
+						adapter_headlines.setHasMore(msg.getData().getBoolean("hasMore"));
+					//}
+					lv_topics.setAdapter(adapter_headlines);
+					break;
+				case R.id.btn_home_teahouse:
+					if(teahouse_pageno > 1){ 
+						teahouseDatas.addAll(Topic.newInstanceList(jsonDatas));
+					}else{ //刷新时显示的是第一页
+						teahouseDatas = Topic.newInstanceList(jsonDatas);
+					}
+					
+					adapter_teahouse = new TopicListViewAdapter(BakHomeActivity.this, teahouseDatas);
+					adapter_teahouse.setHasMore(msg.getData().getBoolean("hasMore"));
+					lv_topics.setAdapter(adapter_teahouse);
+					break;
+				case R.id.btn_home_focus:
+					if(focus_pageno > 1){ 
+						focusDatas.addAll(PushData.newInstanceList(jsonDatas));
+					}else{ //刷新时显示的是第一页
+						focusDatas = PushData.newInstanceList(jsonDatas);
+					}
+					
+					adapter_focus = new FocusListViewAdapter(BakHomeActivity.this, focusDatas);
+					adapter_focus.setHasMore(msg.getData().getBoolean("hasMore"));
+					lv_topics.setAdapter(adapter_focus);
+					break;
+				case R.id.btn_home_entertainment:
+					if(entertainment_pageno > 1){ 
+						entertainmentDatas.addAll(Topic.newInstanceList(jsonDatas));
+					}else{ //刷新时显示的是第一页
+						entertainmentDatas = Topic.newInstanceList(jsonDatas);
+					}
+					
+					adapter_entertainment = new TopicListViewAdapter(BakHomeActivity.this, entertainmentDatas);
+					adapter_entertainment.setHasMore(msg.getData().getBoolean("hasMore"));
+					lv_topics.setAdapter(adapter_entertainment);
+					break;
+				case R.id.btn_home_emotional:
+					if(emotional_pageno > 1){ 
+						emotionalDatas.addAll(Topic.newInstanceList(jsonDatas));
+					}else{ //刷新时显示的是第一页
+						emotionalDatas = Topic.newInstanceList(jsonDatas);
+					}
+					
+					adapter_emotional = new TopicListViewAdapter(BakHomeActivity.this, emotionalDatas);
+					adapter_emotional.setHasMore(msg.getData().getBoolean("hasMore"));
+					lv_topics.setAdapter(adapter_emotional);
+					break;
+				}
+				
+			}else{
+				Toast.makeText(BakHomeActivity.this, "服务器响应数据有误!", Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.home);
+		myApp = (MyApp)this.getApplicationContext();
+		
+		img_invisible = myApp.isImg_invisible();
+		pagesize = myApp.getPageSize();
+		
+		//刷新按钮
+		btn_left = (ImageButton)this.findViewById(R.id.btn_left);
+		btn_left.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				progressDialog.show();
+				switch(curr_banner_id){
+				case R.id.btn_home_headlines:
+					//handler.executeLoadData(Constants.URL_INDEX_TOP, 1, 1);
+					headlines_pageno = 1;
+					handler.executeLoadData(Constants.URL_INDEX_TOPS, BakHomeActivity.this.pagesize, headlines_pageno);
+					break;
+				case R.id.btn_home_teahouse:
+					teahouse_pageno = 1;
+					handler.executeLoadData(Constants.URL_INDEX_TEAHOUSE, BakHomeActivity.this.pagesize, teahouse_pageno);
+					break;
+				case R.id.btn_home_focus:
+					focus_pageno = 1;
+					handler.executeLoadData(Constants.URL_INDEX_FOCUS, BakHomeActivity.this.pagesize, focus_pageno);
+					break;
+				case R.id.btn_home_entertainment:
+					entertainment_pageno = 1;
+					handler.executeLoadData(Constants.URL_INDEX_ENTERTAINMENT, BakHomeActivity.this.pagesize, entertainment_pageno);
+					break;
+				case R.id.btn_home_emotional:
+					emotional_pageno = 1;
+					handler.executeLoadData(Constants.URL_INDEX_EMOTIONAL, BakHomeActivity.this.pagesize, emotional_pageno);
+					break;
+				}
+			}
+		});
+		//退出按钮
+		btn_right = (ImageButton)this.findViewById(R.id.btn_right);
+		btn_right.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				BakHomeActivity.this.showExitDialog();
+			}
+		});
+		
+		layout_headlines = (RelativeLayout)this.findViewById(R.id.headlines);
+		
+		//帖子ListView
+		lv_topics = (MyFooterListView)this.findViewById(R.id.lv_topics);
+		lv_topics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+					//查看帖子详细信息
+					//Toast.makeText(HomeActivity.this, "position-->" + position, 0).show();
+				Intent intent = new Intent(BakHomeActivity.this, TopicDetailActivity.class);
+				
+				//Topic topic = (Topic)HomeActivity.this.adapter.getItem(position);
+				//Log.d(TAG, topic.toString());
+				
+				if(curr_banner_id == R.id.btn_home_headlines ||
+						curr_banner_id == R.id.btn_home_focus){
+					PushData pd = (PushData)lv_topics.getItemAtPosition(position);
+					
+					intent.putExtra(Topic.Attr.TID, pd.getId());
+					intent.putExtra(Topic.Attr.SUBJECT, pd.getTitle());
+				}else{
+					Topic topic = (Topic)lv_topics.getItemAtPosition(position);
+					
+					intent.putExtra(Topic.Attr.TID, topic.getTid());
+					intent.putExtra(Topic.Attr.SUBJECT, topic.getSubject());
+				}
+				//Log.d(TAG, topic.toString());
+				BakHomeActivity.this.startActivity(intent);
+			}
+		});
+		
+		
+		//加载下一页内容
+		lv_topics.getLoadingButton().setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				switch(curr_banner_id){
+				case R.id.btn_home_headlines:
+					if(adapter_headlines.isHasMore()){
+						handler.executeLoadData(Constants.URL_INDEX_TOPS, BakHomeActivity.this.pagesize, 
+								++headlines_pageno);
+					}else{
+						Toast.makeText(BakHomeActivity.this, "已经是底页了!", Toast.LENGTH_SHORT).show();
+					}
+				break;
+				case R.id.btn_home_teahouse:
+					if(adapter_teahouse.isHasMore()){
+						handler.executeLoadData(Constants.URL_INDEX_TEAHOUSE, BakHomeActivity.this.pagesize, ++teahouse_pageno);
+					}else{
+						Toast.makeText(BakHomeActivity.this, "已经是底页了!", Toast.LENGTH_SHORT).show();
+					}
+					break;
+				case R.id.btn_home_focus:
+					if(adapter_focus.isHasMore()){
+						handler.executeLoadData(Constants.URL_INDEX_FOCUS, BakHomeActivity.this.pagesize, ++teahouse_pageno);
+					}else{
+						Toast.makeText(BakHomeActivity.this, "已经是底页了!", Toast.LENGTH_SHORT).show();
+					}
+					break;
+				case R.id.btn_home_entertainment:
+					
+					if(adapter_entertainment.isHasMore()){
+						handler.executeLoadData(Constants.URL_INDEX_ENTERTAINMENT, BakHomeActivity.this.pagesize, ++entertainment_pageno);
+					}else{
+						Toast.makeText(BakHomeActivity.this, "已经是底页了!", Toast.LENGTH_SHORT).show();
+					}
+					break;
+				case R.id.btn_home_emotional:
+					if(adapter_emotional.isHasMore()){
+						handler.executeLoadData(Constants.URL_INDEX_EMOTIONAL, BakHomeActivity.this.pagesize, ++emotional_pageno);
+					}else{
+						Toast.makeText(BakHomeActivity.this, "已经是底页了!", Toast.LENGTH_SHORT).show();
+					}
+					break;
+				}
+			}
+		});
+		
+		///////////
+		
+		
+		btn_home_headlines = (RadioButton)this.findViewById(R.id.btn_home_headlines);
+		btn_home_teahouse = (RadioButton)this.findViewById(R.id.btn_home_teahouse);
+		btn_home_focus = (RadioButton)this.findViewById(R.id.btn_home_focus);
+		btn_home_entertainment = (RadioButton)this.findViewById(R.id.btn_home_entertainment);
+		btn_home_emotional = (RadioButton)this.findViewById(R.id.btn_home_emotional);
+		
+		MyRadioButtonClickListener listener = new MyRadioButtonClickListener();
+		btn_home_headlines.setOnClickListener(listener);
+		btn_home_headlines.performClick();//手动触发一次
+		
+		btn_home_teahouse.setOnClickListener(listener);
+		btn_home_focus.setOnClickListener(listener);
+		btn_home_entertainment.setOnClickListener(listener);
+		btn_home_emotional.setOnClickListener(listener);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		boolean temp = myApp.isImg_invisible(); //是否不显示图片的新值
+		if(R.id.btn_home_headlines == curr_banner_id && img_invisible != temp){
+			curr_banner_id = 0;
+			img_invisible = temp;
+			btn_home_headlines.performClick();//手动触发一次
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		//TODO 停止"数据请求"文字提示
+		lv_topics.setLoadingStop();
+	}
+	
+	//二级菜单按钮的事件监听器
+	class MyRadioButtonClickListener implements View.OnClickListener{
+		public void onClick(View v) {
+			RadioButton btn = (RadioButton)v;
+			switch(btn.getId()){
+			case R.id.btn_home_headlines:
+				if(curr_banner_id != R.id.btn_home_headlines){
+					if(adapter_headlines == null){
+						progressDialog.show();
+						//handler.executeLoadData(Constants.URL_INDEX_TOP, 1, 1);
+						
+						handler.executeLoadData(Constants.URL_INDEX_TOPS, BakHomeActivity.this.pagesize, 1);
+					}else{
+						handler.send304();
+					}
+				}
+				curr_banner_id = R.id.btn_home_headlines;
+				break;
+			case R.id.btn_home_teahouse:
+				if(curr_banner_id != R.id.btn_home_teahouse){
+					if(adapter_teahouse == null){
+						progressDialog.show();
+						handler.executeLoadData(Constants.URL_INDEX_TEAHOUSE, BakHomeActivity.this.pagesize, 1);
+					}else{
+						handler.send304();
+					}
+				}
+				curr_banner_id = R.id.btn_home_teahouse;
+				break;
+			case R.id.btn_home_focus:
+				if(curr_banner_id != R.id.btn_home_focus){
+					if(adapter_focus == null){
+						progressDialog.show();
+						handler.executeLoadData(Constants.URL_INDEX_FOCUS, BakHomeActivity.this.pagesize, 1);
+					}else{
+						handler.send304();
+					}
+				}
+				curr_banner_id = R.id.btn_home_focus;
+				break;
+			case R.id.btn_home_entertainment:
+				if(curr_banner_id != R.id.btn_home_entertainment){
+					if(adapter_entertainment == null){
+						progressDialog.show();
+						handler.executeLoadData(Constants.URL_INDEX_ENTERTAINMENT, BakHomeActivity.this.pagesize, 1);
+					}else{
+						handler.send304();
+					}
+				}
+				curr_banner_id = R.id.btn_home_entertainment;
+				break;
+			case R.id.btn_home_emotional:
+				if(curr_banner_id != R.id.btn_home_emotional){
+					if(adapter_emotional == null){
+						progressDialog.show();
+						handler.executeLoadData(Constants.URL_INDEX_EMOTIONAL, BakHomeActivity.this.pagesize, 1);
+					}else{
+						handler.send304();
+					}
+				}
+				curr_banner_id = R.id.btn_home_emotional;
+				break;
+			}
+		}
+	}
+	
+	///////////////////////////以下为本地测试数据/////////////////////////////////////
+	public static PushData testTopData(){
+		return new PushData(1, "诺基亚“春 Phone”计划 用 Lumia 800 吸引开发者", 
+				"http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", 
+				"前方 MWC 2012 硝烟弥漫，各方厂商都端出新机，诺基亚除了发布新机并宣布 Lumia 手机 4 月将进入中国之外");
+	}
+	
+	public static ArrayList<PushData> testHeadLineDatas(){
+		ArrayList<PushData> datas = new ArrayList<PushData>();
+		datas.add(new PushData(1, "这是标题", "http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", "这个是摘要"));
+		
+		datas.add(new PushData(2, "这是2标题", "http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", "这个是摘要"));
+		datas.add(new PushData(3, "这是3标题", "http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", "这个是摘要"));
+		datas.add(new PushData(4, "这是4标题", "http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", "这个是摘要"));
+		datas.add(new PushData(5, "这是5标题", "http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", "这个是摘要"));
+		datas.add(new PushData(6, "这是6标题", "http://www.shopnctest.com/dx2app/data/attachment/portal/201203/02/111725r0x3xf5okx3x1k3q.jpg", "这个是摘要"));
+		
+		return datas;
+	}
+	
+	public static ArrayList<Topic> testDatas(){
+		ArrayList<Topic> datas = new ArrayList<Topic>();
+		datas.add(new Topic(7, "基本面被忽悠了这时空漩涡这", 
+				"C++", "1111", "222", System.currentTimeMillis() - 3600000*2L));
+		
+		datas.add(new Topic(3, "模压仍然及223模压", 
+				"小马过河", "1", "0", System.currentTimeMillis() - 172800000L));
+		
+		datas.add(new Topic(4, "烟消云散迷人困境顶级得意忘形", 
+				"西少", "23", "23", System.currentTimeMillis() - 259200000L));
+		
+		datas.add(new Topic(5, "客户端说", 
+				"带枪的女子","890", "50", System.currentTimeMillis() - 2592000000L));
+		
+		datas.add(new Topic(6, "何制作校园网", 
+				"shopnc4Android4iPhone","90", "33", System.currentTimeMillis()- 31104000000L));
+		
+		return datas;
+	}
+}

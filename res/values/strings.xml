@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App名 -->
+    <string name="app_name">VeryNC</string>
+    <string name="app_version">1.0.4</string>
+    <string name="app_copyright">Copyright &#169; 2012 VeryNC, All Rights Reserved</string>
+    
+    <!-- pull refresh listview -->
+    <string name="pull_to_refresh_pull">下拉可刷新</string>
+    <string name="pull_to_refresh_release">释放开始刷新</string>
+    <string name="pull_to_refresh_refreshing">加载中&#8230;</string>
+    <string name="pull_to_refresh_at">更新于:</string>
+    
+    <!-- 主屏中的一级栏目名 -->
+    <string name="main_home">首页</string>
+    <string name="main_live">生活</string>
+    <string name="main_forum">论坛</string>
+    <string name="main_info">信息</string>
+    <string name="main_more">更多</string>
+    
+    <!-- "首页"下的二级栏目名  -->
+    <string name="home_headlines">头条</string>
+    <string name="home_teahouse">茶座</string>
+    <string name="home_focus">焦点</string>
+    <string name="home_entertainment">娱乐</string>
+    <string name="home_emotional">情感</string>
+    
+    <!-- "生活"下的二级栏目名  -->    
+    <string name="live_housedecorate">家装</string>
+    <string name="live_food">美食</string>
+    <string name="live_car">汽车</string>
+    <string name="live_marriage">婚嫁</string>
+    <string name="live_baby">母婴</string>
+    <string name="live_woman">女性</string>
+    
+    
+    <!-- "论坛"下的二级栏目名  -->
+    <string name="forum_list">论坛列表</string>
+    <string name="forum_board_favorite">版块收藏</string>
+    <string name="forum_lastest_browse">最近浏览</string>
+        
+    <!-- "信息"下的二级栏目名  -->
+    <string name="info_01">人才</string>
+    <string name="info_02">房产</string>
+    <string name="info_03">二手</string>
+    <string name="info_04">促销</string>
+    <string name="info_05">活动</string>
+    <string name="info_06">团购</string>
+    
+    <!-- 帖子列表下的文本 -->
+    <string name="topic_all">全部</string>
+    <string name="topic_top">置顶</string>
+    <string name="topic_digest">精华</string>
+    <string name="topic_search">搜索</string>
+    <string name="topic_son">子版</string>
+    <string name="topic_search_hint">輸入关键字&#8230;</string>
+    
+    <!-- 帖子详细及回复列表 -->
+    <string name="topic_display_default">默认</string>
+    <string name="topic_display_onlylandlord">只看楼主</string>
+    <string name="topic_display_lastestreplies">最新回复</string>
+    <string name="topic_display_floor_landload">楼主：</string>
+    <string name="topic_display_floor_1">沙发：</string>
+    <string name="topic_display_floor_2">板凳：</string>
+    <string name="topic_display_floor_3">地板：</string>
+    <string name="topic_display_floor_num">%1$d楼：</string>
+    
+    <!-- 发帖 -->
+    <string name="topic_send_name">发帖</string>
+    <string name="topic_send_title">标题：</string>
+    <string name="topic_send_type">分类：</string>
+    <string name="topic_send_title_hint">请输入标题</string>
+    <string name="topic_send_content_hint">说点什么吧&#8230;&#8230;</string>
+    <string name="topic_send_wait">发帖中&#8230;</string>
+    <string name="topic_reply_name">回帖</string>
+    <string name="topic_reply_wait">回帖中&#8230;</string>
+    <string name="topic_quote_name">回复</string>
+    
+    <!-- "商圈"下的文本 -->
+    <string name="search_location_wait">正在定位&#8230;</string>
+    <string name="search_find_location_info">获取位置信息&#8230;</string>
+    <string name="search_find_shop_info">获取商家信息&#8230;</string>
+    <string name="search_lat_lng">纬度：%1$s，经度：%2$s</string>
+    
+    
+     <string name="search_wait">正在加载&#8230;</string>
+     
+    <!-- "更多"下的二级栏目名 -->
+    <string name="more_sysset">系统设置</string>
+    <string name="more_accmng">账号管理</string>
+    <string name="more_feedback">意见反馈</string>
+    <string name="more_aboutus">关于我们</string>
+    
+    
+    <!-- 二级栏目"系统设置"下的文本 -->
+    <string name="more_sysset_type_flow">流量控制</string>
+    <string name="more_sysset_display_poststarter_only">帖子页默认只看楼主</string>
+    <string name="more_sysset_img_invisible">2G/3G网络下禁止图片显示</string>
+    <string name="more_sysset_type_cache">缓存设置</string>
+    <string name="more_sysset_clear_cache">清除缓存</string>
+    <string name="more_sysset_cache_size">当前缓存大小：%1$sM</string>
+    <string name="more_sysset_default">恢复默认设置</string>
+    
+    <!-- 二级栏目"账号管理"下的文本 -->
+    <string name="more_accmng_add">添加新账号</string>
+    
+    <!-- 二级栏目"意见反馈"下的文本 -->
+    <string name="more_feedback_hint">请输入您的宝贵意见</string>
+    <string name="more_feedback_invalid">文本不能为空</string>
+    
+    <!-- 二级栏目"关于我们"下的文本 -->
+    <string name="tel">服务热线：022&#8211;87631069</string>
+    <string name="more_aboutus_appname">VeryNC Android客户端</string>
+    <string name="more_aboutus_version">版本：%1$s</string>
+    
+    <!-- 登录 -->
+    <string name="login">登录</string>
+    <string name="login_loginname">账 号：</string>
+    <string name="login_loginname_hint">请输入社区账号</string>
+    <string name="login_loginname_invalid">账号不能为空</string>
+    <string name="login_pwd">密 码：</string>
+    <string name="login_pwd_hint">请输入社区密码</string>
+	<string name="login_pwd_invalid">密码不能为空</string>
+    <string name="login_rememberpwd">记住密码</string>
+    <string name="login_autologin">自动登录</string>
+    <string name="login_wait">登录中&#8230;</string>
+    
+    <!-- 帖子相关 -->
+    <string name="topic_id">-1</string>
+    <string name="topic_title">没有标题</string>
+    <string name="topic_content">内容前20个字符&#8230;</string>
+    <string name="topic_author">匿名</string>
+    <string name="topic_visits_replies">回复/浏览:%1$s/%2$s</string>
+    <string name="topic_detail_show_pic">查看所有图片，共%1$s张</string>
+    <string name="topic_pic_info">第%1$s张，共%2$s张</string>
+    
+    <!-- 帖子发表时间相关 -->
+    <string name="topic_pubtime">1分钟前</string>
+    <string name="minutes_before">%1$d分钟前</string>
+    <string name="hours_before">%1$d小时前</string>
+    <string name="day_before_yesterday">前天 %1$s</string>
+    <string name="yesterday">昨天 %1$s</string>
+    <string name="days_before">%1$d天前</string>
+    <string name="months_before">%1$d个月前</string>
+    <string name="years_before">%1$d年前</string>
+    
+    <!-- ListView的页脚 -->
+    <string name="footview_more">查看下%1$d条</string>
+    <string name="footview_wait">数据请求中&#8230;</string>
+    
+    
+    <!-- 选项菜单 -->
+    <string name="menu_refresh">刷新</string>
+     <string name="menu_setting">设置</string>
+      <string name="menu_about">关于</string>
+       <string name="menu_exit">退出</string>
+</resources>
+
+
+
+
+

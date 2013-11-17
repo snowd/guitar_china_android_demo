@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 整个应用的基本主题 -->
+    <style name="MyTheme.Basic" parent="@android:style/Theme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:screenOrientation">portrait</item>
+    </style>
+    
+     <!-- 淡入淡出效果 -->
+    <style name="MyAnimations.fade" parent="@android:Animation">
+        <item name="android:windowEnterAnimation">@anim/fadein</item>
+        <item name="android:windowExitAnimation">@anim/fadeout</item>
+    </style>
+
+    <!-- 启动界面的主题 -->
+    <style name="MyTheme.Launcher" parent="@style/MyTheme.Basic">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowAnimationStyle">@style/MyAnimations.fade</item>
+    </style>
+    
+    <!-- 加载数据时的等待对话框(透明背景色) -->
+    <style name="MyProgressDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowFrame">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- 标题上的文字样式 -->
+    <style name="MyTitleBarText">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <!-- tab栏上的按钮样式 -->
+    <style name="MyTabButton">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">@color/btn_tab</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/tab_btn_bg</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">0.70000005dip</item>
+        <item name="android:layout_marginRight">0.70000005dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <!-- 二级栏目上的按钮样式 -->
+    <style name="MyBannerButton">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:textColor">@color/btn_banner</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/btn_banner</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">0.70000005dip</item>
+        <item name="android:layout_marginRight">0.70000005dip</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <!-- ListView之间的分隔条样式 -->
+    <style name="MyLabelSplit">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">10.0dip</item>
+        <item name="android:layout_height">13.0dip</item>
+        <item name="android:focusable">false</item>
+    </style>
+
+    <!-- 内容界面提交按钮样式 -->
+    <style name="MySubmitButton">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/btn_style_1</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">70.0dip</item>
+        <item name="android:layout_marginRight">70.0dip</item>
+        <item name="android:paddingTop">8.0dip</item>
+        <item name="android:paddingBottom">8.0dip</item>
+        <item name="android:button">@null</item>
+    </style>
+
+    <!-- 输入框样式 -->
+    <style name="MyEditText">
+        <item name="android:layout_marginBottom">3.0dip</item>
+        <item name="android:layout_marginTop">3.0dip</item>
+        <item name="android:background">@drawable/bg_edittxt</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:textColorHint">#ffdfdfdf</item>
+        <item name="android:textSize">15.0dip</item>
+    </style>
+
+</resources>

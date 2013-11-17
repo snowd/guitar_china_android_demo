@@ -1,0 +1,191 @@
+﻿一、首页
+1. 头条
+1.1 头条大图
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=top&pageno=1&pagesize=1
+
+1.2 头条列表
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=tops&pageno=1&pagesize=20
+
+2. 茶座
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=index2&pageno=1&pagesize=20
+
+3. 焦点
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=index3&pageno=1&pagesize=20
+
+4. 娱乐
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=index4&pageno=1&pagesize=20
+
+5. 情感
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=index5&pageno=1&pagesize=20
+
+二、生活
+1. 美食
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=second1&pageno=1&pagesize=20
+
+2. 汽车
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=second2&pageno=1&pagesize=20
+
+3. 房产
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=second3&pageno=1&pagesize=20
+
+4. 家装
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=second4&pageno=1&pagesize=20
+
+5. 婚嫁
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=second5&pageno=1&pagesize=20
+
+6. 母婴
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=second6&pageno=1&pagesize=20
+
+三、商圈
+1.搜索制定范围内的商家
+
+http://www.shopnctest.com/dx2app/app2/zuobiao.php?type=shop_list&lat=39.1178&lng=117.15&r=2000
+GET参数: lat（使用者纬度） lng（使用者经度） r（搜索半径范围，单位：米）
+会返回从近到远的商家信息包括shop_id,shop_name,shop_pic,shop_website,shop_lat,shop_lng,distance(距离，单位：米)
+
+{"code":"200","datas":[{"shop_id":"1","shop_pic":"","shop_name":"\u9752\u53f6\u706b\u9505","shop_website":"http://www.qingye.com","shop_lat":"39.1178","shop_lng":"117.15","distance":0},{"shop_id":"2","shop_pic":"","shop_name":"\u4e1c\u5317\u9aa8\u5934\u738b","shop_website":"http://www.gutou.com","shop_lat":"39.1159","shop_lng":"117.149","distance":228.5},{"shop_id":"3","shop_pic":"","shop_name":"\u9a6c\u5170\u62c9\u9762","shop_website":"http://www.lamian.com","shop_lat":"39.1152","shop_lng":"117.149","distance":302}]}
+
+2.商家详细信息
+
+http://www.shopnctest.com/dx2app/app2/zuobiao.php?type=shop_detail&shop_id=1
+GET参数：shop_id（商家ID）
+会返回商家的所有信息：shop_id,shop_name,shop_pic,shop_info,shop_address,shop_phone,shop_website,shop_lat,shop_lng
+{"code":"200","datas":[{"shop_id":"1","shop_name":"\u9752\u53f6\u706b\u9505","shop_pic":"","shop_info":"\u8fd9\u662f\u4e00\u5bb6\u706b\u9505\u5e97","shop_phone":"022-27380001","shop_address":"\u7ea2\u65d7\u8def\u9752\u53f6\u706b\u9505","shop_website":"http://www.qingye.com","shop_lat":"39.1178","shop_lng":"117.15"}]}
+
+四、论坛
+1.论坛板块列表
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=forum_list
+
+描述
+返回的数组结构是这样的
+type=group，说明是板块分类，也就是一级列表，同时fup=0
+type=forum，说明是下级板块，也就是二级列表，同时fup=999，这个fup的值是所属上级板块的fid
+
+2. 板块帖子列表
+2.1 帖子列表
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=thread_list&fid=2&pageno=1&pagesize=20
+
+2.2 板块置顶
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=top_thread&fid=2&pageno=1&pagesize=20
+
+2.3 板块精华
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=digest_thread&fid=2&pageno=1&pagesize=20
+
+
+2.板块搜索
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=search_thread&fid=2&keyword=1&pageno=1&pagesize=20
+
+keyword字段为中文，需要经过url编码
+（php中使用的函数是urldecode和urlencode，android或iphone应该有对应的操作方式。具体参考http://php.net/manual/zh/function.urlencode.php）
+
+3.帖子详细
+3.1 帖子详细
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=thread_detail&tid=3&pageno=1&pagesize=20
+关于帖子中的图片附件在app端显示的问题，我们这边在“帖子详细”api中加了一个返回字段pic_info，这个字段中是每个帖子中包含的图片附件，图片的url已经拼接好了，如果帖子含有多个图片附件会以英文逗号,来进行分割
+
+3.2 只看楼主
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=thread_detail&tid=3&pageno=1&pagesize=20&addtype=only_owner
+
+3.3 最新回复
+http://www.shopnctest.com/dx2app/app2/topiclist.php?type=thread_detail&tid=3&pageno=1&pagesize=20&addtype=last_post
+
+3.4头像
+返回的字段avatar_url为头像的链接
+
+3.5表情
+返回的正文中[ncsmiley] [/ncsmiley]为表情的链接
+
+五、登陆
+http://www.shopnctest.com/dx2app/app2/login.php?type=onlinedo
+POST请求，发送useracc和userpw两个字段，userpw字段需要md5，分别代表用户名和密码。
+
+返回数据：
+成功返回200，分为两种情况：
+登陆成功返回sessionid字符串；
+{"code":"200","datas":[{"sessionid":"7e54a80ab3ecbddfbd8e5e1a09ad1a35"}]}
+账号或密码错误，返回sessionid字段，值为aperror。
+{"code":"200","datas":[{"sessionid":"aperror"}]}
+请求地址type错误，或规定字段不符合要求都会返回404错误。
+{"code":"404","datas":[]}
+请求正确，服务器处理失败或服务器错误会返回500错误。
+{"code":"500","datas":[]}
+
+六、发帖和回帖
+1. 验证
+发帖和回帖的POST表单中，有一个字段sid是做登陆验证的。
+登陆成功后会返回sid和uid，这两个字段的数据应该和用户名一起保存在手机端本地。
+若验证失败，会返回 code: 200 result: login first 数据。
+
+2. 发帖
+请求URL: http://www.shopnctest.com/dx2app/app2/topicpost.php?type=post&fid=板块id
+GET参数：type=post,fid=板块ID,img=1（当需要上传图片时，img需设为1，没图时候img字段可省略）
+POST参数：subject(标题),author(发帖用户名),authorid(发帖用户ID),message(帖子主体信息),img[](上传图片信息，可上传多图)
+
+3. 回帖
+请求URL: http://www.shopnctest.com/dx2app/app2/topicpost.php?type=reply&fid=板块id
+GET参数：type=reply,fid=板块ID,tid=帖子ID,img=1（发图片时添加此参数，可选）
+POST参数：author(发帖用户名),authorid(发帖用户ID),message(帖子主体信息),img[](上传图片信息，可上传多图)
+
+4. 返回数据
+发帖成功 code:200, result:post succ
+发帖失败 code:500, result:post failed
+回复成功 code:200, result:reply succ
+回复失败 code:200, result:reply failed
+错误 code:404
+
+5. 表情
+http://www.shopnctest.com/dx2app/app2/topicpost.php?type=smiley
+插入到正文中，使用code编码
+
+七、建议提交
+http://www.shopnctest.com/dx2app/app2/advice.php?type=submit
+POST传参三个字段，message(建议内容), uid（用户id，可省略）, username（用户名，可省略）
+用户已通过登陆验证后，可以把uid和username添上；若没有账号信息可以省略这两个字段。
+200 send succ
+500 send failed
+404 unknown error
+
+
+
+
+
+
+
+
+
+
+补充
+
+
+现在登陆后返回的数据中会有会员的groupid（用户组ID）
+
+请求论坛板块列表api的时候(toplist.php?type=forum_list)
+
+如果是没登陆的游客状态就无需添加额外参数，如果用户已经登陆则在此api后添加&groupid=（用户登陆时获得的groupid）
+
+返回的论坛板块信息中目前增加了2个字段：ispost（是否允许当前用户发帖）和isreply（是否允许当前用户回帖）；1是允许0是不允许
+
+
+*ispost和is reply均是针对当前用户的权限信息反馈
+*信息中增加的viewperm/postperm/replyperm等字段app端不用理会
+
+
+【例子】一个刚注册的用户（用户组：新手上路 10）登陆后在app端请求测试服务器论坛板块列表api的结果如下：
+
+api：http://www.shopnctest.com/dx2app/app2/topiclist.php?type=forum_list&groupid=10
+返回json：
+
+{"code":"200","datas":[{"fid":"1","fup":"0","type":"group","name":"\u4e92\u52a8NC","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"36","fup":"0","type":"group","name":"\u751f\u6d3b\u5a31\u4e50","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"37","fup":"0","type":"group","name":"\u7f51\u8d2d\u4e50\u7ffb\u5929","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"56","fup":"37","type":"forum","name":"\u670d\u9970\u533a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"57","fup":"37","type":"forum","name":"\u98df\u54c1\u533a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"58","fup":"37","type":"forum","name":"\u7f8e\u5bb9\u533a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"59","fup":"37","type":"forum","name":"\u7bb1\u5305\u978b\u5e3d","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"60","fup":"37","type":"forum","name":"\u9970\u54c1\u5929\u5730","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"61","fup":"37","type":"forum","name":"\u5bb6\u5177\u5bb6\u9970","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"62","fup":"37","type":"forum","name":"\u6742\u8d27\u533a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"63","fup":"37","type":"forum","name":"\u8df3\u86a4\u5e02\u573a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"2","fup":"1","type":"forum","name":"NC\u8336\u5ea7","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"52","fup":"36","type":"forum","name":"\u7f8e\u98df","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"42","fup":"1","type":"forum","name":"\u5a31\u4e50\u516b\u5366","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"53","fup":"36","type":"forum","name":"\u6c7d\u8f66","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"39","fup":"1","type":"forum","name":"\u4ea4\u53cb\u5f81\u5a5a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"54","fup":"36","type":"forum","name":"\u623f\u4ea7","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"40","fup":"1","type":"forum","name":"\u60c5\u611f\u5929\u7a7a","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"55","fup":"36","type":"forum","name":"\u5bb6\u88c5","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"43","fup":"1","type":"forum","name":"\u5f71\u89c6\u90e8\u843d","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"51","fup":"36","type":"forum","name":"\u5a5a\u59fb","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"41","fup":"1","type":"forum","name":"\u771f\u6211SHOW","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"50","fup":"36","type":"forum","name":"\u6bcd\u5a74","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"44","fup":"1","type":"forum","name":"\u901a\u8baf\u8fd0\u8425\u5546","viewperm":"","postperm":"","replyperm":"","ispost":1,"isreply":1},{"fid":"38","fup":"1","type":"forum","name":"\u8c08\u5929\u8bf4\u5730","viewperm":"1011121314151617181912345678","postperm":"11121314151617181912345678","replyperm":"","ispost":0,"isreply":1}]}
+
+注意对app有用的ispost和isreply字段；其中fid=38的板块在discuz设置了不允许这个用户组的用户去发帖，因此此板块的ispost=0
+
+测试站“论坛版块列表”api已作更新，topiclist.php?type=forum_list&uid=【用户ID】,目前传uid来取代之前传groupid；另外返回数据里增加了一个字段是ispostimage用来判断当前用户发帖时是否允许发图片（1可以0不可以）
+
+
+
+
+
+
+
+账号：xinshou    密码：xinshouxinshou  
