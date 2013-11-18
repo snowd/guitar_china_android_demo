@@ -166,7 +166,7 @@ public class TopicAllActivity extends ListActivity implements UpdateHandle {
 		
 		Log.d(TAG, "loadData...");
 		
-		RemoteDataHandler.asyncGet(url+fid, pagesize, pageno, new RemoteDataHandler.Callback() {
+		RemoteDataHandler.asyncGet(url+fid, "thread_list", pagesize, pageno, new RemoteDataHandler.Callback() {
 			@Override
 			public void dataLoaded(ResponseData data) {
 				

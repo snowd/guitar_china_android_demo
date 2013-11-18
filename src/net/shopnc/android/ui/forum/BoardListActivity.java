@@ -157,7 +157,7 @@ public class BoardListActivity extends Activity implements UpdateHandle{
 			url += myApp.getUid();
 		}
 
-		RemoteDataHandler.asyncGet(url, pagesize, pageno, new RemoteDataHandler.Callback() {
+		RemoteDataHandler.asyncGetList(url, pagesize, pageno, new RemoteDataHandler.Callback() {
 			@Override
 			public void dataLoaded(ResponseData data) {
 				pv.endUpdate();

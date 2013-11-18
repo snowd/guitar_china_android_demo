@@ -53,7 +53,8 @@ public class TopicDetailActivity extends TabActivity {
 		int ispostimage = this.getIntent().getIntExtra("ispostimage", 0);
 		Log.d(TAG, t.toString());
 		
-		topic_default_intent = new Intent(this, TopicHtmlActivity.class);
+//		topic_default_intent = new Intent(this, TopicHtmlActivity.class);
+		topic_default_intent = new Intent(this, TopicDetailDefaultActivity.class);
 		topic_default_intent.putExtra(Topic.TOPIC_TAG, t);
 		topic_default_intent.putExtra("url", Constants.URL_TOPIC_DETAIL_DEFAULT);
 		topic_default_intent.putExtra("isreply", isreply);

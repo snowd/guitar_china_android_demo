@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -43,6 +44,7 @@ public class RemoteDataHandler{
 	private static final String _DATAS = "datas"; 
 	private static final String _HASMORE = "haseMore"; 
 	private static final String _COUNT = "count";
+	private static final String _PAGE_INFO = "page";
 	private static final String _RESULT = "result";
 	private static final String _URL = "url";
 	//线程池
@@ -433,7 +435,7 @@ public class RemoteDataHandler{
 	 * @param pageno
 	 * @param callback
 	 */
-	public static void asyncGet(final String url, final int pagesize, final int pageno, final Callback callback){
+	public static void asyncGetList(final String url, final int pagesize, final int pageno, final Callback callback){
 		final Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
@@ -468,24 +470,128 @@ public class RemoteDataHandler{
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d","");
 					
-					JSONObject obj = new JSONObject(json);
-					if(null != obj && obj.has(_CODE)){
-						msg.what = Integer.valueOf(obj.getString(_CODE));
+//					JSONObject obj = new JSONObject(json);
+//					if(null != obj && obj.has(_CODE)){
+//						msg.what = Integer.valueOf(obj.getString(_CODE));
 						
-						if(obj.has(_DATAS)){
-							JSONArray array = obj.getJSONArray(_DATAS);
+//						if(obj.has(_DATAS)){
+						JSONArray array = null;
+						if (!TextUtils.isEmpty(json)) {
+							array = new JSONArray(json);
 							msg.obj = array.toString();
 							
 							if(pagesize == array.length()){
 								msg.getData().putBoolean(_HASMORE, true);
 							}
 						}
-						if(obj.has(_COUNT)){
-							msg.getData().putLong(_COUNT, Long.valueOf(obj.getString(_COUNT)));
+						if (array != null && array.length() > 0) {
+							msg.getData().putLong(_COUNT, Long.valueOf(array.length()));
+							msg.getData().putString(_RESULT, json);
 						}
 						
-						if(obj.has(_RESULT)){
-							msg.getData().putString(_RESULT, obj.getString(_RESULT));
+//						if(obj.has(_COUNT)){
+//							msg.getData().putLong(_COUNT, Long.valueOf(obj.getString(_COUNT)));
+//						}
+//						
+//						if(obj.has(_RESULT)){
+//							msg.getData().putString(_RESULT, obj.getString(_RESULT));
+//						}
+//					}
+				} catch (IOException e) {
+					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
+					e.printStackTrace();
+				} catch (JSONException e) {
+					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				handler.sendMessage(msg);
+			}
+		});
+	}
+	
+	/**
+	 * 异步get分页数据请求封装
+	 * @param url
+	 * @param pagesize
+	 * @param pageno
+	 * @param callback
+	 */
+	public static void asyncGet(final String url, final int pagesize,
+			final int pageno, final Callback callback) {
+		asyncGet(url, _DATAS, pagesize, pageno, callback);
+	}
+	
+	/**
+	 * 异步get分页数据请求封装
+	 * @param url
+	 * @param pagesize
+	 * @param pageno
+	 * @param callback
+	 */
+	public static void asyncGet(final String url, final String datakey,
+			final int pagesize, final int pageno, final Callback callback) {
+		final Handler handler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				ResponseData data = new ResponseData();
+				data.setCode(msg.what);
+				data.setHasMore(msg.getData().getBoolean(_HASMORE));
+				data.setJson((String)msg.obj);
+				data.setResult(msg.getData().getString(_RESULT));
+				data.setCount(msg.getData().getLong(_COUNT));
+				Log.d(TAG, data.toString());
+				
+				callback.dataLoaded(data);
+			}
+		};
+		threadPool.execute(new Runnable() {
+			@Override
+			public void run() {
+				
+				Message msg = handler.obtainMessage(HttpStatus.SC_OK);
+				msg.getData().putBoolean(_HASMORE, false);
+				
+				String realUrl = url + "&" + Constants.PARAM_PAGESIZE + "=" + pagesize 
+						+ "&" + Constants.PARAM_PAGENO + "=" + pageno;
+				
+				Log.d(TAG, realUrl);
+				try {
+					Thread.sleep(1000);
+					
+					String json = HttpHelper.get(realUrl);
+					Log.d(TAG, json);
+					
+					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
+					json = json.replaceAll("\\x0a|\\x0d","");
+					
+					JSONObject obj = new JSONObject(json);
+					if(null != obj/* && obj.has(_CODE)*/){
+//						msg.what = Integer.valueOf(obj.getString(_CODE));
+					
+						if (obj.has(datakey)) {
+							JSONArray array = obj.getJSONArray(datakey);
+							msg.obj = array.toString();
+
+							if (pagesize == array.length()) {
+								msg.getData().putBoolean(_HASMORE, true);
+							}
+						}
+
+						if (obj.has(_COUNT)) {
+							msg.getData().putLong(_COUNT,
+								Long.valueOf(obj.getString(_COUNT)));
+						} else if (obj.has(_PAGE_INFO)) {
+							JSONObject page = obj.getJSONObject("page");
+							msg.getData().putLong(_COUNT,
+								Long.valueOf(page.getString("max_pages"))
+									* pagesize);
+						}
+						if (obj.has(_RESULT)) {
+							msg.getData().putString(_RESULT,
+									obj.getString(_RESULT));
 						}
 					}
 				} catch (IOException e) {

@@ -261,7 +261,7 @@ public final class Constants {
 	 *  "avatar_url": "xxx.jpg"
 	 */
 	public static final String URL_TOPIC_DETAIL_DEFAULT = URL_COMMON_TOPIC_LIST + PARAM_TYPE
-			+ "=thread_detail&tid=";
+			+ "=thread&tid=";
 	
 	/**
 	 * 帖子详情-只看楼主<br/>

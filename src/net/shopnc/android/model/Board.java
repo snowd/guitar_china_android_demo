@@ -142,7 +142,6 @@ public class Board {
 						g.getSubBoards().add(board);
 					}
 				}
-				
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -216,7 +216,7 @@ public class TopicDetailDefaultActivity extends ListActivity implements
 			return;
 		}
 
-		RemoteDataHandler.asyncGet(url + tid, pagesize, pageno,
+		RemoteDataHandler.asyncGet(url + tid, "post", pagesize, pageno,
 				new RemoteDataHandler.Callback() {
 					@Override
 					public void dataLoaded(ResponseData data) {
