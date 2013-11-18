@@ -9,7 +9,7 @@ package net.shopnc.android.adapter;
 
 import java.util.ArrayList;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.model.Smiley;
 import android.content.Context;

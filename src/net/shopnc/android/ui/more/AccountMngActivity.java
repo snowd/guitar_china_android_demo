@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 import org.apache.http.HttpStatus;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.SubmenuListViewAdapter;
 import net.shopnc.android.adapter.UserListViewAdapter;
 import net.shopnc.android.common.Constants;

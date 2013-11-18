@@ -3,7 +3,7 @@ package net.shopnc.android.ui.forum.topic;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.TopicDetailListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;

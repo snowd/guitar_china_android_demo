@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;
@@ -51,29 +51,29 @@ public class StartActivity extends Activity {
        editor.clear();
 //        JSONObject object;
         JSONArray array;
-		try {
-//			object = new JSONObject(RemoteDataHandler.loadTopName());
-//			array=object.getJSONArray("datas");
-			array = new JSONArray(RemoteDataHandler.loadTopName());
-			
-			JSONObject item=array.getJSONObject(0);
-			for(int j =1;j<6;j++)
-			{					
-				String index=item.getString("index"+j);
-				editor.putString("index"+j, index);
-				String second=item.getString("second"+j);
-				editor.putString("second"+j, second);
-				String third=item.getString("third"+j);
-				editor.putString("third"+j, third);
-			}		
-			String second=item.getString("second"+6);
-			editor.putString("second"+6, second);
-			String third=item.getString("third"+6);
-			editor.putString("third"+6, third);			
-			editor.commit();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}	
+//		try {
+////			object = new JSONObject(RemoteDataHandler.loadTopName());
+////			array=object.getJSONArray("datas");
+//			array = new JSONArray(RemoteDataHandler.loadTopName());
+//			
+//			JSONObject item=array.getJSONObject(0);
+//			for(int j =1;j<6;j++)
+//			{					
+//				String index=item.getString("index"+j);
+//				editor.putString("index"+j, index);
+//				String second=item.getString("second"+j);
+//				editor.putString("second"+j, second);
+//				String third=item.getString("third"+j);
+//				editor.putString("third"+j, third);
+//			}		
+//			String second=item.getString("second"+6);
+//			editor.putString("second"+6, second);
+//			String third=item.getString("third"+6);
+//			editor.putString("third"+6, third);			
+//			editor.commit();
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}	
 
                
         if(-1 == SystemHelper.getNetworkType(StartActivity.this)){

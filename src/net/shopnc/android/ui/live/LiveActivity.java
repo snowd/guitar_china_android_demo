@@ -7,7 +7,7 @@
  */
 package net.shopnc.android.ui.live;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.ui.MainActivity;

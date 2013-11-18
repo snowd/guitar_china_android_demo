@@ -9,7 +9,7 @@ package net.shopnc.android.ui.more;
 
 import org.apache.http.HttpStatus;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.handler.RemoteDataHandler;
 import net.shopnc.android.handler.RemoteDataHandler.Callback;

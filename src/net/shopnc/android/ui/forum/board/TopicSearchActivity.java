@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.TopicListViewAdapter;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;

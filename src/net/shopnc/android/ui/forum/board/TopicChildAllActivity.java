@@ -10,7 +10,7 @@ package net.shopnc.android.ui.forum.board;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.TopicListViewAdapter;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;

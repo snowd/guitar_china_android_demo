@@ -11,7 +11,7 @@ package net.shopnc.android.ui.more;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.SubmenuListViewAdapter;
 import net.shopnc.android.common.Constants;
 import android.app.Activity;

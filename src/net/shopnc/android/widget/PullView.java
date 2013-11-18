@@ -3,7 +3,7 @@ package net.shopnc.android.widget;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;

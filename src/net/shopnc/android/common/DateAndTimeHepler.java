@@ -10,7 +10,7 @@ package net.shopnc.android.common;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 

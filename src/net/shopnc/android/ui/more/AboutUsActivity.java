@@ -7,7 +7,7 @@
  */
 package net.shopnc.android.ui.more;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

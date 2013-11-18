@@ -1,6 +1,6 @@
 package net.shopnc.android.ui;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.model.PushData;
 import net.shopnc.android.ui.forum.ForumActivity;

@@ -9,7 +9,7 @@ package net.shopnc.android.adapter;
 
 import java.util.ArrayList;
 
-import com.snowd.anodroid.jimi.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;
 import net.shopnc.android.handler.ImageLoader;
