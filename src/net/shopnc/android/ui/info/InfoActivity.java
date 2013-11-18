@@ -7,7 +7,7 @@
  */
 package net.shopnc.android.ui.info;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.ui.MainActivity;

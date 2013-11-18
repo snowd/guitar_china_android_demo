@@ -7,7 +7,7 @@
  */
 package net.shopnc.android.widget;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.widget.TextView;

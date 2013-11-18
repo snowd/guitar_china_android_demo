@@ -10,7 +10,7 @@ package net.shopnc.android.ui.forum.topic;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.adapter.TopicDetailLastRepliesListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;

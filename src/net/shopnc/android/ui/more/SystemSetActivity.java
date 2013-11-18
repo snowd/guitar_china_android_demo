@@ -13,7 +13,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.adapter.MenuListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.IOHelper;

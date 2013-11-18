@@ -15,7 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.HttpHelper;
 import net.shopnc.android.common.ImageHelper;

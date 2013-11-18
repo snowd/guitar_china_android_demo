@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.adapter.SmileyGridViewAdapter;
 import net.shopnc.android.common.BBCodeHelper;
 import net.shopnc.android.common.Constants;

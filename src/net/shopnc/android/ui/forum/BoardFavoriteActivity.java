@@ -9,7 +9,7 @@ package net.shopnc.android.ui.forum;
 
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.adapter.BoardFavoriteListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;

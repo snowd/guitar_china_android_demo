@@ -9,7 +9,7 @@ package net.shopnc.android.adapter;
 
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.common.DateAndTimeHepler;
 import net.shopnc.android.model.Topic;
 import android.content.Context;

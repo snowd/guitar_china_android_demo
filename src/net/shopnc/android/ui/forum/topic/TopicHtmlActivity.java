@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.common.BBCodeHelper;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.DateAndTimeHepler;

@@ -10,7 +10,7 @@ package net.shopnc.android.adapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.common.BBCodeHelper;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.DateAndTimeHepler;

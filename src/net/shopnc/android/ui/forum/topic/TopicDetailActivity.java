@@ -7,7 +7,7 @@
  */
 package net.shopnc.android.ui.forum.topic;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.model.Topic;
 import android.app.TabActivity;

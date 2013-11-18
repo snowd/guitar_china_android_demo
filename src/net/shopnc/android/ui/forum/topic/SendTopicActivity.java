@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.shopnc.android.R;
+import com.snowd.anodroid.jimi.R;
 import net.shopnc.android.adapter.SmileyGridViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.ImageHelper;
