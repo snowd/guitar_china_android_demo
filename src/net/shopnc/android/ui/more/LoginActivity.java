@@ -7,9 +7,8 @@
  */
 package net.shopnc.android.ui.more;
 
-import org.apache.http.HttpStatus;
+import java.io.Serializable;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MD5Encoder;
 import net.shopnc.android.common.MyApp;
@@ -19,6 +18,9 @@ import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.User;
 import net.shopnc.android.widget.MyProcessDialog;
+
+import org.apache.http.HttpStatus;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 登录
@@ -100,7 +104,12 @@ public class LoginActivity extends Activity {
 		}
 		RemoteDataHandler.asyncLogin(author, md5_pwd, new Callback() {
 			@Override
-			public void dataLoaded(ResponseData data) {
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 				if(data.getCode()==HttpStatus.SC_OK){
 					String json = data.getJson();
 					User user = User.newInstance(json);

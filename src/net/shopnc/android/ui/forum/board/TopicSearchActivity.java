@@ -7,11 +7,11 @@
  */
 package net.shopnc.android.ui.forum.board;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.TopicListViewAdapter;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;
@@ -37,6 +37,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 选定版块下的帖子搜索
@@ -178,7 +180,12 @@ public class TopicSearchActivity extends ListActivity implements UpdateHandle {
 			Log.d(TAG, "url="+real_url);
 			RemoteDataHandler.asyncGet(real_url, pagesize, pageno, new RemoteDataHandler.Callback() {
 				@Override
-				public void dataLoaded(ResponseData data) {
+				public Serializable dataPrepared(int code, String resp) {
+					return null;
+				}
+
+				@Override
+				public void dataLoaded(ResponseData data, Object dataObj) {
 					
 					pv.endUpdate(); //更新完成后的回调方法,用于隐藏刷新面板
 					

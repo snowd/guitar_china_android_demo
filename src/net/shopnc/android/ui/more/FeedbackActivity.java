@@ -7,13 +7,15 @@
  */
 package net.shopnc.android.ui.more;
 
-import org.apache.http.HttpStatus;
+import java.io.Serializable;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.handler.RemoteDataHandler;
 import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.model.ResponseData;
+
+import org.apache.http.HttpStatus;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -22,6 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 意见反馈
@@ -71,7 +75,12 @@ public class FeedbackActivity extends Activity {
 				}
 				RemoteDataHandler.feedback(content, myApp.getUid(), myApp.getUseracc(), new Callback() {
 					@Override
-					public void dataLoaded(ResponseData data) {
+					public Serializable dataPrepared(int code, String resp) {
+						return null;
+					}
+
+					@Override
+					public void dataLoaded(ResponseData data, Object dataObj) {
 						if(data.getCode()==HttpStatus.SC_OK){
 							Toast.makeText(FeedbackActivity.this, "提交成功，谢谢您的宝贵意见！", Toast.LENGTH_SHORT).show();
 							FeedbackActivity.this.finish();

@@ -7,10 +7,10 @@
  */
 package net.shopnc.android.ui.forum.topic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.TopicDetailLastRepliesListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
@@ -34,6 +34,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 
 /**
@@ -218,7 +220,12 @@ public class TopicDetailLastRepliesActivity extends ListActivity implements Upda
 		
 		RemoteDataHandler.asyncGet(url + tid, pagesize, pageno, new RemoteDataHandler.Callback() {
 			@Override
-			public void dataLoaded(ResponseData data) {
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 				pv.endUpdate(); //更新完成后的回调方法,用于隐藏刷新面板
 				
 				if(data.getCode() == HttpStatus.SC_OK){

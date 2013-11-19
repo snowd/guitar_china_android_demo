@@ -8,6 +8,7 @@
 package net.shopnc.android.common;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -287,7 +288,12 @@ public class MyApp extends Application {
 					 */
 					RemoteDataHandler.intall("new", "android", new Callback() {
 						@Override
-						public void dataLoaded(ResponseData data) {
+						public Serializable dataPrepared(int code, String resp) {
+							return null;
+						}
+
+						@Override
+						public void dataLoaded(ResponseData data, Object dataObj) {
 							if(data.getCode() == HttpStatus.SC_OK){
 								System.out.println("第一次安装");
 							}else{

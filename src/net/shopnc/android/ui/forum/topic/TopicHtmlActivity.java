@@ -1,10 +1,10 @@
 package net.shopnc.android.ui.forum.topic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.common.BBCodeHelper;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.DateAndTimeHepler;
@@ -34,9 +34,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.snowd.android.jimi.R;
+
 /**
  * @author hjgang11-1810:33:19.007:D/RemoteDataLoader(27971):{\\\\\\\"post\\\\\\\":[{\\\\\\\"attachment\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"author\\\\\\\":\\\\\\\"jsmg006\\\\\\\",\\\\\\\"authorid\\\\\\\":\\\\\\\"1053278\\\\\\\",\\\\\\\"dateline\\\\\\\":\\\\\\\"1384736656\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"BOSS  ME30    550\u51fa \u6bd4\u8f83\u65b0 \u597d\u4e45\u4e0d\u7528  \u5c31\u662f\u663e\u793a\u5c4f\u4e0d\u4eae\u4e86  \u5e94\u8be5\u4e5f\u4e0d\u662f\u5927\u95ee\u9898  \u5e26\u7535\u6e90\r\ndbx\u5206\u9891\u5668  7\u6210 300\u51fa\r\n\u97e9\u56fd\u82f1\u68658\u8def\u8c03\u97f3\u53f0  \u6709\u70b9\u810f 300\u51fa\r\n\u521b\u65b0SB LIVE \u5916\u7f6e\u58f0\u5361  260\r\njoyo\u5409\u4ed6\u6548\u679c\u5668  300\r\n\u5168\u62ff\u8d701500  \u900180G\u786c\u76d82\u5757  \u8fd0\u8d39\u5c31\u4e0d\u5305\u4e86http:\/\/user.qzone.qq.com\/245116234\/infocenter#!app=4&amp;via=QZ.HashRefresh\n\n[ \u672c\u5e16\u6700\u540e\u7531 jsmg006 \u4e8e 2013-11-18 09:28 \u7f16\u8f91 ]\\\\\\\",\\\\\\\"pid\\\\\\\":\\\\\\\"23074643\\\\\\\",\\\\\\\"rate\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"ratetimes\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"subject\\\\\\\":\\\\\\\"\u5904\u7406\u95f2\u7f6e\u7269\u54c1\u4e00\u5806 \u65b0\u624b\u6709\u7528  \u56f4\u89c2\u4e86\\\\\\\",\\\\\\\"usesig\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"groupid\\\\\\\":\\\\\\\"13\\\\\\\",\\\\\\\"grouptitle\\\\\\\":\\\\\\\"\u5409\u4ed6\u5e08\u5085\\\\\\\"},{\\\\\\\"attachment\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"author\\\\\\\":\\\\\\\"jsmg006\\\\\\\",\\\\\\\"authorid\\\\\\\":\\\\\\\"1053278\\\\\\\",\\\\\\\"dateline\\\\\\\":\\\\\\\"1384737106\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"http:\/\/user.qzone.qq.com\/245116234\/infocenter#!app=4&amp;via=QZ.HashRefresh\u7a7a\u95f4\u770b\u56fe\u5427  \u53d1\u4e0d\u4e0a\u6765  \u4e0d\u4f1a\u5f04\\\\\\\",\\\\\\\"pid\\\\\\\":\\\\\\\"23074673\\\\\\\",\\\\\\\"rate\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"ratetimes\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"subject\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"usesig\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"groupid\\\\\\\":\\\\\\\"13\\\\\\\",\\\\\\\"grouptitle\\\\\\\":\\\\\\\"\u5409\u4ed6\u5e08\u5085\\\\\\\"},{\\\\\\\"attachment\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"author\\\\\\\":\\\\\\\"jsmg006\\\\\\\",\\\\\\\"authorid\\\\\\\":\\\\\\\"1053278\\\\\\\",\\\\\\\"dateline\\\\\\\":\\\\\\\"1384738660\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"[em28] [em28] [em28] [em28]\\\\\\\",\\\\\\\"pid\\\\\\\":\\\\\\\"23074814\\\\\\\",\\\\\\\"rate\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"ratetimes\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"status\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"subject\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"usesig\\\\\\\":\\\\\\\"0\\\\\\\",\\\\\\\"groupid\\\\\\\":\\\\\\\"13\\\\\\\",\\\\\\\"grouptitle\\\\\\\":\\\\\\\"\u5409\u4ed6\u5e08\u5085\\\\\\\"}]}
  */
+@SuppressLint("JavascriptInterface")
 public class TopicHtmlActivity extends Activity {
 	public static final String TAG = "TopicHtmlActivity";
 	private WebView html_web;
@@ -210,8 +213,13 @@ public class TopicHtmlActivity extends Activity {
 		}
 		RemoteDataHandler.asyncGet(url + tid, "post", pagesize, pageno,
 				new RemoteDataHandler.Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
+			@Override
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 //						pv.endUpdate(); // 更新完成后的回调方法,用于隐藏刷新面板
 						dismissDialog(Constants.ORDERBY_ID);
 						str=new StringBuffer();

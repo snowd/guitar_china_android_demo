@@ -7,12 +7,10 @@
  */
 package net.shopnc.android.ui.more;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.http.HttpStatus;
-
-import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.SubmenuListViewAdapter;
 import net.shopnc.android.adapter.UserListViewAdapter;
 import net.shopnc.android.common.Constants;
@@ -22,6 +20,9 @@ import net.shopnc.android.handler.RemoteDataHandler;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.User;
 import net.shopnc.android.widget.MyProcessDialog;
+
+import org.apache.http.HttpStatus;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -37,6 +38,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 账号管理
@@ -193,7 +196,12 @@ public class AccountMngActivity extends Activity {
 		showDialog(Constants.DIALOG_LOGIN_ID);
 		RemoteDataHandler.asyncLogin(author, pwd, new RemoteDataHandler.Callback() {
 			@Override
-			public void dataLoaded(ResponseData data) {
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 				String str = "登录成功！";
 				if(data.getCode()==HttpStatus.SC_OK){
 					String json = data.getJson();

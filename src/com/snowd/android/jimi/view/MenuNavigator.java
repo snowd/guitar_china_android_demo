@@ -41,6 +41,8 @@ public class MenuNavigator extends ListView {
 		mItemList = new ArrayList<NavigatorMenuItem>();
 		// built-in item
 		mItemList.add(new NavigatorMenuItem("登录", R.id.menu_item_profile, 0, true));
+		mItemList.add(new NavigatorMenuItem("GC新闻", R.id.menu_item_hot_news, 0, true));
+		mItemList.add(new NavigatorMenuItem("演出信息", R.id.menu_item_rock_shows, 0, true));
 		mItemList.add(new NavigatorMenuItem("论坛首页", R.id.menu_item_board_list, 0, true));
 		mItemList.add(new NavigatorMenuItem("收藏列表", R.id.menu_item_favorites, 0, true));
 		mItemList.add(new NavigatorMenuItem("我的帖子", R.id.menu_item_threads, 0, true));

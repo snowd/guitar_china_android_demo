@@ -5,12 +5,11 @@
  *  site: http://blog.csdn.net/qjyong
  *  email: qjyong@gmail.com
  */
-package net.shopnc.android.handler;
+package com.snowd.android.jimi.rpc;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.HttpHelper;
 import net.shopnc.android.common.IOHelper;
-import net.shopnc.android.model.Board;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Smiley;
 
@@ -38,7 +36,7 @@ import android.util.Log;
  * 用于发送HTTP请求并处理响应返回的数据的Handler
  * @author qjyong
  */
-public class RemoteDataHandler{
+public class RpcHandler{
 	public static final String TAG = "RemoteDataLoader";
 	private static final String _CODE = "code";
 	private static final String _DATAS = "datas"; 
@@ -51,7 +49,7 @@ public class RemoteDataHandler{
 	//private ExecutorService pool = Executors.newCachedThreadPool();
 	private static ThreadPoolExecutor threadPool = new ThreadPoolExecutor(6, 30, 30L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	
-	private RemoteDataHandler(){}
+	private RpcHandler(){}
 	
 	public interface Callback {
 		/**
@@ -65,105 +63,6 @@ public class RemoteDataHandler{
 	public interface StringCallback{
 		
 		public void dataLoaded(String str);
-	}
-	
-	/**
-	 * 同步的，获取商家详细，因为是在AsyncTask中使用
-	 * @param shop_id
-	 * @return
-	 */
-	public static ResponseData getShopDetail(int shop_id){
-		String url = Constants.URL_DISTRICT_SHOP_DETAIL + "&shop_id=" + shop_id;
-		
-		Log.d(TAG, url);
-		
-		return get(url);
-	}
-	
-	
-	/**
-	 * 根据纬度和经度获取地名(异步的)
-	 * @param lat
-	 * @param lng
-	 * @return
-	 */
-	public static void asyncGetAddressName(double lat, double lng, final StringCallback callback){
-		final String url = MessageFormat.format(Constants.URL_GOOGLE_REVERSE_GEOCODING,  String.valueOf(lat), String.valueOf(lng));
-		
-		final Handler handler = new Handler(){
-			@Override
-			public void handleMessage(Message msg) {
-				callback.dataLoaded((String)msg.obj);
-			}
-		};
-		
-		threadPool.execute(new Runnable() {
-			@Override
-			public void run() {
-				Message msg = handler.obtainMessage(HttpStatus.SC_OK);
-				
-				Log.d(TAG, url);
-				try {
-					String json = HttpHelper.get(url);
-					
-					JSONObject obj = new JSONObject(json);
-					String status = obj.optString("status");
-				
-					if("ok".equalsIgnoreCase(status)){
-						JSONArray arr = obj.optJSONArray("results");
-						int length = arr == null ? 0 : arr.length();
-						if(length > 0){
-							String str2 = arr.getJSONObject(0).optString("formatted_address");
-							if(!"".equals(str2)){
-								msg.obj = str2.substring(2);
-							}
-						}
-					}
-				} catch (IOException e) {
-					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
-					e.printStackTrace();
-				} catch (JSONException e) {
-					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
-					e.printStackTrace();
-				}
-				
-				handler.sendMessage(msg);
-			}
-		});
-	}
-	
-	/**
-	 * 异步根据纬度，经度，搜索半径及分页信息获取商家列表
-	 * @param latitude
-	 * @param longitude
-	 * @param r
-	 * @param pagesize
-	 * @param pageno
-	 * @return
-	 */
-	public static void asyncGetShopList(double latitude, double longitude, int r, final int pagesize, final int pageno, Callback callback){
-		String url = Constants.URL_DISTRICT_SHOP_LIST + "&lat=" + latitude
-				+ "&lng=" + longitude + "&r=" + r;
-		
-		Log.d(TAG, url);
-		
-		asyncGet(url, pagesize, pageno, callback);
-	}
-	
-	/**
-	 * 用户登录后需要获取所有子版块列表并保存到MyApp中，以便于发帖和回帖时进行权限判断<br/>
-	 * @param uid
-	 * @param callback
-	 */
-	public static HashMap<Long, Board> loadSubBoardMap(String uid){
-		 HashMap<Long, Board> map = null;
-		 
-		ResponseData data = RemoteDataHandler.get(Constants.URL_BOARD + uid);
-		if(data.getCode() == HttpStatus.SC_OK){
-			String json = data.getJson();
-			map = Board.newSubBoardMap(json);
-		}
-		return map;
 	}
 	
 	/**
@@ -475,39 +374,10 @@ public class RemoteDataHandler{
 					if(null != obj){
 						msg.getData().putSerializable(_DATAS, obj);
 					}
-//					JSONObject obj = new JSONObject(json);
-//					if(null != obj && obj.has(_CODE)){
-//						msg.what = Integer.valueOf(obj.getString(_CODE));
-						
-//						if(obj.has(_DATAS)){
-//						JSONArray array = null;
-//						if (!TextUtils.isEmpty(json)) {
-//							array = new JSONArray(json);
-//							msg.obj = array.toString();
-//							
-//							if(pagesize == array.length()){
-//								msg.getData().putBoolean(_HASMORE, true);
-//							}
-//						}
-//						if (array != null && array.length() > 0) {
-//							msg.getData().putLong(_COUNT, Long.valueOf(array.length()));
-//							msg.getData().putString(_RESULT, json);
-//						}
-						
-//						if(obj.has(_COUNT)){
-//							msg.getData().putLong(_COUNT, Long.valueOf(obj.getString(_COUNT)));
-//						}
-//						
-//						if(obj.has(_RESULT)){
-//							msg.getData().putString(_RESULT, obj.getString(_RESULT));
-//						}
-//					}
+
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
 					e.printStackTrace();
-//				} catch (JSONException e) {
-//					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
-//					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

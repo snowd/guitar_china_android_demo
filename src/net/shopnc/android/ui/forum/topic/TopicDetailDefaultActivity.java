@@ -1,9 +1,9 @@
 package net.shopnc.android.ui.forum.topic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.TopicDetailListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
@@ -27,6 +27,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 选定帖子的默认显示方式界面
@@ -218,8 +220,13 @@ public class TopicDetailDefaultActivity extends ListActivity implements
 
 		RemoteDataHandler.asyncGet(url + tid, "post", pagesize, pageno,
 				new RemoteDataHandler.Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
+			@Override
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 						pv.endUpdate(); // 更新完成后的回调方法,用于隐藏刷新面板
 
 						if (data.getCode() == HttpStatus.SC_OK) {

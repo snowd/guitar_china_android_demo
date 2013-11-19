@@ -1,12 +1,14 @@
 package com.snowd.android.jimi.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.fragment.BoardViewFragment;
 import com.snowd.android.jimi.view.MenuNavigator;
 
 
@@ -26,6 +28,13 @@ public class MainActivity extends BaseActivity {
 		
 		// action bar
 		getSupportActionBar().setHomeButtonEnabled(true);
+		
+        // Add the Sample Fragment if there is one
+		Fragment boardFragment = new BoardViewFragment();
+		if (boardFragment != null) {
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.fragment_container, boardFragment).commit();
+		}
 	}
 	
 	private void initSlidingMenu() {
@@ -33,9 +42,7 @@ public class MainActivity extends BaseActivity {
 		mMasterMenu.setMode(SlidingMenu.LEFT);
 		mMasterMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		// left
-//		menu.setShadowWidthRes(R.dimen.shadow_width);
 		mMasterMenu.setShadowDrawable(R.drawable.shadow_left);
-//		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		mMasterMenu.setShadowWidth(10);;
 		mMasterMenu.setBehindOffset(200);
 		mMasterMenu.setFadeDegree(0.35f);
@@ -43,9 +50,6 @@ public class MainActivity extends BaseActivity {
 		mMenuNavigator = (MenuNavigator) LayoutInflater.from(this).inflate(
 				R.layout.menu_nav, null);
 		mMasterMenu.setMenu(mMenuNavigator);
-		
-		// right
-//		mMasterMenu.setSecondaryMenu(R.layout.menu_nav);
 		
 		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
 	}
@@ -60,13 +64,6 @@ public class MainActivity extends BaseActivity {
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//		menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//			@Override
-//			public boolean onMenuItemClick(MenuItem item) {
-//				mMasterMenu.showMenu();
-//				return true;
-//			}
-//		});
         menu.add("Save")
 //            .setIcon(isLight ? R.drawable.ic_compose_inverse : R.drawable.ic_compose)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);

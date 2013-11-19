@@ -8,6 +8,7 @@
 package net.shopnc.android.ui.forum.topic;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,15 +17,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.SmileyGridViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.ImageHelper;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.handler.RemoteDataHandler;
+import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.handler.SmileyImageGetter;
 import net.shopnc.android.handler.UploadImageGetter;
-import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Smiley;
 import net.shopnc.android.widget.MyProcessDialog;
@@ -62,6 +62,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 发帖界面
@@ -315,7 +317,12 @@ public class SendTopicActivity extends Activity {
 		
 		RemoteDataHandler.sendTopic(fid, params, uploading_img,typeid ,new Callback() {
 			@Override
-			public void dataLoaded(ResponseData data) {
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 				SendTopicActivity.this.dismissDialog(Constants.DIALOG_SENT_TOPIC_ID);
 				if(data.getCode() == HttpStatus.SC_OK){
 					if(data.getJson().contains("dangerous word")){
