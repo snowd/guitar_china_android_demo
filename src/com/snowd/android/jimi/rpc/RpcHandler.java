@@ -442,39 +442,43 @@ public class RpcHandler{
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d","");
 					
-					JSONObject obj = new JSONObject(json);
-					if(null != obj/* && obj.has(_CODE)*/){
-//						msg.what = Integer.valueOf(obj.getString(_CODE));
-					
-						if (obj.has(datakey)) {
-							JSONArray array = obj.getJSONArray(datakey);
-							msg.obj = array.toString();
-
-							if (pagesize == array.length()) {
-								msg.getData().putBoolean(_HASMORE, true);
-							}
-						}
-
-						if (obj.has(_COUNT)) {
-							msg.getData().putLong(_COUNT,
-								Long.valueOf(obj.getString(_COUNT)));
-						} else if (obj.has(_PAGE_INFO)) {
-							JSONObject page = obj.getJSONObject("page");
-							msg.getData().putLong(_COUNT,
-								Long.valueOf(page.getString("max_pages"))
-									* pagesize);
-						}
-						if (obj.has(_RESULT)) {
-							msg.getData().putString(_RESULT,
-									obj.getString(_RESULT));
-						}
+					Serializable obj = callback.dataPrepared(HttpStatus.SC_OK, json);
+					if(null != obj){
+						msg.getData().putSerializable(_DATAS, obj);
 					}
+//					JSONObject obj = new JSONObject(json);
+//					if(null != obj/* && obj.has(_CODE)*/){
+////						msg.what = Integer.valueOf(obj.getString(_CODE));
+//					
+//						if (obj.has(datakey)) {
+//							JSONArray array = obj.getJSONArray(datakey);
+//							msg.obj = array.toString();
+//
+//							if (pagesize == array.length()) {
+//								msg.getData().putBoolean(_HASMORE, true);
+//							}
+//						}
+//
+//						if (obj.has(_COUNT)) {
+//							msg.getData().putLong(_COUNT,
+//								Long.valueOf(obj.getString(_COUNT)));
+//						} else if (obj.has(_PAGE_INFO)) {
+//							JSONObject page = obj.getJSONObject("page");
+//							msg.getData().putLong(_COUNT,
+//								Long.valueOf(page.getString("max_pages"))
+//									* pagesize);
+//						}
+//						if (obj.has(_RESULT)) {
+//							msg.getData().putString(_RESULT,
+//									obj.getString(_RESULT));
+//						}
+//					}
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
 					e.printStackTrace();
-				} catch (JSONException e) {
-					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
-					e.printStackTrace();
+//				} catch (JSONException e) {
+//					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
+//					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

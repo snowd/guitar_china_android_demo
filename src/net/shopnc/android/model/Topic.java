@@ -88,10 +88,20 @@ public class Topic implements Serializable {
 	}
 	
 	public static ArrayList<Topic> newInstanceList(String jsonDatas){
-		ArrayList<Topic> pushDatas = new ArrayList<Topic>();
-		
 		try {
 			JSONArray arr = new JSONArray(jsonDatas);
+			return newInstanceList(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static ArrayList<Topic> newInstanceList(JSONArray arr){
+		if (arr == null || arr.length() < 1) return null;
+		ArrayList<Topic> pushDatas = new ArrayList<Topic>();
+		try {
+//			JSONArray arr = new JSONArray(jsonDatas);
 			int size = null == arr ? 0 : arr.length();
 			for(int i = 0; i < size; i++){
 				JSONObject obj = arr.getJSONObject(i);

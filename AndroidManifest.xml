@@ -9,6 +9,7 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
@@ -25,6 +26,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:name="net.shopnc.android.common.MyApp">
+        
+        <meta-data android:value="528a316856240be0e32e9373" android:name="UMENG_APPKEY"/>
+		<meta-data android:value="demotest" android:name="UMENG_CHANNEL"/>
         
         <activity
             android:name=".ui.MainActivity"
