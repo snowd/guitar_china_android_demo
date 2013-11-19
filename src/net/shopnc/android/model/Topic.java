@@ -29,7 +29,7 @@ public class Topic implements Serializable {
 		/** 主题（标题） */
 		public static final String SUBJECT = "subject";
 		/** 发帖人ID */
-		public static final String UNAME = "uname";
+		public static final String AUTHORID = "authorid";
 		/** 发贴人昵称 */
 		public static final String AUTHOR = "author";
 		
@@ -62,7 +62,7 @@ public class Topic implements Serializable {
 	/** 主题（标题） */
 	private String subject;
 	/** 发帖人ID */
-	private String uname;
+	private String authorId;
 	/** 发帖人昵称 */
 	private String author;
 	/** 发帖人头像 */
@@ -109,7 +109,7 @@ public class Topic implements Serializable {
 				long fid = obj.optLong(Attr.FID);
 				long pid = obj.optLong(Attr.PID);
 				String subject = obj.optString(Attr.SUBJECT);
-				String uname = obj.optString(Attr.UNAME);
+				String authorid = obj.optString(Attr.AUTHORID);
 				String author = obj.optString(Attr.AUTHOR);
 				String image = obj.optString(Attr.IMAGE);
 				String summary = obj.optString(Attr.SUMMARY);
@@ -124,7 +124,7 @@ public class Topic implements Serializable {
 					pic_info = pics.split(",");
 				}
 				String status=obj.optString(Attr.STATUS);
-				pushDatas.add(new Topic(tid, fid,pid, subject, uname, author, 
+				pushDatas.add(new Topic(tid, fid,pid, subject, authorid, author, 
 						summary, image, views, replies, dateline, message, avatar, pic_info,status));
 			}
 		} catch (JSONException e) {
@@ -158,14 +158,14 @@ public class Topic implements Serializable {
 		this.status = status;
 	}
 
-	public Topic(long tid, long fid, long pid,String subject,String uname, String author,
+	public Topic(long tid, long fid, long pid,String subject,String authorId, String author,
 			String summary, String image, String views, String replies,
 			long dateline, String message, String avatar, String [] pic_info,String status) {
 		this.tid = tid;
 		this.fid = fid;
 		this.pid=pid;
 		this.subject = subject;
-		this.uname = uname;
+		this.authorId = authorId;
 		this.author = author;
 		this.summary = summary;
 		this.image = image;
@@ -211,12 +211,12 @@ public class Topic implements Serializable {
 		this.subject = subject;
 	}
 
-	public String getUname() {
-		return uname;
+	public String getAuthorId() {
+		return authorId;
 	}
 
-	public void setUname(String uname) {
-		this.uname = uname;
+	public void setAuthorId(String authorId) {
+		this.authorId = authorId;
 	}
 
 	public String getAuthor() {
@@ -296,7 +296,7 @@ public class Topic implements Serializable {
 	@Override
 	public String toString() {
 		return "Topic [tid=" + tid + ", fid=" + fid + ", subject=" + subject
-				+ ", uname=" + uname + ", author=" + author + ", avatar="
+				+ ", authorId=" + authorId + ", author=" + author + ", avatar="
 				+ avatar + ", summary=" + summary + ", image=" + image
 				+ ", views=" + views + ", replies=" + replies + ", dateline="
 				+ dateline + ", message=" + message + ", pid=" + pid

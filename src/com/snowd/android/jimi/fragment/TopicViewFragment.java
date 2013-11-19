@@ -4,42 +4,39 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import net.shopnc.android.common.Constants;
-import net.shopnc.android.model.Board;
 import net.shopnc.android.model.ResponseData;
+import net.shopnc.android.model.Topic;
 
 import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.snowd.android.jimi.adapter.BoardListAdapter;
+import com.snowd.android.jimi.adapter.TopicDetailListViewAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
 import com.snowd.android.jimi.rpc.RpcHandler;
 
-public class BoardViewFragment extends BaseListFragment implements
+public class TopicViewFragment extends BaseListFragment implements
 		OnRefreshListener, RpcHandler.Callback, NavigationElement {
 
-	private ForumNavigatorAdapter mHostAdapter;
-	private ArrayList<Board> mBoards;
-	private BoardListAdapter mAdapter;
+	private ArrayList<Topic> mPosts;
+	private TopicDetailListViewAdapter mAdapter;
 	
+	@SuppressWarnings("unused")
+	private ForumNavigatorAdapter mHostAdapter;
 	@Override
 	public void bindHostAdapter(ForumNavigatorAdapter adapter) {
 		mHostAdapter = adapter;
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	private PullToRefreshLayout mPullToRefreshLayout;
@@ -60,9 +57,10 @@ public class BoardViewFragment extends BaseListFragment implements
 				// ViewGroup
 				.insertLayoutInto(viewGroup)
 				// Here we mark just the ListView and it's Empty View as
-				// pullable
+				// pullable1.
 				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
 				.listener(this).setup(mPullToRefreshLayout);
+		Log.d("", "Fragment >>> onViewCreated view=" + getView());
 	}
 
 	@Override
@@ -72,6 +70,7 @@ public class BoardViewFragment extends BaseListFragment implements
 		// Set the List Adapter to display the sample items
 		setListShownNoAnimation(false);
 		loadBoards();
+		Log.d("", "Fragment >>> onActivityCreated view=" + getView());
 	}
 
 	@Override
@@ -80,26 +79,32 @@ public class BoardViewFragment extends BaseListFragment implements
 		setListShown(false);
 		loadBoards();
 	}
-	
+
 	private void loadBoards(){
+		Bundle b = getArguments();
 		//((MainActivity)myParent.getParent()).showDialog(Constants.DIALOG_LOADDATA_ID);
-		String url = Constants.URL_BOARD;
+		String url = Constants.URL_TOPIC_DETAIL_DEFAULT + b.getLong("_key_tid");
 //		if(null != myApp.getUid() && !"".equals(myApp.getUid()) 
 //				&& null != myApp.getSid() && !"".equals(myApp.getSid())){//登录用户
 //			url += myApp.getUid();
 //		}
-		RpcHandler.asyncGetList(url, 50, 1, this);
+		RpcHandler.asyncGet(url, 30, 1, this);
 	}	
 
 	@Override
 	public Serializable dataPrepared(int code, String resp) {
 		if (code == HttpStatus.SC_OK) {
-			String json = resp;
 			/*
 			 * 加载全部数据
 			 */
-			ArrayList<Board> boards = Board.mainBoardList(json);
-			return boards;
+			try {
+				JSONObject obj = new JSONObject(resp);
+				ArrayList<Topic> topics = Topic.newInstanceList(obj
+						.getJSONArray("post"));
+				return topics;
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -108,13 +113,15 @@ public class BoardViewFragment extends BaseListFragment implements
 	@Override
 	public void dataLoaded(ResponseData resp, Object data) {
 		if (resp.getCode() == HttpStatus.SC_OK && data != null) {
-			mBoards = (ArrayList<Board>) data;
+			mPosts = (ArrayList<Topic>) data;
 			if (mAdapter == null) {
-				mAdapter = new BoardListAdapter(getActivity(), mBoards);
+				mAdapter = new TopicDetailListViewAdapter(getActivity());
+				mAdapter.setDatas(mPosts);
 			} else {
-				mAdapter.setData(mBoards);
+				mAdapter.setDatas(mPosts);
 			}
 			setListAdapter(mAdapter);
+			mAdapter.notifyDataSetChanged();
 		} else {
 			Toast.makeText(getView().getContext(), "网络故障！", Toast.LENGTH_SHORT)
 					.show();
@@ -122,15 +129,19 @@ public class BoardViewFragment extends BaseListFragment implements
 		mPullToRefreshLayout.setRefreshComplete();
 		if (getView() != null) {
 			setListShown(true);
+//			if (mAdapter != null) mAdapter.notifyDataSetChanged();
 		}
+	}
+	
+	public void clear() {
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Board item = mAdapter.getItem(position);
-		Bundle bundle = new Bundle();
-		bundle.putLong("_key_fid", item.getFid());
-		mHostAdapter.enterPage(ThreadViewFragment.class, bundle);
+//		Topic item = (Topic) mAdapter.getItem(position);
+//		Bundle bundle = new Bundle();
+//		bundle.putLong("_key_tid", item.getTid());
+//		mHostAdapter.enterPage(TopicViewFragment.class, bundle);
 	}
 	
 }

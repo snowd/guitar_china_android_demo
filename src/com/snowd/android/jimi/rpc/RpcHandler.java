@@ -42,7 +42,7 @@ public class RpcHandler{
 	private static final String _DATAS = "datas"; 
 	private static final String _HASMORE = "haseMore"; 
 	private static final String _COUNT = "count";
-	private static final String _PAGE_INFO = "page";
+//	private static final String _PAGE_INFO = "page";
 	private static final String _RESULT = "result";
 	private static final String _URL = "url";
 	//线程池

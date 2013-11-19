@@ -3,7 +3,6 @@ package com.snowd.android.jimi.fragment;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.shopnc.android.adapter.TopicListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Topic;
@@ -15,29 +14,29 @@ import org.json.JSONObject;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.snowd.android.jimi.adapter.TopicListViewAdapter;
+import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
+import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
 import com.snowd.android.jimi.rpc.RpcHandler;
 
 public class ThreadViewFragment extends BaseListFragment implements
-		OnRefreshListener, RpcHandler.Callback {
+		OnRefreshListener, RpcHandler.Callback, NavigationElement {
 
-	private boolean mResume = false;
 	
 	private ArrayList<Topic> mThreads;
 	private TopicListViewAdapter mAdapter;
 	
+	private ForumNavigatorAdapter mHostAdapter;
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
+	public void bindHostAdapter(ForumNavigatorAdapter adapter) {
+		mHostAdapter = adapter;
 	}
 
 	private PullToRefreshLayout mPullToRefreshLayout;
@@ -73,35 +72,12 @@ public class ThreadViewFragment extends BaseListFragment implements
 		loadBoards();
 		Log.d("", "Fragment >>> onActivityCreated view=" + getView());
 	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		Log.d("", "Fragment >>> onAttach view=" + getView());
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-//		if (!mResume) {
-//			mResume = true;
-//			// 
-//		}
-		Log.d("", "Fragment >>> onResume view=" + getView());
-	}
 
 	@Override
 	public void onRefreshStarted(View view) {
 		// Hide the list
 		setListShown(false);
 		loadBoards();
-	}
-	
-	@Override
-	public void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		mResume = false;
 	}
 
 	private void loadBoards(){
@@ -162,9 +138,10 @@ public class ThreadViewFragment extends BaseListFragment implements
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-//		Topic item = (Topic) mAdapter.getItem(position);
-//		Intent intent = new Intent();
-//		
+		Topic item = (Topic) mAdapter.getItem(position);
+		Bundle bundle = new Bundle();
+		bundle.putLong("_key_tid", item.getTid());
+		mHostAdapter.enterPage(TopicViewFragment.class, bundle);
 	}
 	
 }
