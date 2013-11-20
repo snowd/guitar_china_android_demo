@@ -93,7 +93,8 @@ public class BoardViewFragment extends BaseListFragment implements
 
 	@Override
 	public Serializable dataPrepared(int code, String resp) {
-		if (code == HttpStatus.SC_OK) {
+		if (getActivity() != null && !getActivity().isFinishing()
+				&& code == HttpStatus.SC_OK) {
 			String json = resp;
 			/*
 			 * 加载全部数据
@@ -107,7 +108,8 @@ public class BoardViewFragment extends BaseListFragment implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void dataLoaded(ResponseData resp, Object data) {
-		if (resp.getCode() == HttpStatus.SC_OK && data != null) {
+		if (getActivity() != null && !getActivity().isFinishing()
+				&& resp.getCode() == HttpStatus.SC_OK && data != null) {
 			mBoards = (ArrayList<Board>) data;
 			if (mAdapter == null) {
 				mAdapter = new BoardListAdapter(getActivity(), mBoards);
@@ -130,7 +132,8 @@ public class BoardViewFragment extends BaseListFragment implements
 		Board item = mAdapter.getItem(position);
 		Bundle bundle = new Bundle();
 		bundle.putLong("_key_fid", item.getFid());
-		mHostAdapter.enterPage(ThreadViewFragment.class, bundle);
+		if (mHostAdapter != null)
+			mHostAdapter.enterPage(ThreadViewFragment.class, bundle);
 	}
 	
 }

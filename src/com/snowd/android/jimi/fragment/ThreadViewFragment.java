@@ -93,7 +93,8 @@ public class ThreadViewFragment extends BaseListFragment implements
 
 	@Override
 	public Serializable dataPrepared(int code, String resp) {
-		if (code == HttpStatus.SC_OK) {
+		if (getActivity() != null && !getActivity().isFinishing()
+				&& code == HttpStatus.SC_OK) {
 			/*
 			 * 加载全部数据
 			 */
@@ -112,7 +113,8 @@ public class ThreadViewFragment extends BaseListFragment implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void dataLoaded(ResponseData resp, Object data) {
-		if (resp.getCode() == HttpStatus.SC_OK && data != null) {
+		if (getActivity() != null && !getActivity().isFinishing()
+				&& resp.getCode() == HttpStatus.SC_OK && data != null) {
 			mThreads = (ArrayList<Topic>) data;
 			if (mAdapter == null) {
 				mAdapter = new TopicListViewAdapter(getActivity());

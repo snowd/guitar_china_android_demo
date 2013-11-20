@@ -121,33 +121,33 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 		//需要把帖子内容中的code转换成html标签，再用HTML进行格式化显示
 		//String str = BBCodeHelper.processBBCode(topic.getMessage());
 		String str=topic.getMessage();
-		//判断帖子来源：iPhone Android
-		String str3=new String();
-		String yinyong="[/quote]";
-		//static/image/
-		int c=topic.getMessage().lastIndexOf(yinyong);
-		int d=topic.getMessage().lastIndexOf("本帖最后由");
-		int e=topic.getMessage().lastIndexOf("编辑");
-		if(c!=-1){
-			vh.view_huifu.setVisibility(View.VISIBLE);
-			str3=topic.getMessage().substring(0,c+8);
-			str=str.replace(str3, "");
-			str3=str3.replace("[img]"+WAY+Constants.HUIFU+"[/img]","<br/>\t");
-			str3=str3.replace(WAY+Constants.HUIFU,"<br/>\t");
-			if(d!=-1 && e!=-1){
-				str3=str3.replaceFirst(str3.substring(d, e+"编辑".length()),"");
-			}
-			vh.view_huifu.setText(Html.fromHtml("\t"+BBCodeHelper.processBBCode(str3),new SmileyImageGetter(ctx), null));
-		}else{
-			vh.view_huifu.setVisibility(View.GONE);
-		}
-		/**判断来自那个客户端*/
-		if(topic.getStatus()!=null &&topic.getStatus().length()>5 &&!"".equals(topic.getStatus())){
-			vh.txt_from.setVisibility(View.VISIBLE);
-			vh.txt_from.setText(topic.getStatus());
-		}else{
-			vh.txt_from.setVisibility(View.GONE);
-		}
+//		//判断帖子来源：iPhone Android
+//		String str3=new String();
+//		String yinyong="[/quote]";
+//		//static/image/
+//		int c=topic.getMessage().lastIndexOf(yinyong);
+//		int d=topic.getMessage().lastIndexOf("本帖最后由");
+//		int e=topic.getMessage().lastIndexOf("编辑");
+//		if(c!=-1){
+//			vh.view_huifu.setVisibility(View.VISIBLE);
+//			str3=topic.getMessage().substring(0,c+8);
+//			str=str.replace(str3, "");
+//			str3=str3.replace("[img]"+WAY+Constants.HUIFU+"[/img]","<br/>\t");
+//			str3=str3.replace(WAY+Constants.HUIFU,"<br/>\t");
+//			if(d!=-1 && e!=-1){
+//				str3=str3.replaceFirst(str3.substring(d, e+"编辑".length()),"");
+//			}
+//			vh.view_huifu.setText(Html.fromHtml("\t"+BBCodeHelper.processBBCode(str3),new SmileyImageGetter(ctx), null));
+//		}else{
+//			vh.view_huifu.setVisibility(View.GONE);
+//		}
+//		/**判断来自那个客户端*/
+//		if(topic.getStatus()!=null &&topic.getStatus().length()>5 &&!"".equals(topic.getStatus())){
+//			vh.txt_from.setVisibility(View.VISIBLE);
+//			vh.txt_from.setText(topic.getStatus());
+//		}else{
+//			vh.txt_from.setVisibility(View.GONE);
+//		}
 		str=BBCodeHelper.processBBCode(str);
 		img_invisible = myApp.isImg_invisible();
 		if(ConnectivityManager.TYPE_WIFI == SystemHelper.getNetworkType(ctx) || !img_invisible){
@@ -155,7 +155,8 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 		}else{
 			str=BBCodeHelper.parseHtmlExcludeImgTag(str);
 		}
-		vh.txt_content.setText(Html.fromHtml(str,new SmileyImageGetter(ctx), null));
+		vh.txt_content.setText(topic.getMessage());
+//		vh.txt_content.setText(Html.fromHtml(str,new SmileyImageGetter(ctx), null));
 		if(null != myApp.getUid() && !"".equals(myApp.getUid()) 
 				&& null != myApp.getSid() && !"".equals(myApp.getSid())){
 			if(topic.getSubject()!=null && !"".equals(topic.getSubject())){

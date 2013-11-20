@@ -25,8 +25,8 @@
 
         <ImageView
             android:id="@+id/author_avatar"
-            android:layout_width="42dp"
-            android:layout_height="42dip"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
@@ -41,7 +41,7 @@
                 android:singleLine="true"
                 android:text="作者昵称"
                 android:textColor="#ff0066cc"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/author_floor"
@@ -115,7 +115,7 @@
             android:clickable="true"
             android:paddingLeft="6.0dip"
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
         
         <TextView
             android:id="@+id/topic_from"
