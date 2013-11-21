@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App名 -->
-    <string name="app_name">VeryNC</string>
+    <string name="app_name">JIMI</string>
     <string name="app_version">1.0.4</string>
     <string name="app_copyright">Copyright &#169; 2012 VeryNC, All Rights Reserved</string>
     

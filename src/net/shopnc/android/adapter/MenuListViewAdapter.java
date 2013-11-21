@@ -10,7 +10,7 @@ package net.shopnc.android.adapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.shopnc.android.R;
+import com.snowd.android.jimi.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -7,9 +7,9 @@
  */
 package net.shopnc.android.ui.forum;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
 import net.shopnc.android.adapter.MyExpandableListAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
@@ -33,6 +33,8 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 版块列表
@@ -157,9 +159,14 @@ public class BoardListActivity extends Activity implements UpdateHandle{
 			url += myApp.getUid();
 		}
 
-		RemoteDataHandler.asyncGet(url, pagesize, pageno, new RemoteDataHandler.Callback() {
+		RemoteDataHandler.asyncGetList(url, pagesize, pageno, new RemoteDataHandler.Callback() {
 			@Override
-			public void dataLoaded(ResponseData data) {
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 				pv.endUpdate();
 				//((MainActivity)myParent.getParent()).dismissDialog(Constants.DIALOG_LOADDATA_ID);
 				if(data.getCode() == HttpStatus.SC_OK){

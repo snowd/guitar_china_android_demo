@@ -9,7 +9,7 @@ package net.shopnc.android.ui.forum.board;
 
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.adapter.SonListViewAdapter;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;

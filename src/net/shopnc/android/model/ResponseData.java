@@ -31,6 +31,8 @@ public class ResponseData {
 	private String result;
 	/** 总记录数 */
 	private long count;
+	/** 业务数据 */
+	private Object data;
 	
 	public int getCode() {
 		return code;
@@ -67,5 +69,11 @@ public class ResponseData {
 		return "ResponseData [code=" + code + ", hasMore=" + hasMore
 				+ ", json=" + json + ", result=" + result + ", count=" + count
 				+ "]";
+	}
+	public Object getData() {
+		return data;
+	}
+	public void setData(Object data) {
+		this.data = data;
 	}
 }

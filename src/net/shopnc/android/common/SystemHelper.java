@@ -9,7 +9,7 @@ package net.shopnc.android.common;
 
 import java.io.File;
 
-import net.shopnc.android.R;
+import com.snowd.android.jimi.R;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;

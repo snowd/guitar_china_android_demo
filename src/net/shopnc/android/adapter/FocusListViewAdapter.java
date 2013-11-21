@@ -9,7 +9,7 @@ package net.shopnc.android.adapter;
 
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.model.PushData;
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -7,16 +7,16 @@
  */
 package net.shopnc.android.ui.home;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
 import net.shopnc.android.adapter.HeadlinesListViewAdapter;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;
 import net.shopnc.android.handler.ImageLoader;
-import net.shopnc.android.handler.RemoteDataHandler;
 import net.shopnc.android.handler.ImageLoader.ImageCallback;
+import net.shopnc.android.handler.RemoteDataHandler;
 import net.shopnc.android.model.PushData;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Topic;
@@ -43,6 +43,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.snowd.android.jimi.R;
 
 /**首页-->茶座界面
  * @author qjyong
@@ -204,7 +206,12 @@ public class HeadlinesActivity 	extends ListActivity implements UpdateHandle{
 		
 		RemoteDataHandler.asyncGet(Constants.URL_HOME_TOPS, pagesize, pageno, new RemoteDataHandler.Callback() {
 			@Override
-			public void dataLoaded(ResponseData data) {
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 				
 				pv.endUpdate(); //更新完成后的回调方法,用于隐藏刷新面板
 				moreBtn.setText(txt_more_default);

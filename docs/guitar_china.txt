@@ -40,3 +40,80 @@ index.php?action=thread&tid=1144210&page=0
   "type": "forum"
 }
 
+
+http://bbs.guitarchina.com
+app_json/
+index.php?action=my
+index.php?action=post&do=reply&fid=1&tid=405841
+index.php?action=login
+req:
+password	***
+username	snowd
+resp:
+question	Array	
+[0]	Object	
+id	String	0
+value	String	无安全提问
+[1]	Object	
+[2]	Object	
+[3]	Object	
+[4]	Object	
+[5]	Object	
+[6]	Object	
+[7]	Object	
+username	String	snowd
+loginauth	String	58a6KJQNVlpfHs/rQqCE387IYNZTx2gWQTwVBs20SAt/inZhvweW8lM
+
+index.php?action=login
+req:
+answer	laoyang
+loginauth	58a6KJQNVlpfHs/rQqCE387IYNZTx2gWQTwVBs20SAt/inZhvweW8lM
+questionid	4
+username	snowd
+resp:
+formhash	String	023b94e7
+sid	String	8rXlXX
+uid	String	176240
+
+index.php?action=my
+adminid	String	0
+avatar	String	
+bday	String	0000-00-00
+digestposts	String	0
+email	String	xuelongwen@yahoo.com.cn
+gender	String	保密
+invisible	String	0
+location	String	
+newpm	String	0
+nickname	String	
+posts	String	224
+qq	String	
+uid	String	176240
+username	String	snowd
+
+http://login.guitarchina.com
+avatar.php?uid=80466&size=small
+avatar.php?uid=339&size=small
+
+http://live.guitarchina.com
+index.php/
+app/
+live_list/
+0
+live_view/
+36
+36
+get_thumb_list/
+36
+36
+logo_pic/
+85fb5abf4e1758ff297d8ee986cab79a.jpg (320x433)
+
+http://news.guitarchina.com
+app/
+index.php/
+main/
+news_list/
+0
+news_view/
+12828

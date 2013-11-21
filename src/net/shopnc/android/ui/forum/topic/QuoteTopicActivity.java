@@ -8,6 +8,7 @@
 package net.shopnc.android.ui.forum.topic;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.shopnc.android.R;
 import net.shopnc.android.adapter.SmileyGridViewAdapter;
 import net.shopnc.android.common.BBCodeHelper;
 import net.shopnc.android.common.Constants;
@@ -25,9 +25,9 @@ import net.shopnc.android.common.ImageHelper;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.Tools;
 import net.shopnc.android.handler.RemoteDataHandler;
+import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.handler.SmileyImageGetter;
 import net.shopnc.android.handler.UploadImageGetter;
-import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Smiley;
 import net.shopnc.android.widget.MyProcessDialog;
@@ -58,6 +58,8 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.snowd.android.jimi.R;
 
 /**
  * 引用界面
@@ -281,8 +283,13 @@ public class QuoteTopicActivity extends Activity {
 		params.put("message", quote);
 		RemoteDataHandler.quoteTopic(fid, tid, params, uploading_img,
 				new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
+			@Override
+			public Serializable dataPrepared(int code, String resp) {
+				return null;
+			}
+
+			@Override
+			public void dataLoaded(ResponseData data, Object dataObj) {
 						QuoteTopicActivity.this
 								.dismissDialog(Constants.DIALOG_SENT_TOPIC_ID);
 						if (data.getCode() == HttpStatus.SC_OK) {

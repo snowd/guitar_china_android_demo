@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.snowd.android.jimi.view.MenuNavigator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" />
+    
+    <!-- 
+    <TextView
+        style="@style/MenuNavigatorItem"
+        android:id="@+id/menu_item_profile"
+        android:text="登录"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigator_menu_item_height" />
+    
+    <TextView
+        style="@style/MenuNavigatorItem"
+        android:id="@+id/menu_item_board_list"
+        android:text="板块"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <TextView
+        style="@style/MenuNavigatorItem"
+        android:id="@+id/menu_item_favorites"
+        android:text="收藏"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <TextView
+        style="@style/MenuNavigatorItem"
+        android:id="@+id/menu_item_threads"
+        android:text="我的话题"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+     -->
+    
+    <!-- 
+    <TextView
+        android:id="@+id/menu_item_profile"
+        android:text="登录"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+     -->
+    
+

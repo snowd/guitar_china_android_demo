@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-import net.shopnc.android.R;
+import com.snowd.android.jimi.R;
 import net.shopnc.android.common.MyApp;
 import net.shopnc.android.common.SystemHelper;
 import net.shopnc.android.handler.ImageLoader;

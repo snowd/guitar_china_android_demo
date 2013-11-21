@@ -7,6 +7,7 @@
  */
 package net.shopnc.android.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,21 +15,39 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.text.Html;
+
 /**
  * 版块
  * @author qjyong
  */
-public class Board {
+public class Board implements Serializable {
 	
-	public static class Attr{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7035100489331687315L;
+
+	public static class Attr implements Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -4122661220481331184L;
 		public static final String FID = "fid";
 		public static final String FUP = "fup";
 		public static final String NAME = "name";
+		public static final String DESCRIPTION = "description";
 		public static final String TYPE = "type";
+		public static final String TODAY = "todayposts";
+		public static final String THREADS = "threads";
+		public static final String POSTS = "posts";
 		public static final String ISPOST = "ispost";
 		public static final String ISREPLY = "isreply";
 		public static final String ISPOSTIMAGE = "ispostimage";
 	}
+	
+	
+	private String groupName;
 	/**ID */
 	private long fid;
 	/** 父版块ID */
@@ -37,6 +56,14 @@ public class Board {
 	private String name;
 	/** 类型 */
 	private String type;
+	
+	private String description;
+	
+	private long todayPosts;
+	
+	private long threads;
+	
+	private long posts;
 	
 	/**ispost（是否允许当前用户发帖）1是允许0是不允许*/
 	private int ispost;
@@ -97,6 +124,10 @@ public class Board {
 				b.setFup(obj.optLong(Attr.FUP));
 				b.setType(obj.optString(Attr.TYPE));
 				b.setName(obj.optString(Attr.NAME));
+				b.setDescription(obj.optString(Attr.DESCRIPTION));
+				b.setTodayPosts(obj.optLong(Attr.TODAY));
+				b.setThreads(obj.optLong(Attr.THREADS));
+				b.setPosts(obj.optLong(Attr.POSTS));
 				b.setIspost(obj.optInt(Attr.ISPOST));
 				b.setIsreply(obj.optInt(Attr.ISREPLY));
 				b.setIspostimage(obj.optInt(Attr.ISPOSTIMAGE));
@@ -124,10 +155,15 @@ public class Board {
 				b.setFid(obj.optLong(Attr.FID));
 				b.setFup(obj.optLong(Attr.FUP));
 				b.setType(obj.optString(Attr.TYPE));
-				b.setName(obj.optString(Attr.NAME));
+				b.setName(Html.fromHtml(obj.optString(Attr.NAME)).toString());
+				b.setDescription(Html.fromHtml(obj.optString(Attr.DESCRIPTION))
+						.toString());
 				b.setIspost(obj.optInt(Attr.ISPOST));
 				b.setIsreply(obj.optInt(Attr.ISREPLY));
 				b.setIspostimage(obj.optInt(Attr.ISPOSTIMAGE));
+				b.setTodayPosts(obj.optLong(Attr.TODAY));
+				b.setThreads(obj.optLong(Attr.THREADS));
+				b.setPosts(obj.optLong(Attr.POSTS));
 				
 				if("group".equals(b.getType()) && 0L == b.getFup()){
 					group.add(b);
@@ -142,14 +178,25 @@ public class Board {
 						g.getSubBoards().add(board);
 					}
 				}
-				
 			}
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return group;
+	}
+	
+	public static ArrayList<Board> mainBoardList(String json) {
+		ArrayList<Board> mainList = new ArrayList<Board>();
+		ArrayList<Board> group = newBoardList(json);
+		for (Board g : group) {
+			ArrayList<Board> subs = g.getSubBoards();
+			subs.get(0).groupName = g.name;
+			mainList.addAll(subs);
+		}
+		return mainList;
 	}
 
 	public ArrayList<Board> getSubBoards() {
@@ -158,6 +205,14 @@ public class Board {
 
 	public void setSubBoards(ArrayList<Board> subBoards) {
 		this.subBoards = subBoards;
+	}
+	
+	public String getGroupName() {
+		return groupName;
+	}
+	
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 	public long getFid() {
@@ -215,7 +270,39 @@ public class Board {
 	public void setIspostimage(int ispostimage) {
 		this.ispostimage = ispostimage;
 	}
+	
+	public long getTodayPosts() {
+		return todayPosts;
+	}
 
+	public void setTodayPosts(long todayPosts) {
+		this.todayPosts = todayPosts;
+	}
+
+	public long getThreads() {
+		return threads;
+	}
+
+	public void setThreads(long threads) {
+		this.threads = threads;
+	}
+
+	public long getPosts() {
+		return posts;
+	}
+
+	public void setPosts(long posts) {
+		this.posts = posts;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	@Override
 	public String toString() {
 		return "Board [fid=" + fid + ", fup=" + fup + ", name=" + name
@@ -223,6 +310,5 @@ public class Board {
 				+ isreply + ", ispostimage=" + ispostimage + ", subBoards="
 				+ subBoards + "]";
 	}
-
 	
 }
