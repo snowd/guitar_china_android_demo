@@ -10,6 +10,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.view.MenuNavigator;
+import com.snowd.android.jimi.view.PopoutDrawer;
 
 
 public class MainActivity extends BaseActivity {
@@ -39,6 +40,10 @@ public class MainActivity extends BaseActivity {
 		mNavAdapter = new ForumNavigatorAdapter(this,
 				getSupportFragmentManager(), mNavigatorPager);
 		mNavigatorPager.setAdapter(mNavAdapter);
+		
+		PopoutDrawer pop = (PopoutDrawer) findViewById(R.id.popout_indexer);
+		pop.setTotal(20);
+//		pop.setTotal(6);
 	}
 	
 	private void initSlidingMenu() {
@@ -55,7 +60,7 @@ public class MainActivity extends BaseActivity {
 				R.layout.menu_nav, null);
 		mMasterMenu.setMenu(mMenuNavigator);
 		
-		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 	}
 	
     @Override
@@ -71,14 +76,11 @@ public class MainActivity extends BaseActivity {
         menu.add("Save")
 //            .setIcon(isLight ? R.drawable.ic_compose_inverse : R.drawable.ic_compose)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
         menu.add("Search")
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
         menu.add("Refresh")
 //            .setIcon(isLight ? R.drawable.ic_refresh_inverse : R.drawable.ic_refresh)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
         return true;
     }
 
