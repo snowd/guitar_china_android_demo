@@ -15,6 +15,11 @@
         android:id="@+id/fragment_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    
+    <com.snowd.android.jimi.view.PopoutDrawer
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 <!-- 
     <RadioGroup
         android:id="@android:id/tabhost"

@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
 				R.layout.menu_nav, null);
 		mMasterMenu.setMenu(mMenuNavigator);
 		
-		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 	}
 	
     @Override
@@ -71,14 +71,11 @@ public class MainActivity extends BaseActivity {
         menu.add("Save")
 //            .setIcon(isLight ? R.drawable.ic_compose_inverse : R.drawable.ic_compose)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
         menu.add("Search")
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
         menu.add("Refresh")
 //            .setIcon(isLight ? R.drawable.ic_refresh_inverse : R.drawable.ic_refresh)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
         return true;
     }
 

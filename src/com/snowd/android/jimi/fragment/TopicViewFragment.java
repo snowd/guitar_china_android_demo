@@ -93,8 +93,8 @@ public class TopicViewFragment extends BaseListFragment implements
 
 	@Override
 	public Serializable dataPrepared(int code, String resp) {
-		if (getActivity() != null && !getActivity().isFinishing()
-				&& code == HttpStatus.SC_OK) {
+		if (getActivity() == null || getView() == null) return null;
+		if (code == HttpStatus.SC_OK) {
 			/*
 			 * 加载全部数据
 			 */
@@ -113,8 +113,8 @@ public class TopicViewFragment extends BaseListFragment implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void dataLoaded(ResponseData resp, Object data) {
-		if (getActivity() != null && !getActivity().isFinishing()
-				&& resp.getCode() == HttpStatus.SC_OK && data != null) {
+		if (getActivity() == null || getView() == null) return;
+		if (resp.getCode() == HttpStatus.SC_OK && data != null) {
 			mPosts = (ArrayList<Topic>) data;
 			if (mAdapter == null) {
 				mAdapter = new TopicDetailListViewAdapter(getActivity());
