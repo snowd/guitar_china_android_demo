@@ -10,6 +10,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.view.MenuNavigator;
+import com.snowd.android.jimi.view.PopoutDrawer;
 
 
 public class MainActivity extends BaseActivity {
@@ -39,6 +40,10 @@ public class MainActivity extends BaseActivity {
 		mNavAdapter = new ForumNavigatorAdapter(this,
 				getSupportFragmentManager(), mNavigatorPager);
 		mNavigatorPager.setAdapter(mNavAdapter);
+		
+		PopoutDrawer pop = (PopoutDrawer) findViewById(R.id.popout_indexer);
+		pop.setTotal(20);
+//		pop.setTotal(6);
 	}
 	
 	private void initSlidingMenu() {
