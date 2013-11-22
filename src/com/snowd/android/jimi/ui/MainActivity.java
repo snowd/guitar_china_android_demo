@@ -1,8 +1,12 @@
 package com.snowd.android.jimi.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -13,7 +17,7 @@ import com.snowd.android.jimi.view.MenuNavigator;
 import com.snowd.android.jimi.view.PopoutDrawer;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnItemClickListener {
 	
 	private SlidingMenu mMasterMenu;
 	private MenuNavigator mMenuNavigator;
@@ -30,12 +34,6 @@ public class MainActivity extends BaseActivity {
 		// action bar
 		getSupportActionBar().setHomeButtonEnabled(true);
 		
-//        // Add the Sample Fragment if there is one
-//		Fragment boardFragment = new BoardViewFragment();
-//		if (boardFragment != null) {
-//			getSupportFragmentManager().beginTransaction()
-//					.replace(R.id.fragment_container, boardFragment).commit();
-//		}
 		mNavigatorPager = (ViewPager) findViewById(R.id.fragment_viewpager);
 		PopoutDrawer pop = (PopoutDrawer) findViewById(R.id.popout_indexer);
 		
@@ -60,6 +58,8 @@ public class MainActivity extends BaseActivity {
 		
 		mMenuNavigator = (MenuNavigator) LayoutInflater.from(this).inflate(
 				R.layout.menu_nav, null);
+		mMenuNavigator.setOnItemClickListener(this);
+		
 		mMasterMenu.setMenu(mMenuNavigator);
 		
 		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
@@ -94,4 +94,18 @@ public class MainActivity extends BaseActivity {
 		}
 		super.onBackPressed();
 	}
+
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		switch((int)id) {
+		case R.id.menu_item_profile:
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			break;
+		}
+	}
+	
 }

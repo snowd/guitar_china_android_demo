@@ -32,8 +32,8 @@
             android:textColor="@color/black"
             android:textSize="15.0sp" />
 
-        <EditText
-            android:id="@+id/txt_loginname"
+        <Spinner
+            android:id="@+id/spinner_questions"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="false"
@@ -62,12 +62,11 @@
             android:textSize="15.0sp" />
 
         <EditText
-            android:id="@+id/txt_pwd"
+            android:id="@+id/txt_answer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="false"
             android:hint="@string/login_pwd_hint"
-            android:password="true"
             android:textSize="15.0sp" />
     </LinearLayout>
 

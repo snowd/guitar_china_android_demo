@@ -289,7 +289,7 @@ public final class Constants {
 	 *  请求地址type错误，或规定字段不符合要求都会返回404错误。{"code":"404","datas":[]}<br/>
 	 *  请求正确，服务器处理失败或服务器错误会返回500错误。{"code":"500","datas":[]}<br/>
 	 */
-	public static final String URL_LOGIN = URL_CONTEXTPATH + "/login.php?" + PARAM_TYPE + "=onlinedo";
+	public static final String URL_LOGIN = URL_TOP_NAME + PARAM_TYPE + "=login";
 
 	/**
 	 * 发帖<br/>

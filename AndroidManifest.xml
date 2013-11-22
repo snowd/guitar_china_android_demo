@@ -176,7 +176,10 @@
         <activity android:name="net.shopnc.android.ui.more.AboutUsActivity"
             android:screenOrientation="portrait"/>
         <!-- 登录 -->
-        <activity android:name="net.shopnc.android.ui.more.LoginActivity" android:windowSoftInputMode="stateVisible|adjustPan"
+        <activity android:name=".ui.LoginActivity" android:windowSoftInputMode="stateVisible|adjustPan"
+            android:screenOrientation="portrait"/>
+        <!-- 登录 -->
+        <activity android:name=".ui.LoginQuestionActivity" android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"/>
     </application>
 

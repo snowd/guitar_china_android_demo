@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import net.shopnc.android.common.Constants;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Topic;
 
@@ -25,6 +24,7 @@ import android.widget.Toast;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
 import com.snowd.android.jimi.adapter.TopicListViewAdapter;
+import com.snowd.android.jimi.common.Constants;
 import com.snowd.android.jimi.rpc.RpcHandler;
 import com.snowd.android.jimi.view.PopoutDrawer;
 import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
@@ -80,15 +80,13 @@ public class ThreadViewFragment extends BaseListFragment implements
 				.listener(this).setup(mPullToRefreshLayout);
 		Log.d("", "Fragment >>> onViewCreated view=" + getView());
 		
-//		PopoutDrawer popout = new PopoutDrawer(view.getContext());
-//		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-//				FrameLayout.LayoutParams.WRAP_CONTENT,
-//				FrameLayout.LayoutParams.WRAP_CONTENT);
-//		params.gravity = Gravity.RIGHT;
-//		popout.setLayoutParams(params);
-//		popout.setTotal(10);
-//		viewGroup.addView(popout);
-		mPopoutDrawer.setVisibility(View.GONE);
+		if (mPopoutDrawer == null && mTotal > 1) return;
+		if (mTotal > 1) {
+			mPopoutDrawer.setVisibility(View.VISIBLE);
+			mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
+		} else {
+			mPopoutDrawer.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

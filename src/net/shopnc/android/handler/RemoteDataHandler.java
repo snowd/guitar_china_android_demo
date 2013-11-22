@@ -357,8 +357,22 @@ public class RemoteDataHandler{
 	 */
 	public static void asyncLogin(final String author, final String md5_pwd, final Callback callback){
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("useracc", author);
-		params.put("userpw", md5_pwd);
+		params.put("username", author);
+		params.put("password", md5_pwd);
+		asyncPost(Constants.URL_LOGIN, params, callback);
+	}
+	
+	/**
+	 * 异步的登录验证
+	 */
+	public static void asyncLoginQuestions(final String author,
+			final String loginauth, final String questionId,
+			final String answer, final Callback callback) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("username", author);
+		params.put("questionid", questionId);
+		params.put("answer", answer);
+		params.put("loginauth", loginauth);
 		asyncPost(Constants.URL_LOGIN, params, callback);
 	}
 	
@@ -787,6 +801,7 @@ public class RemoteDataHandler{
 					String json = HttpHelper.post(url, params);
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d","");
+					
 					JSONObject obj = new JSONObject(json);
 					if(null != obj && obj.has(_CODE)){
 						msg.what = Integer.valueOf(obj.getString(_CODE));
