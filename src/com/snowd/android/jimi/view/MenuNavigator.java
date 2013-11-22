@@ -51,23 +51,23 @@ public class MenuNavigator extends ListView {
 	}
 	
 	private BaseAdapter mAdapter = new BaseAdapter() {
-
+		
 		@Override
 		public int getCount() {
 			return mItemList.size();
 		}
-
+		
 		@Override
 		public NavigatorMenuItem getItem(int position) {
 			// TODO Auto-generated method stub
 			return mItemList.get(position);
 		}
-
+		
 		@Override
 		public long getItemId(int position) {
 			return getItem(position).getId();
 		}
-
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView itemView;

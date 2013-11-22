@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.snowd.android.jimi.fragment.BoardViewFragment;
 import com.snowd.android.jimi.view.PopoutDrawer;
+import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
 
 public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 		ViewPager.OnPageChangeListener {
@@ -110,8 +111,13 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 	@Override
 	public void onPageSelected(int position) {
 		mCurPosition = position;
+		NavigationElement navFragment = (NavigationElement)getItem(position);
 		if (position == 0) {
 			mPopout.setVisibility(View.GONE);
+		} else if (((NavigationElement)getItem(position)).getTotalPage() > 1) {
+			mPopout.setVisibility(View.VISIBLE);
+			mPopout.setTotal(navFragment.getTotalPage(), navFragment.getCurrentPage() - 1);
+			mPopout.setOnIndexChangedListener((OnIndexChangedListener) navFragment);
 		}
 	}
 

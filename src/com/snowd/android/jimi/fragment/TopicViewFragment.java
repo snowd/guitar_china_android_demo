@@ -77,7 +77,12 @@ public class TopicViewFragment extends BaseListFragment implements
 				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
 				.listener(this).setup(mPullToRefreshLayout);
 		Log.d("", "Fragment >>> onViewCreated view=" + getView());
-		mPopoutDrawer.setVisibility(View.GONE);
+		if (mTotal > 1) {
+			mPopoutDrawer.setVisibility(View.VISIBLE);
+			mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
+		} else {
+			mPopoutDrawer.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -183,8 +188,10 @@ public class TopicViewFragment extends BaseListFragment implements
 
 	@Override
 	public void onChangeIndexTo(int from, int to, int total) {
-		setListShown(false);
-		loadBoards(to + 1);
+		if (getView() != null) {
+			setListShown(false);
+			loadBoards(to + 1);
+		}
 	}
 
 	@Override

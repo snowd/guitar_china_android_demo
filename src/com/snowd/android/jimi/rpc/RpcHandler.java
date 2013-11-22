@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import net.shopnc.android.common.Constants;
 import net.shopnc.android.common.HttpHelper;
 import net.shopnc.android.common.IOHelper;
+import net.shopnc.android.handler.RemoteDataHandler.Callback;
 import net.shopnc.android.model.ResponseData;
 import net.shopnc.android.model.Smiley;
 
@@ -77,7 +78,7 @@ public class RpcHandler{
 			json = HttpHelper.get(Constants.URL_TOPIC_TYPE + fid);
 			Log.d(TAG, "topic type===>"+Constants.URL_TOPIC_TYPE + fid);
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-			json = json.replaceAll("\\x0a|\\x0d","");			
+//			json = json.replaceAll("\\x0a|\\x0d","");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -256,12 +257,25 @@ public class RpcHandler{
 	 */
 	public static void asyncLogin(final String author, final String md5_pwd, final Callback callback){
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("useracc", author);
-		params.put("userpw", md5_pwd);
+		params.put("username", author);
+		params.put("password", md5_pwd);
 		asyncPost(Constants.URL_LOGIN, params, callback);
 	}
 	
-	///////////////////////////////////////////////////////////////////////////
+	/**
+	 * 异步的登录验证
+	 */
+	public static void asyncLoginQuestions(final String author,
+			final String loginauth, final String questionId,
+			final String answer, final Callback callback) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("username", author);
+		params.put("questionid", questionId);
+		params.put("answer", answer);
+		params.put("loginauth", loginauth);
+		asyncPost(Constants.URL_LOGIN, params, callback);
+	}
+		///////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * 异步GET请求封装
@@ -294,7 +308,7 @@ public class RpcHandler{
 					String json = HttpHelper.get(url);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
-					json = json.replaceAll("\\x0a|\\x0d","");
+//					json = json.replaceAll("\\x0a|\\x0d","");
 					
 					JSONObject obj = new JSONObject(json);
 					if(null != obj && obj.has(_CODE)){
@@ -369,7 +383,7 @@ public class RpcHandler{
 					Log.d(TAG, json);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-					json = json.replaceAll("\\x0a|\\x0d","");
+//					json = json.replaceAll("\\x0a|\\x0d","");
 					Serializable obj = callback.dataPrepared(HttpStatus.SC_OK, json);
 					if(null != obj){
 						msg.getData().putSerializable(_DATAS, obj);
@@ -439,8 +453,8 @@ public class RpcHandler{
 					String json = HttpHelper.get(realUrl);
 					Log.d(TAG, json);
 					
-					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-					json = json.replaceAll("\\x0a|\\x0d","");
+//					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
+//					json = json.replaceAll("\\x0a|\\x0d","");
 					
 					Serializable obj = callback.dataPrepared(HttpStatus.SC_OK, json);
 					if(null != obj){
@@ -503,7 +517,7 @@ public class RpcHandler{
 			String json = HttpHelper.get(url);
 			
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-			json = json.replaceAll("\\x0a|\\x0d","");
+//			json = json.replaceAll("\\x0a|\\x0d","");
 			
 			JSONObject obj = new JSONObject(json);
 			if(null != obj && obj.has(_CODE)){
@@ -554,7 +568,7 @@ public class RpcHandler{
 			String json = HttpHelper.get(realUrl);
 			
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-			json = json.replaceAll("\\x0a|\\x0d","");
+//			json = json.replaceAll("\\x0a|\\x0d","");
 			
 			JSONObject obj = new JSONObject(json);
 			if(null != obj && obj.has(_CODE)){
@@ -597,7 +611,7 @@ public class RpcHandler{
 			String json = HttpHelper.post(url, params);
 			
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-			json = json.replaceAll("\\x0a|\\x0d","");
+//			json = json.replaceAll("\\x0a|\\x0d","");
 			
 			JSONObject obj = new JSONObject(json);
 			if(null != obj && obj.has(_CODE)){
@@ -649,7 +663,7 @@ public class RpcHandler{
 				
 				Log.d(TAG, data.toString());
 				
-				callback.dataLoaded(data, null);
+				callback.dataLoaded(data, msg.obj);
 			}
 		};
 		threadPool.execute(new Runnable() {
@@ -660,24 +674,25 @@ public class RpcHandler{
 				try {
 					String json = HttpHelper.post(url, params);
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-					json = json.replaceAll("\\x0a|\\x0d","");
-					JSONObject obj = new JSONObject(json);
-					if(null != obj && obj.has(_CODE)){
-						msg.what = Integer.valueOf(obj.getString(_CODE));
-						
-						if(obj.has(_DATAS)){
-							JSONArray array = obj.getJSONArray(_DATAS);
-							msg.obj = array.toString();
-						}
-						
-						if(obj.has(_RESULT)){
-							msg.getData().putString(_RESULT, obj.getString(_RESULT));
-						}
-					}
+//					json = json.replaceAll("\\x0a|\\x0d","");
+					msg.obj = json;
+//					JSONObject obj = new JSONObject(json);
+//					if(null != obj && obj.has(_CODE)){
+//						msg.what = Integer.valueOf(obj.getString(_CODE));
+//						
+//						if(obj.has(_DATAS)){
+//							JSONArray array = obj.getJSONArray(_DATAS);
+//							msg.obj = array.toString();
+//						}
+//						
+//						if(obj.has(_RESULT)){
+//							msg.getData().putString(_RESULT, obj.getString(_RESULT));
+//						}
+//					}
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
 					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (Exception e) {
 					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
 					e.printStackTrace();
 				}
@@ -719,7 +734,7 @@ public class RpcHandler{
 					String json = HttpHelper.multipartPost(url, params, fileMap);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-					json = json.replaceAll("\\x0a|\\x0d","");
+//					json = json.replaceAll("\\x0a|\\x0d","");
 					
 					JSONObject obj = new JSONObject(json);
 					if(null != obj && obj.has(_CODE)){
@@ -759,7 +774,7 @@ public class RpcHandler{
 			json = HttpHelper.get(Constants.URL_TOP_NAME);
 			Log.d(TAG, "top_name===>"+Constants.URL_TOP_NAME);
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-			json = json.replaceAll("\\x0a|\\x0d","");			
+//			json = json.replaceAll("\\x0a|\\x0d","");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
