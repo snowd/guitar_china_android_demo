@@ -37,12 +37,14 @@ public class MainActivity extends BaseActivity {
 //					.replace(R.id.fragment_container, boardFragment).commit();
 //		}
 		mNavigatorPager = (ViewPager) findViewById(R.id.fragment_viewpager);
+		PopoutDrawer pop = (PopoutDrawer) findViewById(R.id.popout_indexer);
+		
 		mNavAdapter = new ForumNavigatorAdapter(this,
 				getSupportFragmentManager(), mNavigatorPager);
+		mNavAdapter.setPopouDrawer(pop);
 		mNavigatorPager.setAdapter(mNavAdapter);
 		
-		PopoutDrawer pop = (PopoutDrawer) findViewById(R.id.popout_indexer);
-		pop.setTotal(20);
+//		pop.setTotal(20);
 //		pop.setTotal(6);
 	}
 	

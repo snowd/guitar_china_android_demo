@@ -38,9 +38,10 @@
             android:layout_height="wrap_content" />
          -->
         
-	    <Button
+	    <TextView
 	        android:id="@+id/go_to_index"
 	        android:text="跳页"
+	        android:gravity="center"
 	        android:background="#e0e0e0e0"
 	        android:clickable="false"
 	        android:layout_width="wrap_content"

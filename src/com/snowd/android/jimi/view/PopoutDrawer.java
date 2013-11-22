@@ -1,5 +1,9 @@
 package com.snowd.android.jimi.view;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -8,8 +12,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -44,6 +48,7 @@ public class PopoutDrawer extends LinearLayout {
 	private TextView mGoToIndex;
 	private TextView mTouchHandler;
 	
+	private LinkedList<TextView> mRemovedViews;
 	private OnIndexChangedListener mOnIndexChangedListener;
 	
 	public PopoutDrawer(Context context, AttributeSet attrs, int defStyle) {
@@ -86,34 +91,44 @@ public class PopoutDrawer extends LinearLayout {
 		mColorHighlight = Color.argb(0xe0, 0x00, 0x99, 0xcc);
 		mColorCurrent = Color.argb(0xe0, 0x33, 0xb5, 0xe5);
 		
-//		mColorHighlight = getResources().getColor(R.color.abs__holo_blue_light);
-		
 		mTouchHandler = (TextView) findViewById(R.id.touch_handler);
 		mButtonsPanel = (LinearLayout) findViewById(R.id.buttons_panel);
 		mGoToIndex = (TextView) findViewById(R.id.go_to_index);
 		mGoToIndex.getLayoutParams().height = HEIGHT_BUTTON;
-//		for (int i = 0; i < mVisible; i++) {
-//			Button b = new Button(getContext());
-//			b.setLayoutParams(new LinearLayout.LayoutParams(WIDTH_BUTTON, HEIGHT_BUTTON));
-//			b.setText(String.valueOf(i + 1));
-//			b.setBackgroundColor(mCurrent == i + mVisibleFirst ? mColorCurrent : mColorNormal);
-////			b.setTextColor(Color.rgb(0x00, 0x99, 0xcc));
-//			mButtonsPanel.addView(b, i);
-//		}
+
+		mRemovedViews = new LinkedList<TextView>();
 	}
 	
 	private int computeVisibleButtons(int total) {
-		int visible = (SCREEN_WIDTH - mTouchHandler.getWidth()) / WIDTH_BUTTON;
+		if (mTouchHandler.getMeasuredWidth() == 0) {
+			if (mTouchHandler.getLayoutParams().width > 0) {
+				mTouchHandler.setMinWidth(mTouchHandler.getLayoutParams().width);
+			}
+			mTouchHandler.measure(
+					MeasureSpec.makeMeasureSpec(
+							mTouchHandler.getLayoutParams().width,
+							MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
+							SCREEN_HEIGHT, MeasureSpec.AT_MOST));
+		}
+		int visible = (SCREEN_WIDTH - mTouchHandler.getMeasuredWidth())
+				/ WIDTH_BUTTON;
 		if (visible < total) {
 			mGoToIndex.setVisibility(VISIBLE);
 			if (mGoToIndex.getMeasuredWidth() == 0) {
 				mGoToIndex.measure(MeasureSpec.makeMeasureSpec(SCREEN_WIDTH,
 						MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(
-								SCREEN_HEIGHT, MeasureSpec.AT_MOST));
+						HEIGHT_BUTTON, MeasureSpec.EXACTLY));
 			}
-			visible = (SCREEN_WIDTH - mTouchHandler.getWidth() - mGoToIndex
+			if (mGoToIndex.getMeasuredWidth() < WIDTH_BUTTON) {
+				mGoToIndex.getLayoutParams().width = WIDTH_BUTTON;
+				mGoToIndex.measure(MeasureSpec.makeMeasureSpec(WIDTH_BUTTON,
+						MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
+						HEIGHT_BUTTON, MeasureSpec.EXACTLY));
+			}
+			visible = (SCREEN_WIDTH - mTouchHandler.getMeasuredWidth() - mGoToIndex
 					.getMeasuredWidth()) / WIDTH_BUTTON;
 		} else {
+			visible = total;
 			mGoToIndex.setVisibility(GONE);
 		}
 		return visible;
@@ -143,10 +158,17 @@ public class PopoutDrawer extends LinearLayout {
 	}
 	
 	private void initButtons(int visible) {
-		for (int i = 0; i < visible; i++) {
-			Button b = new Button(getContext());
+		while (visible < mButtonsPanel.getChildCount() - 1 && mButtonsPanel.getChildCount() > 1) {
+			TextView child = (TextView) mButtonsPanel.getChildAt(0);
+			mRemovedViews.add(child);
+			mButtonsPanel.removeView(child);
+		}
+		int start = mButtonsPanel.getChildCount() - 1;
+		for (int i = start; i < visible; i++) {
+			TextView b = new TextView(getContext());
 			b.setLayoutParams(new LinearLayout.LayoutParams(WIDTH_BUTTON,
 					HEIGHT_BUTTON));
+			b.setGravity(Gravity.CENTER);
 //			b.setText(String.valueOf(i + 1));
 			b.setBackgroundColor(mCurrent == i + mVisibleFirst ? mColorCurrent
 					: mColorNormal);
@@ -166,7 +188,7 @@ public class PopoutDrawer extends LinearLayout {
 			mVisibleFirst = mTotal - mVisible + 1;
 		}
 		for (int i = 0; i < mButtonsPanel.getChildCount(); i++) {
-			Button b = (Button) mButtonsPanel.getChildAt(i);
+			TextView b = (TextView) mButtonsPanel.getChildAt(i);
 			if (b.getId() != R.id.go_to_index) {
 				b.setText(String.valueOf(i + mVisibleFirst));
 			}
@@ -202,6 +224,7 @@ public class PopoutDrawer extends LinearLayout {
 				}
 			}
 			return true;
+		case MotionEvent.ACTION_OUTSIDE: // 穿透
 		case MotionEvent.ACTION_MOVE:
 			if (mButtonsPanel == null) break;
 			int pos = (int) (event.getX() / WIDTH_BUTTON);
@@ -212,7 +235,7 @@ public class PopoutDrawer extends LinearLayout {
 				if (pos < mVisible) {
 					pointer = pos;
 					for (int i = 0; i < mVisible; i++) {
-						Button b = (Button) mButtonsPanel.getChildAt(i);
+						TextView b = (TextView) mButtonsPanel.getChildAt(i);
 						if (i == pos) {
 							b.setBackgroundColor(mColorHighlight);
 						} else if (i + mVisibleFirst == mCurrent) {
@@ -225,7 +248,7 @@ public class PopoutDrawer extends LinearLayout {
 				} else {
 					pointer = POINTER_CHANGE_EXTRA;
 					for (int i = 0; i < mVisible; i++) {
-						Button b = (Button) mButtonsPanel.getChildAt(i);
+						TextView b = (TextView) mButtonsPanel.getChildAt(i);
 						if (i + mVisibleFirst == mCurrent) {
 							b.setBackgroundColor(mColorCurrent);
 						} else {
@@ -242,8 +265,9 @@ public class PopoutDrawer extends LinearLayout {
 					Log.d("", "touch >> move ptr=" + pointer);
 				}
 			}
+			return true;
 		}
-		return false;
+		return super.dispatchTouchEvent(event);
 	}
 	
 }
