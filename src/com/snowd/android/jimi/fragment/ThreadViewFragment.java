@@ -197,8 +197,10 @@ public class ThreadViewFragment extends BaseListFragment implements
 
 	@Override
 	public void onChangeIndexTo(int from, int to, int total) {
-		setListShown(false);
-		loadBoards(to + 1);
+		if (getView() != null) {
+			setListShown(false);
+			loadBoards(to + 1);
+		}
 	}
 
 	@Override
