@@ -9,14 +9,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 
 import com.snowd.android.jimi.fragment.BoardViewFragment;
+import com.snowd.android.jimi.view.PopoutDrawer;
 
 public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 		ViewPager.OnPageChangeListener {
 	
 	public interface NavigationElement {
 		public void bindHostAdapter(ForumNavigatorAdapter adapter);
+		public void bindPopoutDrawer(PopoutDrawer p);
+		public int getTotalPage();
+		public int getCurrentPage();
 	}
 	
 	private Context mContext;
@@ -24,7 +29,7 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 	private ViewPager mViewPager;
 	private ArrayList<Fragment> mPages;
 	private int mCurPosition = -1;
-	
+	private PopoutDrawer mPopout;
 	
 //	private int mNavIndex = 1;
 	
@@ -68,10 +73,16 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 		mPages.add(f);
 	}
 	
+	public void setPopouDrawer(PopoutDrawer p) {
+		mPopout = p;
+	}
+	
 	public void enterPage(Class<?> claz, Bundle data) {
 		Fragment fragment = Fragment
 				.instantiate(mContext, claz.getName(), data);
 		((NavigationElement)fragment).bindHostAdapter(this);
+		((NavigationElement)fragment).bindPopoutDrawer(mPopout);
+		
 		Log.d("", "frag=" + fragment);
 		Log.d("", "frag param=" + fragment.getArguments());
 		pushPage(fragment);
@@ -94,13 +105,14 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onPageSelected(int position) {
 		mCurPosition = position;
+		if (position == 0) {
+			mPopout.setVisibility(View.GONE);
+		}
 	}
 
 }

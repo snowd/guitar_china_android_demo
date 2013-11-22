@@ -23,6 +23,7 @@ import com.snowd.android.jimi.adapter.BoardListAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
 import com.snowd.android.jimi.rpc.RpcHandler;
+import com.snowd.android.jimi.view.PopoutDrawer;
 
 public class BoardViewFragment extends BaseListFragment implements
 		OnRefreshListener, RpcHandler.Callback, NavigationElement {
@@ -30,10 +31,23 @@ public class BoardViewFragment extends BaseListFragment implements
 	private ForumNavigatorAdapter mHostAdapter;
 	private ArrayList<Board> mBoards;
 	private BoardListAdapter mAdapter;
+//	private PopoutDrawer mPopouDrawer;
 	
 	@Override
 	public void bindHostAdapter(ForumNavigatorAdapter adapter) {
 		mHostAdapter = adapter;
+	}
+	
+	public void bindPopoutDrawer(PopoutDrawer p) {
+//		mPopouDrawer = p;
+	}
+	
+	public int getTotalPage() {
+		return 1;
+	}
+	
+	public int getCurrentPage() {
+		return 1;
 	}
 	
 	@Override
@@ -63,6 +77,7 @@ public class BoardViewFragment extends BaseListFragment implements
 				// pullable
 				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
 				.listener(this).setup(mPullToRefreshLayout);
+//		mPopouDrawer.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -82,14 +97,14 @@ public class BoardViewFragment extends BaseListFragment implements
 	}
 	
 	private void loadBoards(){
-		//((MainActivity)myParent.getParent()).showDialog(Constants.DIALOG_LOADDATA_ID);
-		String url = Constants.URL_BOARD;
-//		if(null != myApp.getUid() && !"".equals(myApp.getUid()) 
-//				&& null != myApp.getSid() && !"".equals(myApp.getSid())){//登录用户
-//			url += myApp.getUid();
-//		}
-		RpcHandler.asyncGetList(url, 50, 1, this);
-	}	
+		if (mAdapter != null) {
+			setListAdapter(mAdapter);
+			setListShown(true);
+		} else {
+			String url = Constants.URL_BOARD;
+			RpcHandler.asyncGetList(url, 50, 1, this);
+		}
+	}
 
 	@Override
 	public Serializable dataPrepared(int code, String resp) {
@@ -117,6 +132,8 @@ public class BoardViewFragment extends BaseListFragment implements
 				mAdapter.setData(mBoards);
 			}
 			setListAdapter(mAdapter);
+			
+			// pager
 		} else {
 			Toast.makeText(getView().getContext(), "网络故障！", Toast.LENGTH_SHORT)
 					.show();

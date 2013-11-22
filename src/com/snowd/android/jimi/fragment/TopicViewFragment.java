@@ -25,12 +25,15 @@ import com.snowd.android.jimi.adapter.TopicDetailListViewAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
 import com.snowd.android.jimi.rpc.RpcHandler;
+import com.snowd.android.jimi.view.PopoutDrawer;
+import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
 
 public class TopicViewFragment extends BaseListFragment implements
-		OnRefreshListener, RpcHandler.Callback, NavigationElement {
+		OnRefreshListener, RpcHandler.Callback, NavigationElement, OnIndexChangedListener {
 
 	private ArrayList<Topic> mPosts;
 	private TopicDetailListViewAdapter mAdapter;
+	private PopoutDrawer mPopoutDrawer;
 	
 	@SuppressWarnings("unused")
 	private ForumNavigatorAdapter mHostAdapter;
@@ -38,7 +41,20 @@ public class TopicViewFragment extends BaseListFragment implements
 	public void bindHostAdapter(ForumNavigatorAdapter adapter) {
 		mHostAdapter = adapter;
 	}
+	
+	public void bindPopoutDrawer(PopoutDrawer p) {
+		mPopoutDrawer = p;
+		mPopoutDrawer.setOnIndexChangedListener(this);
+	}
 
+	public int getTotalPage() {
+		return mTotal;
+	}
+	
+	public int getCurrentPage() {
+		return mCurrent;
+	}
+	
 	private PullToRefreshLayout mPullToRefreshLayout;
 
 	@Override
@@ -61,6 +77,7 @@ public class TopicViewFragment extends BaseListFragment implements
 				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
 				.listener(this).setup(mPullToRefreshLayout);
 		Log.d("", "Fragment >>> onViewCreated view=" + getView());
+		mPopoutDrawer.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -81,15 +98,22 @@ public class TopicViewFragment extends BaseListFragment implements
 	}
 
 	private void loadBoards(){
-		Bundle b = getArguments();
-		//((MainActivity)myParent.getParent()).showDialog(Constants.DIALOG_LOADDATA_ID);
-		String url = Constants.URL_TOPIC_DETAIL_DEFAULT + b.getLong("_key_tid");
-//		if(null != myApp.getUid() && !"".equals(myApp.getUid()) 
-//				&& null != myApp.getSid() && !"".equals(myApp.getSid())){//登录用户
-//			url += myApp.getUid();
-//		}
-		RpcHandler.asyncGet(url, 30, 1, this);
-	}	
+		loadBoards(1);
+	}
+	
+	private void loadBoards(int page) {
+		if (id == 0 && getArguments() != null) {
+			id = getArguments().getLong("_key_tid");
+		}
+		String url = Constants.URL_TOPIC_DETAIL_DEFAULT + id;
+		RpcHandler.asyncGet(url, mPageSize, page, this);
+	}
+	
+	private long id = 0;
+	private int mPageSize = 20;
+	private int mCurrent = 0;
+	private int mTotal = 0;
+	private JSONObject mPageInfo;
 
 	@Override
 	public Serializable dataPrepared(int code, String resp) {
@@ -100,6 +124,7 @@ public class TopicViewFragment extends BaseListFragment implements
 			 */
 			try {
 				JSONObject obj = new JSONObject(resp);
+				mPageInfo = obj.optJSONObject("page");
 				ArrayList<Topic> topics = Topic.newInstanceList(obj
 						.getJSONArray("post"));
 				return topics;
@@ -132,6 +157,16 @@ public class TopicViewFragment extends BaseListFragment implements
 		if (getView() != null) {
 			setListShown(true);
 //			if (mAdapter != null) mAdapter.notifyDataSetChanged();
+			try {
+				if (mPageInfo != null && mPageInfo.length() > 0) {
+					mTotal = mPageInfo.getInt("max_pages");
+					mCurrent = mPageInfo.getInt("curpage");
+					mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
+					if (mTotal > 1) mPopoutDrawer.setVisibility(View.VISIBLE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -144,6 +179,18 @@ public class TopicViewFragment extends BaseListFragment implements
 //		Bundle bundle = new Bundle();
 //		bundle.putLong("_key_tid", item.getTid());
 //		mHostAdapter.enterPage(TopicViewFragment.class, bundle);
+	}
+
+	@Override
+	public void onChangeIndexTo(int from, int to, int total) {
+		setListShown(false);
+		loadBoards(to + 1);
+	}
+
+	@Override
+	public boolean onChangeIndexExtra(int from, int total) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
