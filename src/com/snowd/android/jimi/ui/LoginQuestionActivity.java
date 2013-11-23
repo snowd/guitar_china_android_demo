@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.model.LoginQuestion;
+import com.snowd.android.jimi.model.SessionHolder;
 import com.snowd.android.jimi.rpc.RpcHandler;
 import com.snowd.android.jimi.rpc.RpcHandler.Callback;
 
@@ -118,6 +119,7 @@ public class LoginQuestionActivity extends BaseActivity {
 						intent.putExtra("sid", sid);
 						intent.putExtra("uid", uid);
 						intent.putExtra("formhash", formhash);
+						SessionHolder.setLogin(sid, uid, formhash);
 						setResult(RESULT_FIRST_USER, intent);
 						finish();
 					} catch (JSONException e) {

@@ -29,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.snowd.android.jimi.model.SessionHolder;
+
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -305,7 +307,11 @@ public class RpcHandler{
 				
 				Log.d(TAG, url);
 				try {
-					String json = HttpHelper.get(url);
+					String surl = url;
+					if (SessionHolder.isLogin()) {
+						surl += "&sid=" + SessionHolder.obtainSid();
+					}
+					String json = HttpHelper.get(surl);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
 //					json = json.replaceAll("\\x0a|\\x0d","");
@@ -379,6 +385,9 @@ public class RpcHandler{
 				try {
 					Thread.sleep(1000);
 					
+					if (SessionHolder.isLogin()) {
+						realUrl += "&sid=" + SessionHolder.obtainSid();
+					}
 					String json = HttpHelper.get(realUrl);
 					Log.d(TAG, json);
 					
@@ -450,6 +459,9 @@ public class RpcHandler{
 				try {
 					Thread.sleep(1000);
 					
+					if (SessionHolder.isLogin()) {
+						realUrl += "&sid=" + SessionHolder.obtainSid();
+					}
 					String json = HttpHelper.get(realUrl);
 					Log.d(TAG, json);
 					
