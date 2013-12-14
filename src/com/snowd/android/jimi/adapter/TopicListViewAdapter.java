@@ -7,17 +7,18 @@
  */
 package com.snowd.android.jimi.adapter;
 
-import java.util.ArrayList;
-
-import com.snowd.android.jimi.R;
-import net.shopnc.android.common.DateAndTimeHepler;
-import net.shopnc.android.model.Topic;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.common.DateAndTimeHepler;
+import com.snowd.android.jimi.model.Topic;
+
+
+import java.util.ArrayList;
 
 /**
  * 帖子列表适配器

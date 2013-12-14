@@ -25,7 +25,7 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name="net.shopnc.android.common.MyApp">
+        android:name=".common.MyApp">
         
         <meta-data android:value="528a316856240be0e32e9373" android:name="UMENG_APPKEY"/>
 		<meta-data android:value="demotest" android:name="UMENG_CHANNEL"/>
@@ -52,8 +52,9 @@
             </intent-filter>
         </activity>
              -->
-        
-        <!-- 一级栏目界面 -->
+
+        <!-- 一级栏目界面 -
+        ->
         <activity android:name="net.shopnc.android.ui.MainActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.home.HomeActivity"
@@ -68,7 +69,8 @@
         <activity android:name="net.shopnc.android.ui.more.MoreActivity"
             android:screenOrientation="portrait"/>
         
-        <!-- 首页下的二级栏目 -->
+        <!- - 首页下的二级栏目 -
+        ->
         <activity android:name="net.shopnc.android.ui.home.HeadlinesActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.home.TeahouseActivity"
@@ -80,7 +82,8 @@
         <activity android:name="net.shopnc.android.ui.home.EmotionalActivity"
             android:screenOrientation="portrait"/>
         
-        <!-- 生活下的二级栏目 --> 
+        <!- - 生活下的二级栏目 -
+        ->
         <activity android:name="net.shopnc.android.ui.live.HouseDecorateActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.live.FoodActivity"
@@ -94,7 +97,8 @@
         <activity android:name="net.shopnc.android.ui.live.WomanActivity"
             android:screenOrientation="portrait"/>
         
-        <!-- 论坛下的二级栏目  -->
+        <!- - 论坛下的二级栏目  -
+        ->
         <activity android:name="net.shopnc.android.ui.forum.BoardListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.forum.BoardFavoriteActivity"
@@ -102,7 +106,8 @@
         <activity android:name="net.shopnc.android.ui.forum.LastestBrowseActivity"
             android:screenOrientation="portrait"/>
         
-          <!-- 论坛下的三级栏目  -->
+          <!- - 论坛下的三级栏目  -
+          ->
         <activity android:name="net.shopnc.android.ui.forum.board.ChildBoardActivity"
             android:screenOrientation="portrait"/>
          <activity android:name="net.shopnc.android.ui.forum.board.TopicChildListActivity"
@@ -114,7 +119,8 @@
          <activity android:name="net.shopnc.android.ui.forum.board.TopicChildTopActivity"
             android:screenOrientation="portrait"/>
         
-         <!-- 信息下的二级栏目 -->
+         <!- - 信息下的二级栏目 -
+         ->
         <activity android:name="net.shopnc.android.ui.info.OneActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.info.TwoActivity"
@@ -128,7 +134,8 @@
         <activity android:name="net.shopnc.android.ui.info.SixActivity"
             android:screenOrientation="portrait"/>
         
-        <!-- 选定的版块下的帖子列表相关 -->
+        <!- - 选定的版块下的帖子列表相关 -
+        ->
         <activity android:name="net.shopnc.android.ui.forum.board.TopicListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.forum.board.TopicAllActivity"
@@ -140,7 +147,8 @@
         <activity android:name="net.shopnc.android.ui.forum.board.TopicSearchActivity"
             android:screenOrientation="portrait"/>
         
-        <!-- 选定的帖子详细及回复列表相关 -->
+        <!- - 选定的帖子详细及回复列表相关 -
+        ->
         <activity android:name="net.shopnc.android.ui.forum.topic.TopicDetailActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.forum.topic.TopicDetailDefaultActivity"
@@ -162,11 +170,13 @@
         <activity android:name="net.shopnc.android.ui.forum.topic.ShowImageActivity"
             android:screenOrientation="portrait"/>
         
-        <!-- 商圈 
-        <activity android:name=".ui.district.ShopDetailActivity"/>-->
+        <!- - 商圈
+        <activity android:name=".ui.district.ShopDetailActivity"/>-
+        ->
          <activity android:name="net.shopnc.android.ui.forum.topic.QuoteTopicActivity"
                android:screenOrientation="portrait"/>
-        <!-- 更多 -->
+        <!- - 更多 -
+        ->
         <activity android:name="net.shopnc.android.ui.more.SystemSetActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.more.AccountMngActivity"
@@ -175,6 +185,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name="net.shopnc.android.ui.more.AboutUsActivity"
             android:screenOrientation="portrait"/>
+        -->
+
         <!-- 登录 -->
         <activity android:name=".ui.LoginActivity" android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"/>

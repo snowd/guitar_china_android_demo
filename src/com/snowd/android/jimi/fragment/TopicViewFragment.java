@@ -3,10 +3,10 @@ package com.snowd.android.jimi.fragment;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.shopnc.android.common.Constants;
-import net.shopnc.android.model.ResponseData;
-import net.shopnc.android.model.Topic;
 
+import com.snowd.android.jimi.common.Constants;
+import com.snowd.android.jimi.model.ResponseData;
+import com.snowd.android.jimi.model.Topic;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;

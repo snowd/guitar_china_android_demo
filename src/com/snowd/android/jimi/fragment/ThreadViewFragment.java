@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import net.shopnc.android.model.ResponseData;
-import net.shopnc.android.model.Topic;
 
+import com.snowd.android.jimi.model.ResponseData;
+import com.snowd.android.jimi.model.Topic;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;

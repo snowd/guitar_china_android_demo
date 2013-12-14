@@ -3,10 +3,10 @@ package com.snowd.android.jimi.fragment;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.shopnc.android.common.Constants;
-import net.shopnc.android.model.Board;
-import net.shopnc.android.model.ResponseData;
 
+import com.snowd.android.jimi.common.Constants;
+import com.snowd.android.jimi.model.Board;
+import com.snowd.android.jimi.model.ResponseData;
 import org.apache.http.HttpStatus;
 
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
@@ -121,7 +121,6 @@ public class BoardViewFragment extends BaseListFragment implements
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
 	public void dataLoaded(ResponseData resp, Object data) {
 		if (getActivity() != null && !getActivity().isFinishing()
 				&& resp.getCode() == HttpStatus.SC_OK && data != null) {

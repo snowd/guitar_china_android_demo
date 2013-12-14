@@ -11,16 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import net.shopnc.android.common.BBCodeHelper;
-import net.shopnc.android.common.Constants;
-import net.shopnc.android.common.DateAndTimeHepler;
-import net.shopnc.android.common.MyApp;
-import net.shopnc.android.common.SystemHelper;
-import net.shopnc.android.handler.ImageLoader;
-import net.shopnc.android.handler.SmileyImageGetter;
-import net.shopnc.android.model.Board;
-import net.shopnc.android.model.Topic;
-import net.shopnc.android.ui.forum.topic.QuoteTopicActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.common.DateAndTimeHepler;
+import com.snowd.android.jimi.common.MyApp;
+import com.snowd.android.jimi.common.SystemHelper;
+import com.snowd.android.jimi.model.Board;
+import com.snowd.android.jimi.model.Topic;
+import com.snowd.android.jimi.rpc.ImageLoader;
 
 /**
  * 帖子详细列表适配器
@@ -148,13 +144,16 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 //		}else{
 //			vh.txt_from.setVisibility(View.GONE);
 //		}
-		str=BBCodeHelper.processBBCode(str);
-		img_invisible = myApp.isImg_invisible();
-		if(ConnectivityManager.TYPE_WIFI == SystemHelper.getNetworkType(ctx) || !img_invisible){
-		//显示
-		}else{
-			str=BBCodeHelper.parseHtmlExcludeImgTag(str);
-		}
+
+
+//		str=BBCodeHelper.processBBCode(str);
+//		img_invisible = myApp.isImg_invisible();
+//		if(ConnectivityManager.TYPE_WIFI == SystemHelper.getNetworkType(ctx) || !img_invisible){
+//		//显示
+//		}else{
+//			str=BBCodeHelper.parseHtmlExcludeImgTag(str);
+//		}
+
 		vh.txt_content.setText(topic.getMessage());
 //		vh.txt_content.setText(Html.fromHtml(str,new SmileyImageGetter(ctx), null));
 		if(null != myApp.getUid() && !"".equals(myApp.getUid()) 
@@ -174,28 +173,28 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 							Board b2 = subBoardMap.get(Long.valueOf(topic.getFid()));
 							Log.d(TAG, b2.toString());
 							if(b2.getIsreply() == 1){
-								Intent it = new Intent(ctx, QuoteTopicActivity.class);
-								it.putExtra("author", topic.getAuthor());
-								String str="[/quote]";
-								int a=topic.getMessage().lastIndexOf(str);
-								if(a!=-1){
-									mage=topic.getMessage().replace(topic.getMessage().substring(0,a), "");
-									mage=mage.replace("[/quote]", "");
-								}else{
-									mage=topic.getMessage();
-								}
-								int b=mage.lastIndexOf("[img");
-								int c=mage.lastIndexOf("[/img]");
-								if(b!=-1&&c!=-1){
-									mage=mage.replace(mage.substring(b,c+6), "");
-								}
-								it.putExtra("mage",mage);
-								it.putExtra("tid", String.valueOf(getTid()));
-								it.putExtra("fid",  String.valueOf(topic.getFid()));
-								it.putExtra("pid", String.valueOf(topic.getPid()));
-								it.putExtra("date",String.valueOf(topic.getDateline()));
-								it.putExtra("ispostimage",String.valueOf(b2.getIspostimage()));
-								((Activity) ctx).startActivityForResult(it, 300);
+//								Intent it = new Intent(ctx, QuoteTopicActivity.class);
+//								it.putExtra("author", topic.getAuthor());
+//								String str="[/quote]";
+//								int a=topic.getMessage().lastIndexOf(str);
+//								if(a!=-1){
+//									mage=topic.getMessage().replace(topic.getMessage().substring(0,a), "");
+//									mage=mage.replace("[/quote]", "");
+//								}else{
+//									mage=topic.getMessage();
+//								}
+//								int b=mage.lastIndexOf("[img");
+//								int c=mage.lastIndexOf("[/img]");
+//								if(b!=-1&&c!=-1){
+//									mage=mage.replace(mage.substring(b,c+6), "");
+//								}
+//								it.putExtra("mage",mage);
+//								it.putExtra("tid", String.valueOf(getTid()));
+//								it.putExtra("fid",  String.valueOf(topic.getFid()));
+//								it.putExtra("pid", String.valueOf(topic.getPid()));
+//								it.putExtra("date",String.valueOf(topic.getDateline()));
+//								it.putExtra("ispostimage",String.valueOf(b2.getIspostimage()));
+//								((Activity) ctx).startActivityForResult(it, 300);
 							}else{
 								Toast.makeText(ctx, "你没有权限在本版回帖！", Toast.LENGTH_SHORT).show();
 							}
@@ -271,7 +270,7 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 		vh.txt_visit_replies.setVisibility(View.GONE);
 		
 		vh.txt_pubtime.setText(DateAndTimeHepler.friendly_time(ctx,
-				topic.getDateline() * 1000));
+                topic.getDateline() * 1000));
 		
 		return convertView;
 	}

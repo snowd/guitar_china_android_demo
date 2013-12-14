@@ -10,6 +10,7 @@ package com.snowd.android.jimi.rpc;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,15 +18,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+
 import com.snowd.android.jimi.common.Constants;
 import com.snowd.android.jimi.common.HttpHelper;
+import com.snowd.android.jimi.model.Board;
 import com.snowd.android.jimi.model.ResponseData;
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.snowd.android.jimi.model.SessionHolder;
 
 import android.os.Handler;
 import android.os.Message;
@@ -35,20 +36,20 @@ import android.util.Log;
  * 用于发送HTTP请求并处理响应返回的数据的Handler
  * @author qjyong
  */
-public class RpcHandler{
+public class RemoteDataHandler{
 	public static final String TAG = "RemoteDataLoader";
 	private static final String _CODE = "code";
 	private static final String _DATAS = "datas"; 
 	private static final String _HASMORE = "haseMore"; 
 	private static final String _COUNT = "count";
-//	private static final String _PAGE_INFO = "page";
+	private static final String _PAGE_INFO = "page";
 	private static final String _RESULT = "result";
 	private static final String _URL = "url";
 	//线程池
 	//private ExecutorService pool = Executors.newCachedThreadPool();
 	private static ThreadPoolExecutor threadPool = new ThreadPoolExecutor(6, 30, 30L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	
-	private RpcHandler(){}
+	private RemoteDataHandler(){}
 	
 	public interface Callback {
 		/**
@@ -65,6 +66,105 @@ public class RpcHandler{
 	}
 	
 	/**
+	 * 同步的，获取商家详细，因为是在AsyncTask中使用
+	 * @param shop_id
+	 * @return
+	 */
+	public static ResponseData getShopDetail(int shop_id){
+		String url = Constants.URL_DISTRICT_SHOP_DETAIL + "&shop_id=" + shop_id;
+		
+		Log.d(TAG, url);
+		
+		return get(url);
+	}
+	
+	
+	/**
+	 * 根据纬度和经度获取地名(异步的)
+	 * @param lat
+	 * @param lng
+	 * @return
+	 */
+	public static void asyncGetAddressName(double lat, double lng, final StringCallback callback){
+		final String url = MessageFormat.format(Constants.URL_GOOGLE_REVERSE_GEOCODING,  String.valueOf(lat), String.valueOf(lng));
+		
+		final Handler handler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				callback.dataLoaded((String)msg.obj);
+			}
+		};
+		
+		threadPool.execute(new Runnable() {
+			@Override
+			public void run() {
+				Message msg = handler.obtainMessage(HttpStatus.SC_OK);
+				
+				Log.d(TAG, url);
+				try {
+					String json = HttpHelper.get(url);
+					
+					JSONObject obj = new JSONObject(json);
+					String status = obj.optString("status");
+				
+					if("ok".equalsIgnoreCase(status)){
+						JSONArray arr = obj.optJSONArray("results");
+						int length = arr == null ? 0 : arr.length();
+						if(length > 0){
+							String str2 = arr.getJSONObject(0).optString("formatted_address");
+							if(!"".equals(str2)){
+								msg.obj = str2.substring(2);
+							}
+						}
+					}
+				} catch (IOException e) {
+					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
+					e.printStackTrace();
+				} catch (JSONException e) {
+					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
+					e.printStackTrace();
+				}
+				
+				handler.sendMessage(msg);
+			}
+		});
+	}
+	
+	/**
+	 * 异步根据纬度，经度，搜索半径及分页信息获取商家列表
+	 * @param latitude
+	 * @param longitude
+	 * @param r
+	 * @param pagesize
+	 * @param pageno
+	 * @return
+	 */
+	public static void asyncGetShopList(double latitude, double longitude, int r, final int pagesize, final int pageno, Callback callback){
+		String url = Constants.URL_DISTRICT_SHOP_LIST + "&lat=" + latitude
+				+ "&lng=" + longitude + "&r=" + r;
+		
+		Log.d(TAG, url);
+		
+		asyncGet(url, pagesize, pageno, callback);
+	}
+	
+	/**
+	 * 用户登录后需要获取所有子版块列表并保存到MyApp中，以便于发帖和回帖时进行权限判断<br/>
+	 * @param uid
+	 * @param callback
+	 */
+	public static HashMap<Long, Board> loadSubBoardMap(String uid){
+		 HashMap<Long, Board> map = null;
+		 
+		ResponseData data = RemoteDataHandler.get(Constants.URL_BOARD + uid);
+		if(data.getCode() == HttpStatus.SC_OK){
+			String json = data.getJson();
+			map = Board.newSubBoardMap(json);
+		}
+		return map;
+	}
+	
+	/**
 	 * 用户发帖时获取主题的分类<br/>
 	 * @param uid
 	 * @param callback
@@ -76,7 +176,7 @@ public class RpcHandler{
 			json = HttpHelper.get(Constants.URL_TOPIC_TYPE + fid);
 			Log.d(TAG, "topic type===>"+Constants.URL_TOPIC_TYPE + fid);
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//			json = json.replaceAll("\\x0a|\\x0d","");			
+			json = json.replaceAll("\\x0a|\\x0d","");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -273,7 +373,8 @@ public class RpcHandler{
 		params.put("loginauth", loginauth);
 		asyncPost(Constants.URL_LOGIN, params, callback);
 	}
-		///////////////////////////////////////////////////////////////////////////
+	
+	///////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * 异步GET请求封装
@@ -303,14 +404,10 @@ public class RpcHandler{
 				
 				Log.d(TAG, url);
 				try {
-					String surl = url;
-					if (SessionHolder.isLogin()) {
-						surl += "&sid=" + SessionHolder.obtainSid();
-					}
-					String json = HttpHelper.get(surl);
+					String json = HttpHelper.get(url);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
-//					json = json.replaceAll("\\x0a|\\x0d","");
+					json = json.replaceAll("\\x0a|\\x0d","");
 					
 					JSONObject obj = new JSONObject(json);
 					if(null != obj && obj.has(_CODE)){
@@ -381,22 +478,48 @@ public class RpcHandler{
 				try {
 					Thread.sleep(1000);
 					
-					if (SessionHolder.isLogin()) {
-						realUrl += "&sid=" + SessionHolder.obtainSid();
-					}
 					String json = HttpHelper.get(realUrl);
 					Log.d(TAG, json);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//					json = json.replaceAll("\\x0a|\\x0d","");
+					json = json.replaceAll("\\x0a|\\x0d","");
 					Serializable obj = callback.dataPrepared(HttpStatus.SC_OK, json);
 					if(null != obj){
 						msg.getData().putSerializable(_DATAS, obj);
 					}
-
+//					JSONObject obj = new JSONObject(json);
+//					if(null != obj && obj.has(_CODE)){
+//						msg.what = Integer.valueOf(obj.getString(_CODE));
+						
+//						if(obj.has(_DATAS)){
+//						JSONArray array = null;
+//						if (!TextUtils.isEmpty(json)) {
+//							array = new JSONArray(json);
+//							msg.obj = array.toString();
+//							
+//							if(pagesize == array.length()){
+//								msg.getData().putBoolean(_HASMORE, true);
+//							}
+//						}
+//						if (array != null && array.length() > 0) {
+//							msg.getData().putLong(_COUNT, Long.valueOf(array.length()));
+//							msg.getData().putString(_RESULT, json);
+//						}
+						
+//						if(obj.has(_COUNT)){
+//							msg.getData().putLong(_COUNT, Long.valueOf(obj.getString(_COUNT)));
+//						}
+//						
+//						if(obj.has(_RESULT)){
+//							msg.getData().putString(_RESULT, obj.getString(_RESULT));
+//						}
+//					}
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
 					e.printStackTrace();
+//				} catch (JSONException e) {
+//					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
+//					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -455,52 +578,45 @@ public class RpcHandler{
 				try {
 					Thread.sleep(1000);
 					
-					if (SessionHolder.isLogin()) {
-						realUrl += "&sid=" + SessionHolder.obtainSid();
-					}
 					String json = HttpHelper.get(realUrl);
 					Log.d(TAG, json);
 					
-//					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//					json = json.replaceAll("\\x0a|\\x0d","");
+					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
+					json = json.replaceAll("\\x0a|\\x0d","");
 					
-					Serializable obj = callback.dataPrepared(HttpStatus.SC_OK, json);
-					if(null != obj){
-						msg.getData().putSerializable(_DATAS, obj);
+					JSONObject obj = new JSONObject(json);
+					if(null != obj/* && obj.has(_CODE)*/){
+//						msg.what = Integer.valueOf(obj.getString(_CODE));
+					
+						if (obj.has(datakey)) {
+							JSONArray array = obj.getJSONArray(datakey);
+							msg.obj = array.toString();
+
+							if (pagesize == array.length()) {
+								msg.getData().putBoolean(_HASMORE, true);
+							}
+						}
+
+						if (obj.has(_COUNT)) {
+							msg.getData().putLong(_COUNT,
+								Long.valueOf(obj.getString(_COUNT)));
+						} else if (obj.has(_PAGE_INFO)) {
+							JSONObject page = obj.getJSONObject("page");
+							msg.getData().putLong(_COUNT,
+								Long.valueOf(page.getString("max_pages"))
+									* pagesize);
+						}
+						if (obj.has(_RESULT)) {
+							msg.getData().putString(_RESULT,
+									obj.getString(_RESULT));
+						}
 					}
-//					JSONObject obj = new JSONObject(json);
-//					if(null != obj/* && obj.has(_CODE)*/){
-////						msg.what = Integer.valueOf(obj.getString(_CODE));
-//					
-//						if (obj.has(datakey)) {
-//							JSONArray array = obj.getJSONArray(datakey);
-//							msg.obj = array.toString();
-//
-//							if (pagesize == array.length()) {
-//								msg.getData().putBoolean(_HASMORE, true);
-//							}
-//						}
-//
-//						if (obj.has(_COUNT)) {
-//							msg.getData().putLong(_COUNT,
-//								Long.valueOf(obj.getString(_COUNT)));
-//						} else if (obj.has(_PAGE_INFO)) {
-//							JSONObject page = obj.getJSONObject("page");
-//							msg.getData().putLong(_COUNT,
-//								Long.valueOf(page.getString("max_pages"))
-//									* pagesize);
-//						}
-//						if (obj.has(_RESULT)) {
-//							msg.getData().putString(_RESULT,
-//									obj.getString(_RESULT));
-//						}
-//					}
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
 					e.printStackTrace();
-//				} catch (JSONException e) {
-//					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
-//					e.printStackTrace();
+				} catch (JSONException e) {
+					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
+					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -525,7 +641,7 @@ public class RpcHandler{
 			String json = HttpHelper.get(url);
 			
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//			json = json.replaceAll("\\x0a|\\x0d","");
+			json = json.replaceAll("\\x0a|\\x0d","");
 			
 			JSONObject obj = new JSONObject(json);
 			if(null != obj && obj.has(_CODE)){
@@ -576,7 +692,7 @@ public class RpcHandler{
 			String json = HttpHelper.get(realUrl);
 			
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//			json = json.replaceAll("\\x0a|\\x0d","");
+			json = json.replaceAll("\\x0a|\\x0d","");
 			
 			JSONObject obj = new JSONObject(json);
 			if(null != obj && obj.has(_CODE)){
@@ -619,7 +735,7 @@ public class RpcHandler{
 			String json = HttpHelper.post(url, params);
 			
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//			json = json.replaceAll("\\x0a|\\x0d","");
+			json = json.replaceAll("\\x0a|\\x0d","");
 			
 			JSONObject obj = new JSONObject(json);
 			if(null != obj && obj.has(_CODE)){
@@ -671,7 +787,7 @@ public class RpcHandler{
 				
 				Log.d(TAG, data.toString());
 				
-				callback.dataLoaded(data, msg.obj);
+				callback.dataLoaded(data, null);
 			}
 		};
 		threadPool.execute(new Runnable() {
@@ -682,25 +798,25 @@ public class RpcHandler{
 				try {
 					String json = HttpHelper.post(url, params);
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//					json = json.replaceAll("\\x0a|\\x0d","");
-					msg.obj = json;
-//					JSONObject obj = new JSONObject(json);
-//					if(null != obj && obj.has(_CODE)){
-//						msg.what = Integer.valueOf(obj.getString(_CODE));
-//						
-//						if(obj.has(_DATAS)){
-//							JSONArray array = obj.getJSONArray(_DATAS);
-//							msg.obj = array.toString();
-//						}
-//						
-//						if(obj.has(_RESULT)){
-//							msg.getData().putString(_RESULT, obj.getString(_RESULT));
-//						}
-//					}
+					json = json.replaceAll("\\x0a|\\x0d","");
+					
+					JSONObject obj = new JSONObject(json);
+					if(null != obj && obj.has(_CODE)){
+						msg.what = Integer.valueOf(obj.getString(_CODE));
+						
+						if(obj.has(_DATAS)){
+							JSONArray array = obj.getJSONArray(_DATAS);
+							msg.obj = array.toString();
+						}
+						
+						if(obj.has(_RESULT)){
+							msg.getData().putString(_RESULT, obj.getString(_RESULT));
+						}
+					}
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
 					e.printStackTrace();
-				} catch (Exception e) {
+				} catch (JSONException e) {
 					msg.what = HttpStatus.SC_INTERNAL_SERVER_ERROR;
 					e.printStackTrace();
 				}
@@ -742,7 +858,7 @@ public class RpcHandler{
 					String json = HttpHelper.multipartPost(url, params, fileMap);
 					
 					//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//					json = json.replaceAll("\\x0a|\\x0d","");
+					json = json.replaceAll("\\x0a|\\x0d","");
 					
 					JSONObject obj = new JSONObject(json);
 					if(null != obj && obj.has(_CODE)){
@@ -773,7 +889,7 @@ public class RpcHandler{
 	/**
 	 * 请求二级栏目名称
 	 * @param url
-	 * @throws JSONException 
+	 * @throws org.json.JSONException
 	 */
 	public static String loadTopName() throws JSONException{		 
 		
@@ -782,7 +898,7 @@ public class RpcHandler{
 			json = HttpHelper.get(Constants.URL_TOP_NAME);
 			Log.d(TAG, "top_name===>"+Constants.URL_TOP_NAME);
 			//注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
-//			json = json.replaceAll("\\x0a|\\x0d","");			
+			json = json.replaceAll("\\x0a|\\x0d","");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

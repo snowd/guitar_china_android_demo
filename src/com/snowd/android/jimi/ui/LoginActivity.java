@@ -10,9 +10,9 @@ package com.snowd.android.jimi.ui;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.shopnc.android.common.MyApp;
-import net.shopnc.android.model.ResponseData;
 
+import com.snowd.android.jimi.common.MyApp;
+import com.snowd.android.jimi.model.ResponseData;
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;

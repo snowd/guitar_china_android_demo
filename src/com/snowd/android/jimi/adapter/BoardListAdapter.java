@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.snowd.android.jimi.R;
 
-import net.shopnc.android.model.Board;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import com.snowd.android.jimi.model.Board;
 
 public class BoardListAdapter extends BaseAdapter<Board> {
 
