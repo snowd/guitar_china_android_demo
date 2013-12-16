@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
@@ -18,8 +18,8 @@ import com.snowd.android.jimi.view.PopoutDrawer;
 
 
 public class MainActivity extends BaseActivity implements OnItemClickListener {
-	
-	private SlidingMenu mMasterMenu;
+
+    private SlidingMenu mMasterMenu;
 	private MenuNavigator mMenuNavigator;
 //	private static final String sTitle = "论坛";
 	private ViewPager mNavigatorPager;
@@ -55,16 +55,16 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 		mMasterMenu.setShadowWidth(10);;
 		mMasterMenu.setBehindOffset(200);
 		mMasterMenu.setFadeDegree(0.35f);
-		
+
 		mMenuNavigator = (MenuNavigator) LayoutInflater.from(this).inflate(
 				R.layout.menu_nav, null);
 		mMenuNavigator.setOnItemClickListener(this);
-		
+
 		mMasterMenu.setMenu(mMenuNavigator);
-		
+
 		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 	}
-	
+
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
     	if (item.getItemId() == android.R.id.home) {

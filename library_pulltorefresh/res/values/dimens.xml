@@ -13,10 +13,9 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
+-->
 <resources>
 
-    <dimen name="default_corner_radius">1dp</dimen>
+    <dimen name="ptr_progress_bar_stroke_width">4dp</dimen>
 
 </resources>
