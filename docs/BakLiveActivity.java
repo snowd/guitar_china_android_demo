@@ -7,21 +7,6 @@
  */
 package net.shopnc.android.ui.live;
 
-import java.util.ArrayList;
-
-import net.shopnc.android.R;
-import net.shopnc.android.adapter.TopicListViewAdapter;
-import net.shopnc.android.common.Constants;
-import net.shopnc.android.common.MyApp;
-import net.shopnc.android.handler.RemoteDataLoader2;
-import net.shopnc.android.model.PushData;
-import net.shopnc.android.model.Topic;
-import net.shopnc.android.ui.BaseActivity;
-import net.shopnc.android.ui.forum.TopicDetailActivity;
-import net.shopnc.android.widget.MyFooterListView;
-
-import org.apache.http.HttpStatus;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -30,6 +15,18 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import net.shopnc.android.R;
+import net.shopnc.android.adapter.TopicListViewAdapter;
+import net.shopnc.android.common.Constants;
+import net.shopnc.android.common.MyApp;
+import net.shopnc.android.handler.RemoteDataLoader2;
+import net.shopnc.android.model.Topic;
+import net.shopnc.android.ui.BaseActivity;
+import net.shopnc.android.ui.forum.TopicDetailActivity;
+import net.shopnc.android.widget.MyFooterListView;
+import org.apache.http.HttpStatus;
+
+import java.util.ArrayList;
 
 /**
  * "生活"界面

@@ -7,33 +7,26 @@
  */
 package com.snowd.android.jimi.ui;
 
-import java.io.Serializable;
-import java.util.List;
-
-
-import com.snowd.android.jimi.common.MyApp;
-import com.snowd.android.jimi.model.ResponseData;
-import org.apache.http.HttpStatus;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.common.MyApp;
 import com.snowd.android.jimi.model.LoginQuestion;
+import com.snowd.android.jimi.model.ResponseData;
 import com.snowd.android.jimi.model.SessionHolder;
 import com.snowd.android.jimi.rpc.RpcHandler;
 import com.snowd.android.jimi.rpc.RpcHandler.Callback;
+import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 登录

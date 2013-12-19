@@ -7,13 +7,13 @@
  */
 package com.snowd.android.jimi.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 板块下的帖子实体类

@@ -15,9 +15,9 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="library_appcompat" />
-    <orderEntry type="module" module-name="library_pull_torefresh" />
-    <orderEntry type="library" name="libs" level="project" />
+    <orderEntry type="module" module-name="library_appcompat" exported="" />
+    <orderEntry type="module" module-name="library_pull_torefresh" exported="" />
+    <orderEntry type="library" exported="" name="libs" level="project" />
   </component>
 </module>
 

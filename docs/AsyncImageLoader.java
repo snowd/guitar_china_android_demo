@@ -1,23 +1,21 @@
 package net.shopnc.android.handler;
 
-import java.io.IOException;
-import java.lang.ref.SoftReference;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import net.shopnc.android.common.BitmapHelper;
-import net.shopnc.android.common.HttpHelper;
-
-import org.apache.http.HttpStatus;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import net.shopnc.android.common.BitmapHelper;
+import net.shopnc.android.common.HttpHelper;
+import org.apache.http.HttpStatus;
+
+import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用于异步获取HTTP请求返回的图片的Handler

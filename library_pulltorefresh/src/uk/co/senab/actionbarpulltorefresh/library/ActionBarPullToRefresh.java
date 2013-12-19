@@ -20,13 +20,12 @@ package uk.co.senab.actionbarpulltorefresh.library;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 public class ActionBarPullToRefresh {
 

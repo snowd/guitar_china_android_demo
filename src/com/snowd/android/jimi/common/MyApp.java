@@ -7,22 +7,19 @@
  */
 package com.snowd.android.jimi.common;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.snowd.android.jimi.model.Board;
-import com.snowd.android.jimi.model.ResponseData;
-import com.snowd.android.jimi.rpc.RemoteDataHandler;
-import com.snowd.android.jimi.rpc.RpcHandler;
-import org.apache.http.HttpStatus;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.util.DisplayMetrics;
+import com.snowd.android.jimi.model.Board;
+import com.snowd.android.jimi.model.ResponseData;
+import com.snowd.android.jimi.rpc.RpcHandler;
+import org.apache.http.HttpStatus;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 全局变量类

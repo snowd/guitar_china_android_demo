@@ -17,7 +17,6 @@ import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.common.DateAndTimeHepler;
 import com.snowd.android.jimi.model.Topic;
 
-
 import java.util.ArrayList;
 
 /**
@@ -60,7 +59,7 @@ public class TopicListViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.listview_item_topics, null);
+			convertView = inflater.inflate(R.layout.listview_item_topics, parent, false);
 			vh = new ViewHolder();
 			vh.txt_id = (TextView) convertView.findViewById(R.id.topic_id);
 			vh.txt_title = (TextView) convertView.findViewById(R.id.topic_title);

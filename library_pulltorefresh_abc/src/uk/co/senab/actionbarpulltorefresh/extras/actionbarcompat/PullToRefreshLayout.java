@@ -19,7 +19,6 @@ package uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-
 import uk.co.senab.actionbarpulltorefresh.library.Options;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 

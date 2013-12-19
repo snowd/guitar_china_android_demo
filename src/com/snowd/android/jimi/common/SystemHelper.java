@@ -7,9 +7,6 @@
  */
 package com.snowd.android.jimi.common;
 
-import java.io.File;
-
-import com.snowd.android.jimi.R;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +22,9 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
+import com.snowd.android.jimi.R;
+
+import java.io.File;
 
 /**
  * 获取系统信息的工具类

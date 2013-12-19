@@ -23,7 +23,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.FrameLayout;
-
 import uk.co.senab.actionbarpulltorefresh.library.EnvironmentDelegate;
 import uk.co.senab.actionbarpulltorefresh.library.HeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.Options;

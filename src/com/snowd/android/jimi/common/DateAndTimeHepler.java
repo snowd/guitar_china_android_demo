@@ -7,12 +7,12 @@
  */
 package com.snowd.android.jimi.common;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.snowd.android.jimi.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import com.snowd.android.jimi.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 日期和时间操作工具类

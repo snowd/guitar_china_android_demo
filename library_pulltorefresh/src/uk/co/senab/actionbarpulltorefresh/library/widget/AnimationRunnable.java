@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-
 import uk.co.senab.actionbarpulltorefresh.library.sdk.Compat;
 
 class AnimationRunnable implements Runnable {

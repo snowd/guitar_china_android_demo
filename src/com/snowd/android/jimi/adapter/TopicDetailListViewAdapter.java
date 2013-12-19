@@ -7,13 +7,7 @@
  */
 package com.snowd.android.jimi.adapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.text.Html;
@@ -23,11 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.common.DateAndTimeHepler;
 import com.snowd.android.jimi.common.MyApp;
@@ -35,6 +25,10 @@ import com.snowd.android.jimi.common.SystemHelper;
 import com.snowd.android.jimi.model.Board;
 import com.snowd.android.jimi.model.Topic;
 import com.snowd.android.jimi.rpc.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * 帖子详细列表适配器

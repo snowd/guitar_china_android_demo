@@ -24,7 +24,6 @@ import android.os.Build;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 
 /**

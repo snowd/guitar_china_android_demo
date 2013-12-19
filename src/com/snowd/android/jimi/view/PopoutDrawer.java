@@ -1,9 +1,5 @@
 package com.snowd.android.jimi.view;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -12,12 +8,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.snowd.android.jimi.R;
+
+import java.util.LinkedList;
 
 public class PopoutDrawer extends LinearLayout {
 	

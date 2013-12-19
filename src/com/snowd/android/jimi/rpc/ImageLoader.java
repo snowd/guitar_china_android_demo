@@ -7,22 +7,6 @@
  */
 package com.snowd.android.jimi.rpc;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.ref.SoftReference;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import com.snowd.android.jimi.R;
-
-import com.snowd.android.jimi.common.Constants;
-import com.snowd.android.jimi.common.HttpHelper;
-import com.snowd.android.jimi.common.ImageHelper;
-import com.snowd.android.jimi.common.MD5Encoder;
-import org.apache.http.HttpStatus;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +14,20 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.common.Constants;
+import com.snowd.android.jimi.common.HttpHelper;
+import com.snowd.android.jimi.common.ImageHelper;
+import com.snowd.android.jimi.common.MD5Encoder;
+import org.apache.http.HttpStatus;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author qjyong

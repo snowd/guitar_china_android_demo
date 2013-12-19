@@ -9,12 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
+import com.snowd.android.jimi.fragment.BoardListFragment;
 import com.snowd.android.jimi.view.MenuNavigator;
-import com.snowd.android.jimi.view.PopoutDrawer;
 
 
 public class MainActivity extends BaseActivity implements OnItemClickListener {
@@ -28,23 +27,20 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.main_struct);
-		// configure the SlidingMenu
-		initSlidingMenu();
-		// action bar
-		getSupportActionBar().setHomeButtonEnabled(true);
-		
-		mNavigatorPager = (ViewPager) findViewById(R.id.fragment_viewpager);
-		PopoutDrawer pop = (PopoutDrawer) findViewById(R.id.popout_indexer);
-		
-		mNavAdapter = new ForumNavigatorAdapter(this,
-				getSupportFragmentManager(), mNavigatorPager);
-		mNavAdapter.setPopouDrawer(pop);
-		mNavigatorPager.setAdapter(mNavAdapter);
-		
-//		pop.setTotal(20);
-//		pop.setTotal(6);
+        setContentView(R.layout.main);
+//        Log.turnOn();
+//        Log.d("", "activity content=" + findViewById(android.R.id.content));
+        getSupportActionBar().setHomeButtonEnabled(true);
+        initBoardList();
+        initSlidingMenu();
 	}
+
+    private void initBoardList() {
+        BoardListFragment boards = new BoardListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_content_frame, boards)
+                .commit();
+    }
 	
 	private void initSlidingMenu() {
 		mMasterMenu = new SlidingMenu(this);
@@ -59,9 +55,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 		mMenuNavigator = (MenuNavigator) LayoutInflater.from(this).inflate(
 				R.layout.menu_nav, null);
 		mMenuNavigator.setOnItemClickListener(this);
-
 		mMasterMenu.setMenu(mMenuNavigator);
-
 		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 	}
 
@@ -75,15 +69,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("Save")
-//            .setIcon(isLight ? R.drawable.ic_compose_inverse : R.drawable.ic_compose)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        menu.add("Search")
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        menu.add("Refresh")
-//            .setIcon(isLight ? R.drawable.ic_refresh_inverse : R.drawable.ic_refresh)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        return true;
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 	@Override

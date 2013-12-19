@@ -1,14 +1,15 @@
 package com.snowd.android.jimi.adapter;
 
-import java.util.List;
-
-import com.snowd.android.jimi.R;
-
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.model.Board;
+
+import java.util.List;
 
 public class BoardListAdapter extends BaseAdapter<Board> {
 
@@ -21,10 +22,10 @@ public class BoardListAdapter extends BaseAdapter<Board> {
 	}
 
 	@Override
-	protected View preparedView(int position, View convertView) {
+	protected View preparedView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		if (convertView == null) {
-			convertView = View.inflate(getContext(), R.layout.item_boardlist, null);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_boardlist, parent, false);
 			holder = new ViewHolder();
 			holder.group = (TextView) convertView.findViewById(R.id.board_group);
 			holder.title = (TextView) convertView.findViewById(R.id.board_title);
@@ -38,7 +39,7 @@ public class BoardListAdapter extends BaseAdapter<Board> {
 	}
 
 	@Override
-	protected void bindData(int position, View itemView, Board item) {
+	protected void bindData(int position, View itemView, ViewGroup parent, Board item) {
 		ViewHolder holder = (ViewHolder) itemView.getTag();
 		if (!TextUtils.isEmpty(item.getGroupName())) {
 			holder.group.setVisibility(View.VISIBLE);

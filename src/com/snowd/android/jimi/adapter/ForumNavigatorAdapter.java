@@ -1,7 +1,5 @@
 package com.snowd.android.jimi.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +8,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-
 import com.snowd.android.jimi.fragment.BoardListFragment;
 import com.snowd.android.jimi.view.PopoutDrawer;
 import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
+
+import java.util.ArrayList;
 
 public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 		ViewPager.OnPageChangeListener {

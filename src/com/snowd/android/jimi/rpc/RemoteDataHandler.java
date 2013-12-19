@@ -7,18 +7,9 @@
  */
 package com.snowd.android.jimi.rpc;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import com.snowd.android.jimi.common.Constants;
 import com.snowd.android.jimi.common.HttpHelper;
 import com.snowd.android.jimi.model.Board;
@@ -28,9 +19,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用于发送HTTP请求并处理响应返回的数据的Handler
