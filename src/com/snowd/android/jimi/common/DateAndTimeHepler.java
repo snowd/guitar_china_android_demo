@@ -33,26 +33,26 @@ public class DateAndTimeHepler {
 	public static String friendly_time(Context ctx, long times) {
 		int ct = (int)((System.currentTimeMillis() - times)/1000);
 		if(ct < 3600){
-			return ctx.getString(R.string.minutes_before, Integer.valueOf(Math.max(ct / 60, 1)));
+			return String.format(ctx.getString(R.string.minutes_before), Integer.valueOf(Math.max(ct / 60, 1)));
 		}
 		if(ct >= 3600 && ct < 86400){
-			return  ctx.getString(R.string.hours_before, Integer.valueOf(ct / 3600));
+			return  String.format(ctx.getString(R.string.hours_before), Integer.valueOf(ct / 3600));
 		}
 		if(ct >= 86400 && ct < 172800){ //86400
 			String t = new SimpleDateFormat(TIME_PATTERN).format(new Date(times));
-			return  ctx.getString(R.string.yesterday, t);
+			return  String.format(ctx.getString(R.string.yesterday), t);
 		}
 		if(ct >= 172800 && ct < 259200){ //86400 * 2
 			String t = new SimpleDateFormat(TIME_PATTERN).format(new Date(times));
-			return  ctx.getString(R.string.day_before_yesterday, t);
+			return  String.format(ctx.getString(R.string.day_before_yesterday), t);
 		}
 		if(ct >= 259200 && ct < 2592000){ //86400 * 30
-			return ctx.getString(R.string.days_before, Integer.valueOf(ct / 86400));
+			return String.format(ctx.getString(R.string.days_before), Integer.valueOf(ct / 86400));
 		}
 		if(ct >= 2592000 && ct < 31104000){ //86400 * 30以上
-			return ctx.getString(R.string.months_before, Integer.valueOf(ct / 2592000));
+			return String.format(ctx.getString(R.string.months_before), Integer.valueOf(ct / 2592000));
 		}
-		return ctx.getString(R.string.years_before, Integer.valueOf(ct / 31104000));		
+		return String.format(ctx.getString(R.string.years_before), Integer.valueOf(ct / 31104000));
 	}
 
 }

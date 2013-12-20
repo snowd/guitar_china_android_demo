@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * 用于发送HTTP请求并处理响应返回的数据的Handler
  * @author qjyong
  */
-public class RpcHandler{
+public class RemoteHandler {
 	public static final String TAG = "RemoteDataLoader";
 	private static final String _CODE = "code";
 	private static final String _DATAS = "datas"; 
@@ -45,7 +45,7 @@ public class RpcHandler{
 	//private ExecutorService pool = Executors.newCachedThreadPool();
 	private static ThreadPoolExecutor threadPool = new ThreadPoolExecutor(6, 30, 30L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	
-	private RpcHandler(){}
+	private RemoteHandler(){}
 	
 	public interface Callback {
 		/**

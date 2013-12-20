@@ -13,7 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import com.snowd.android.jimi.model.Board;
 import com.snowd.android.jimi.model.ResponseData;
-import com.snowd.android.jimi.rpc.RpcHandler;
+import com.snowd.android.jimi.rpc.RemoteHandler;
 import org.apache.http.HttpStatus;
 
 import java.io.File;
@@ -280,7 +280,7 @@ public class MyApp extends Application {
 					/**
 					 * 查看是否是第一次安装
 					 */
-					RpcHandler.intall("new", "android", new RpcHandler.Callback() {
+					RemoteHandler.intall("new", "android", new RemoteHandler.Callback() {
                         @Override
                         public Serializable dataPrepared(int code, String resp) {
                             return null;

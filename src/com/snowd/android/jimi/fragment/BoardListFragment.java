@@ -13,8 +13,8 @@ import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
 import com.snowd.android.jimi.common.Constants;
 import com.snowd.android.jimi.model.Board;
 import com.snowd.android.jimi.model.ResponseData;
-import com.snowd.android.jimi.rpc.RpcHandler;
-import com.snowd.android.jimi.ui.ThreadListActivity;
+import com.snowd.android.jimi.rpc.RemoteHandler;
+import com.snowd.android.jimi.ui.TopicListActivity;
 import com.snowd.android.jimi.view.PopoutDrawer;
 import org.apache.http.HttpStatus;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class BoardListFragment extends BaseListFragment implements
-        OnRefreshListener, RpcHandler.Callback, NavigationElement {
+        OnRefreshListener, RemoteHandler.Callback, NavigationElement {
 
 	private ForumNavigatorAdapter mHostAdapter;
 	private ArrayList<Board> mBoards;
@@ -102,7 +102,7 @@ public class BoardListFragment extends BaseListFragment implements
 			setListShown(true);
 		} else {
 			String url = Constants.URL_BOARD;
-			RpcHandler.asyncGetList(url, 50, 1, this);
+			RemoteHandler.asyncGetList(url, 50, 1, this);
 		}
 	}
 
@@ -147,7 +147,7 @@ public class BoardListFragment extends BaseListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Board item = mAdapter.getItem(position);
 //		if (mHostAdapter != null) {
-            Intent intent = new Intent(l.getContext(), ThreadListActivity.class);
+            Intent intent = new Intent(l.getContext(), TopicListActivity.class);
             intent.putExtra("_key_fid", item.getFid());
 			startActivity(intent);
 //        }

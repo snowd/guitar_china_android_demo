@@ -1,5 +1,5 @@
 /**
- *  ClassName: TopicDetailListViewAdapter.java
+ *  ClassName: TopicDetailAdapter.java
  *  created on 2012-2-25
  *  Copyrights 2011-2012 qjyong All rights reserved.
  *  site: http://blog.csdn.net/qjyong
@@ -23,7 +23,7 @@ import com.snowd.android.jimi.common.DateAndTimeHepler;
 import com.snowd.android.jimi.common.MyApp;
 import com.snowd.android.jimi.common.SystemHelper;
 import com.snowd.android.jimi.model.Board;
-import com.snowd.android.jimi.model.Topic;
+import com.snowd.android.jimi.model.TopicItem;
 import com.snowd.android.jimi.rpc.ImageLoader;
 
 import java.util.ArrayList;
@@ -35,10 +35,10 @@ import java.util.HashMap;
  * 
  * @author hjgang
  */
-public class TopicDetailListViewAdapter extends BaseAdapter {
-	private static final String TAG = "TopicDetailListViewAdapter"; 
+public class TopicDetailAdapter extends BaseAdapter {
+	private static final String TAG = "TopicDetailAdapter";
 	/** 存放选项数据的集合 */
-	private ArrayList<Topic> datas;
+	private ArrayList<TopicItem> datas;
 	/** 布局加载器 */
 	private LayoutInflater inflater;
 	private ViewHolder vh;
@@ -62,7 +62,7 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 		this.tid = tid;
 	}
 	
-	public TopicDetailListViewAdapter(Context ctx) {
+	public TopicDetailAdapter(Context ctx) {
 		inflater = LayoutInflater.from(ctx);
 		this.ctx = ctx;
 		myApp = (MyApp)ctx.getApplicationContext();
@@ -103,7 +103,7 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 			vh = (ViewHolder)convertView.getTag();
 		}
 		
-		final Topic topic = datas.get(position);
+		final TopicItem topic = datas.get(position);
 		
 		//用于存放帖子正文内容中的图片地址
 		//final LinkedHashSet<String> img_urls = new LinkedHashSet<String>();
@@ -269,11 +269,11 @@ public class TopicDetailListViewAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	public ArrayList<Topic> getDatas() {
+	public ArrayList<TopicItem> getDatas() {
 		return datas;
 	}
 
-	public void setDatas(ArrayList<Topic> datas) {
+	public void setDatas(ArrayList<TopicItem> datas) {
 		this.datas = datas;
 	}
 	

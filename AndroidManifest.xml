@@ -41,12 +41,12 @@
         </activity>
 
         <activity
-                android:name=".ui.ThreadListActivity"
+                android:name=".ui.TopicListActivity"
                 android:screenOrientation="portrait">
         </activity>
 
         <activity
-                android:name=".ui.ThreadDetailActivity"
+                android:name=".ui.TopicDetailActivity"
                 android:screenOrientation="portrait">
         </activity>
 
@@ -203,8 +203,8 @@
         <!-- 登录 -->
         <activity android:name=".ui.LoginQuestionActivity" android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ThreadListActivity"/>
-        <activity android:name=".ui.ThreadDetailActivity"/>
+        <activity android:name=".ui.TopicListActivity"/>
+        <activity android:name=".ui.TopicDetailActivity"/>
     </application>
 
 </manifest>

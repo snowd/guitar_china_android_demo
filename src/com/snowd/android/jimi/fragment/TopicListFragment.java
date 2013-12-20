@@ -9,12 +9,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
-import com.snowd.android.jimi.adapter.TopicDetailListViewAdapter;
+import com.snowd.android.jimi.adapter.TopicListAdapter;
 import com.snowd.android.jimi.common.Constants;
 import com.snowd.android.jimi.model.ResponseData;
-import com.snowd.android.jimi.model.Topic;
-import com.snowd.android.jimi.rpc.RpcHandler;
-import com.snowd.android.jimi.ui.ThreadDetailActivity;
+import com.snowd.android.jimi.model.TopicItem;
+import com.snowd.android.jimi.rpc.RemoteHandler;
+import com.snowd.android.jimi.ui.TopicDetailActivity;
 import com.snowd.android.jimi.view.PopoutDrawer;
 import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
 import org.apache.http.HttpStatus;
@@ -27,26 +27,28 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TopicViewFragment extends BaseListFragment implements
-        OnRefreshListener, RpcHandler.Callback, NavigationElement, OnIndexChangedListener {
+public class TopicListFragment extends BaseListFragment implements
+        OnRefreshListener, RemoteHandler.Callback, NavigationElement, OnIndexChangedListener {
 
-	private ArrayList<Topic> mPosts;
-	private TopicDetailListViewAdapter mAdapter;
-	private PopoutDrawer mPopoutDrawer;
-
-	@SuppressWarnings("unused")
-	private ForumNavigatorAdapter mHostAdapter;
+	
+	private AtomicBoolean mRpcInWork = new AtomicBoolean(false);
+	
+	private ArrayList<TopicItem> mThreads;
+	private TopicListAdapter mAdapter;
+//	private PopoutDrawer mPopoutDrawer;
+//	private ForumNavigatorAdapter mHostAdapter;
 	@Override
 	public void bindHostAdapter(ForumNavigatorAdapter adapter) {
-		mHostAdapter = adapter;
-	}
-	
-	public void bindPopoutDrawer(PopoutDrawer p) {
-		mPopoutDrawer = p;
-		mPopoutDrawer.setOnIndexChangedListener(this);
+//		mHostAdapter = adapter;
 	}
 
+	public void bindPopoutDrawer(PopoutDrawer p) {
+//		mPopoutDrawer = p;
+//		mPopoutDrawer.setOnIndexChangedListener(this);
+	}
+	
 	public int getTotalPage() {
 		return mTotal;
 	}
@@ -77,13 +79,17 @@ public class TopicViewFragment extends BaseListFragment implements
 				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
 				.listener(this).setup(mPullToRefreshLayout);
 		Log.d("", "Fragment >>> onViewCreated view=" + getView());
-		if (mTotal > 1) {
-			mPopoutDrawer.setVisibility(View.VISIBLE);
-			mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
-		} else {
-			mPopoutDrawer.setVisibility(View.GONE);
-		}
-	}
+		
+//		if (mPopoutDrawer == null && mTotal > 1) return;
+//        if (mPopoutDrawer != null) {
+//            if (mTotal > 1) {
+//                mPopoutDrawer.setVisibility(View.VISIBLE);
+//                mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
+//            } else {
+//                mPopoutDrawer.setVisibility(View.GONE);
+//            }
+//        }
+    }
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -107,11 +113,13 @@ public class TopicViewFragment extends BaseListFragment implements
 	}
 	
 	private void loadBoards(int page) {
-		if (id == 0 && getArguments() != null) {
-			id = getArguments().getLong("_key_tid");
+		if (mRpcInWork.compareAndSet(false, true)) {
+			if (id == 0 && getArguments() != null) {
+				id = getArguments().getLong("_key_fid");
+			}
+			String url = Constants.URL_BOARD_TOPIC_LIST + id;
+			RemoteHandler.asyncGet(url, mPageSize, page, this);
 		}
-		String url = Constants.URL_TOPIC_DETAIL_DEFAULT + id;
-		RpcHandler.asyncGet(url, mPageSize, page, this);
 	}
 	
 	private long id = 0;
@@ -130,8 +138,8 @@ public class TopicViewFragment extends BaseListFragment implements
 			try {
 				JSONObject obj = new JSONObject(resp);
 				mPageInfo = obj.optJSONObject("page");
-				ArrayList<Topic> topics = Topic.newInstanceList(obj
-						.getJSONArray("post"));
+				ArrayList<TopicItem> topics = TopicItem.newInstanceList(obj
+                        .getJSONArray("thread_list"));
 				return topics;
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -145,12 +153,12 @@ public class TopicViewFragment extends BaseListFragment implements
 	public void dataLoaded(ResponseData resp, Object data) {
 		if (getActivity() == null || getView() == null) return;
 		if (resp.getCode() == HttpStatus.SC_OK && data != null) {
-			mPosts = (ArrayList<Topic>) data;
+			mThreads = (ArrayList<TopicItem>) data;
 			if (mAdapter == null) {
-				mAdapter = new TopicDetailListViewAdapter(getActivity());
-				mAdapter.setDatas(mPosts);
+				mAdapter = new TopicListAdapter(getActivity());
+				mAdapter.setData(mThreads);
 			} else {
-				mAdapter.setDatas(mPosts);
+				mAdapter.setData(mThreads);
 			}
 			setListAdapter(mAdapter);
 			mAdapter.notifyDataSetChanged();
@@ -160,14 +168,15 @@ public class TopicViewFragment extends BaseListFragment implements
 		}
 		mPullToRefreshLayout.setRefreshComplete();
 		if (getView() != null) {
+			mRpcInWork.set(false);
 			setListShown(true);
 //			if (mAdapter != null) mAdapter.notifyDataSetChanged();
 			try {
 				if (mPageInfo != null && mPageInfo.length() > 0) {
 					mTotal = mPageInfo.getInt("max_pages");
 					mCurrent = mPageInfo.getInt("curpage");
-					mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
-					if (mTotal > 1) mPopoutDrawer.setVisibility(View.VISIBLE);
+//					mPopoutDrawer.setTotal(mTotal, mCurrent - 1);
+//					if (mTotal > 1) mPopoutDrawer.setVisibility(View.VISIBLE);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -180,11 +189,11 @@ public class TopicViewFragment extends BaseListFragment implements
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Topic item = (Topic) mAdapter.getItem(position);
-		Intent intent = new Intent(getActivity(), ThreadDetailActivity.class);
+		TopicItem item = (TopicItem) mAdapter.getItem(position);
+		Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
 		intent.putExtra("_key_tid", item.getTid());
         startActivity(intent);
-//		mHostAdapter.enterPage(TopicViewFragment.class, bundle);
+//		mHostAdapter.enterPage(TopicDetailFragment_old.class, bundle);
 	}
 
 	@Override
