@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.snowd.android.jimi.adapter.AbsEndlessAdapter;
 import com.snowd.android.jimi.rpc.RpcHelper;
@@ -66,8 +67,7 @@ public abstract class AbsForumListFragment<E> extends BaseListFragment implement
             MainAdapter adapter = new MainAdapter(getActivity(), data);
             setListAdapter(adapter);
         } else {
-            Toast.makeText(getView().getContext(), "网络故障！", Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getView().getContext(), "网络故障！", Toast.LENGTH_SHORT).show();
         }
         mPullToRefreshLayout.setRefreshComplete();
         if (getView() != null) {
@@ -82,7 +82,7 @@ public abstract class AbsForumListFragment<E> extends BaseListFragment implement
     class LoadTask extends AsyncTask<Void, Void, RpcHelper.RpcResult> {
         @Override
         protected RpcHelper.RpcResult doInBackground(Void ...params) {
-            return doInBackground();
+            return AbsForumListFragment.this.doInBackground();
         }
 
         @Override
@@ -91,8 +91,6 @@ public abstract class AbsForumListFragment<E> extends BaseListFragment implement
             if (data != null) postResult(data);
         }
     }
-
-    private MainAdapter mAdapter;
 
     class MainAdapter extends AbsEndlessAdapter {
         public MainAdapter(Context context, List<E> data) {
@@ -108,11 +106,11 @@ public abstract class AbsForumListFragment<E> extends BaseListFragment implement
             AbsForumListFragment.this.bindData(position, contentView, parent, item);
         }
         @Override protected boolean cacheInBackground() throws Exception {
-            return doInBackgroundEndless();
+            return doInBackgroundAppend();
         }
     }
 
-    protected abstract boolean doInBackgroundEndless();
+    protected abstract boolean doInBackgroundAppend();
 
     protected abstract View preparedView(int position, View convertView, ViewGroup parent);
 

@@ -1,7 +1,7 @@
 package com.snowd.android.jimi.ui;
 
 import android.os.Bundle;
-import com.snowd.android.jimi.fragment.TopicDetailFragment_old;
+import com.snowd.android.jimi.fragment.TopicDetailFragment;
 
 /**
  * Created by xuelong.wenxl on 13-12-19.
@@ -13,7 +13,7 @@ public class TopicDetailActivity extends AbsForumActivity {
 
     @Override
     protected Class<?> getClaz() {
-        return TopicDetailFragment_old.class;
+        return TopicDetailFragment.class;
     }
 
 }

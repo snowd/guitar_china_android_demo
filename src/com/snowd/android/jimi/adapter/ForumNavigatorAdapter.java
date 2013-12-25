@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import com.snowd.android.jimi.fragment.BoardListFragment;
 import com.snowd.android.jimi.view.PopoutDrawer;
 import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
 
@@ -53,12 +52,12 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 	}
 	
 	private void initPages() {
-		mPages = new ArrayList<Fragment>();
-		BoardListFragment boardFragment = (BoardListFragment) Fragment.instantiate(
-				mContext, BoardListFragment.class.getName());
-		boardFragment.bindHostAdapter(this);
-		pushPage(boardFragment);
-		mCurPosition = 0;
+//		mPages = new ArrayList<Fragment>();
+//		BoardListFragment_old boardFragment = (BoardListFragment_old) Fragment.instantiate(
+//				mContext, BoardListFragment_old.class.getName());
+//		boardFragment.bindHostAdapter(this);
+//		pushPage(boardFragment);
+//		mCurPosition = 0;
 	}
 	
 	private Fragment popPage() {

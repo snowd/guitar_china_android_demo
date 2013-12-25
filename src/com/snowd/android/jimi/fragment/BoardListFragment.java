@@ -2,155 +2,119 @@ package com.snowd.android.jimi.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
-import com.snowd.android.jimi.adapter.BoardListAdapter;
-import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
-import com.snowd.android.jimi.adapter.ForumNavigatorAdapter.NavigationElement;
+import android.widget.TextView;
+import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.common.Constants;
+import com.snowd.android.jimi.common.DateAndTimeHepler;
+import com.snowd.android.jimi.common.MyApp;
 import com.snowd.android.jimi.model.Board;
-import com.snowd.android.jimi.model.ResponseData;
-import com.snowd.android.jimi.rpc.RemoteHandler;
+import com.snowd.android.jimi.model.Topic;
+import com.snowd.android.jimi.rpc.RpcHelper;
 import com.snowd.android.jimi.ui.TopicListActivity;
-import com.snowd.android.jimi.view.PopoutDrawer;
-import org.apache.http.HttpStatus;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import org.json.JSONObject;
 
-
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class BoardListFragment extends BaseListFragment implements
-        OnRefreshListener, RemoteHandler.Callback, NavigationElement {
+/**
+ * Created by xuelong.wenxl on 13-12-20.
+ */
+public class BoardListFragment extends AbsForumListFragment<Board> implements RpcHelper.DataProcesser<List<Board>> {
 
-	private ForumNavigatorAdapter mHostAdapter;
-	private ArrayList<Board> mBoards;
-	private BoardListAdapter mAdapter;
-//	private PopoutDrawer mPopouDrawer;
-	
-	@Override
-	public void bindHostAdapter(ForumNavigatorAdapter adapter) {
-		mHostAdapter = adapter;
-	}
-	
-	public void bindPopoutDrawer(PopoutDrawer p) {
-//		mPopouDrawer = p;
-	}
-	
-	public int getTotalPage() {
-		return 1;
-	}
-	
-	public int getCurrentPage() {
-		return 1;
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
 
-	private PullToRefreshLayout mPullToRefreshLayout;
+    private MyApp myApp;
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		ViewGroup viewGroup = (ViewGroup) view;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		// As we're using a ListFragment we create a PullToRefreshLayout
-		// manually
-		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
+    }
 
-		// We can now setup the PullToRefreshLayout
-		ActionBarPullToRefresh
-				.from(getActivity())
-				// We need to insert the PullToRefreshLayout into the Fragment's
-				// ViewGroup
-				.insertLayoutInto(viewGroup)
-				// Here we mark just the ListView and it's Empty View as
-				// pullable
-				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
-				.listener(this).setup(mPullToRefreshLayout);
-//		mPopouDrawer.setVisibility(View.GONE);
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        myApp = (MyApp) getActivity().getApplication();
+    }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+    @Override
+    protected RpcHelper.RpcResult doInBackground() {
+        String url = Constants.URL_BOARD;
+        return RpcHelper.get(url, this);
+    }
 
-		// Set the List Adapter to display the sample items
-		setListShownNoAnimation(false);
-		loadBoards();
-	}
+    @Override
+    protected boolean doInBackgroundAppend() {
+        // only one page here
+        return false;
+    }
 
-	@Override
-	public void onRefreshStarted(View view) {
-		// Hide the list
-		setListShown(false);
-		loadBoards();
-	}
-	
-	private void loadBoards(){
-		if (mAdapter != null) {
-			setListAdapter(mAdapter);
-			setListShown(true);
-		} else {
-			String url = Constants.URL_BOARD;
-			RemoteHandler.asyncGetList(url, 50, 1, this);
-		}
-	}
+    @Override
+    public List<Board> process(String input) throws Exception {
+        List<Board> list = Board.mainBoardList(input);
+        return list;
+    }
 
-	@Override
-	public Serializable dataPrepared(int code, String resp) {
-		if (getActivity() != null && !getActivity().isFinishing()
-				&& code == HttpStatus.SC_OK) {
-			String json = resp;
-			/*
-			 * 加载全部数据
-			 */
-			ArrayList<Board> boards = Board.mainBoardList(json);
-			return boards;
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void dataLoaded(ResponseData resp, Object data) {
-		if (getActivity() != null && !getActivity().isFinishing()
-				&& resp.getCode() == HttpStatus.SC_OK && data != null) {
-			mBoards = (ArrayList<Board>) data;
-			if (mAdapter == null) {
-				mAdapter = new BoardListAdapter(getActivity(), mBoards);
-			} else {
-				mAdapter.setData(mBoards);
-			}
-			setListAdapter(mAdapter);
-			
-			// pager
-		} else {
-			Toast.makeText(getView().getContext(), "网络故障！", Toast.LENGTH_SHORT)
-					.show();
-		}
-		mPullToRefreshLayout.setRefreshComplete();
-		if (getView() != null) {
-			setListShown(true);
-		}
-	}
+    @Override
+    protected List<Board> onPostResult(RpcHelper.RpcResult o) {
+        if (o != null && o.data != null) return (List<Board>) o.data;
+        return null;
+    }
 
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		Board item = mAdapter.getItem(position);
-//		if (mHostAdapter != null) {
-            Intent intent = new Intent(l.getContext(), TopicListActivity.class);
-            intent.putExtra("_key_fid", item.getFid());
-			startActivity(intent);
-//        }
-	}
-	
+
+    @Override
+    protected View preparedView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_boardlist, parent, false);
+            ViewHolder holder = new ViewHolder();
+            holder.group = (TextView) convertView.findViewById(R.id.board_group);
+            holder.title = (TextView) convertView.findViewById(R.id.board_title);
+            holder.today = (TextView) convertView.findViewById(R.id.board_today);
+            holder.description = (TextView) convertView.findViewById(R.id.board_description);
+            holder.threads = (TextView) convertView.findViewById(R.id.board_threads);
+            holder.posts = (TextView) convertView.findViewById(R.id.board_posts);
+            convertView.setTag(holder);
+        }
+        return convertView;
+    }
+
+    @Override
+    protected void bindData(int position, View contentView, ViewGroup parent, Object item) {
+        ViewHolder holder = (ViewHolder) contentView.getTag();
+        Board board = (Board) item;
+        if (!TextUtils.isEmpty(board.getGroupName())) {
+            holder.group.setVisibility(View.VISIBLE);
+            holder.group.setText(board.getGroupName());
+        } else {
+            holder.group.setVisibility(View.GONE);
+        }
+        holder.title.setText(board.getName());
+        holder.today.setText("今日：" + board.getTodayPosts());
+        holder.description.setText(board.getDescription());
+        holder.threads.setText("主题：" + board.getThreads());
+        holder.posts.setText("帖子：" + board.getPosts());
+
+    }
+
+    static class ViewHolder {
+        TextView group;
+        TextView title;
+        TextView today;
+        TextView description;
+        TextView threads;
+        TextView posts;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Board board = (Board) l.getAdapter().getItem(position);
+        Intent intent = new Intent(getActivity(), TopicListActivity.class);
+        intent.putExtra("_key_fid", board.getFid());
+        startActivity(intent);
+    }
 }

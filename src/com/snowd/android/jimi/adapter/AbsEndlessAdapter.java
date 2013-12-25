@@ -31,10 +31,12 @@ public abstract class AbsEndlessAdapter<T> extends EndlessAdapter {
 
     public AbsEndlessAdapter(Context context, List<T> data) {
         super(context, new AdapterWrapped(context, data), android.R.layout.simple_list_item_1, true);
+        ((AdapterWrapped) getWrappedAdapter()).bindHostAdapter(this);
     }
 
     public AbsEndlessAdapter(Context context, List<T> data, int appendingResource) {
         super(context, new AdapterWrapped(context, data), appendingResource, true);
+        ((AdapterWrapped) getWrappedAdapter()).bindHostAdapter(this);
     }
 
     private List<T> mDataToAppend;
@@ -44,11 +46,17 @@ public abstract class AbsEndlessAdapter<T> extends EndlessAdapter {
         return false;
     }
 
+    public void postAppendData(List<T> data) {
+        mDataToAppend = data;
+    }
+
     @Override
     protected void appendCachedData() {
-        AdapterWrapped<T> wrapped = ((AdapterWrapped<T>) getWrappedAdapter());
-        wrapped.getData().addAll(mDataToAppend);
-        mDataToAppend = null;
+        if (mDataToAppend != null) {
+            AdapterWrapped<T> wrapped = ((AdapterWrapped<T>) getWrappedAdapter());
+            wrapped.getData().addAll(mDataToAppend);
+            mDataToAppend = null;
+        }
     }
 
     static class AdapterWrapped<T> extends BaseAdapter {
