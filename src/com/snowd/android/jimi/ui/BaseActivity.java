@@ -1,9 +1,9 @@
 package com.snowd.android.jimi.ui;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends SherlockFragmentActivity {
+public class BaseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onPause() {

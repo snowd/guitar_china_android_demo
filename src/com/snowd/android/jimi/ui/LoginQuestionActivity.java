@@ -7,32 +7,26 @@
  */
 package com.snowd.android.jimi.ui;
 
-import java.io.Serializable;
-import java.util.List;
-
-import net.shopnc.android.common.MyApp;
-import net.shopnc.android.model.ResponseData;
-
-import org.apache.http.HttpStatus;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.common.MyApp;
 import com.snowd.android.jimi.model.LoginQuestion;
-import com.snowd.android.jimi.rpc.RpcHandler;
-import com.snowd.android.jimi.rpc.RpcHandler.Callback;
+import com.snowd.android.jimi.model.ResponseData;
+import com.snowd.android.jimi.model.SessionHolder;
+import com.snowd.android.jimi.rpc.RemoteHandler;
+import com.snowd.android.jimi.rpc.RemoteHandler.Callback;
+import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 登录
@@ -96,35 +90,36 @@ public class LoginQuestionActivity extends BaseActivity {
 			progress.show();
 		}
 		Intent intent = getIntent();
-		RpcHandler.asyncLoginQuestions(intent.getStringExtra("username"), intent.getStringExtra("loginauth"), questionId, answer, new Callback() {
-			@Override
-			public Serializable dataPrepared(int code, String resp) {
-				return null;
-			}
+		RemoteHandler.asyncLoginQuestions(intent.getStringExtra("username"), intent.getStringExtra("loginauth"), questionId, answer, new Callback() {
+            @Override
+            public Serializable dataPrepared(int code, String resp) {
+                return null;
+            }
 
-			@Override
-			public void dataLoaded(ResponseData data, Object dataObj) {
-				if(data.getCode()==HttpStatus.SC_OK && !TextUtils.isEmpty(String.valueOf(dataObj))){
-					try {
-						JSONObject json = new JSONObject(String.valueOf(dataObj));
-						String sid = json.getString("sid");
-						String uid = json.getString("uid");
-						String formhash = json.getString("formhash");
-						Toast.makeText(LoginQuestionActivity.this,
-								"Login Success uid=" + uid,
-								Toast.LENGTH_LONG).show();
-						
-						Intent intent = new Intent();
-						intent.putExtra("sid", sid);
-						intent.putExtra("uid", uid);
-						intent.putExtra("formhash", formhash);
-						setResult(RESULT_FIRST_USER, intent);
-						finish();
-					} catch (JSONException e) {
-						e.printStackTrace();
-						Toast.makeText(LoginQuestionActivity.this,
-								"网络错误，请重试！", Toast.LENGTH_SHORT).show();
-					}
+            @Override
+            public void dataLoaded(ResponseData data, Object dataObj) {
+                if (data.getCode() == HttpStatus.SC_OK && !TextUtils.isEmpty(String.valueOf(dataObj))) {
+                    try {
+                        JSONObject json = new JSONObject(String.valueOf(dataObj));
+                        String sid = json.getString("sid");
+                        String uid = json.getString("uid");
+                        String formhash = json.getString("formhash");
+                        Toast.makeText(LoginQuestionActivity.this,
+                                "Login Success uid=" + uid,
+                                Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent();
+                        intent.putExtra("sid", sid);
+                        intent.putExtra("uid", uid);
+                        intent.putExtra("formhash", formhash);
+                        SessionHolder.setLogin(sid, uid, formhash);
+                        setResult(RESULT_FIRST_USER, intent);
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(LoginQuestionActivity.this,
+                                "网络错误，请重试！", Toast.LENGTH_SHORT).show();
+                    }
 //					String json = data.getJson();
 //					User user = User.newInstance(json);
 //					String sessionid = user.getSessionid();
@@ -160,14 +155,14 @@ public class LoginQuestionActivity extends BaseActivity {
 //						//myApp.setGroupid("");
 //						Toast.makeText(LoginQuestionActivity.this, "登陆失败，请重试！", Toast.LENGTH_SHORT).show();
 //					}
-				}else{
-					Toast.makeText(LoginQuestionActivity.this, "网络错误，请重试！", Toast.LENGTH_SHORT).show();
-				}
+                } else {
+                    Toast.makeText(LoginQuestionActivity.this, "网络错误，请重试！", Toast.LENGTH_SHORT).show();
+                }
 //				dismissDialog(Constants.DIALOG_LOGIN_ID);
-				if (progress != null && progress.isShowing())
-					progress.dismiss();
-			}
-		});
+                if (progress != null && progress.isShowing())
+                    progress.dismiss();
+            }
+        });
 		//this.dismissDialog(Constants.DIALOG_LOGIN_ID);
 	}
 	

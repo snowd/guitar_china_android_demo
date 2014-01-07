@@ -1,7 +1,8 @@
 package com.snowd.android.jimi.ui;
 
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class BaseSlidingActivity extends SlidingFragmentActivity {
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
+
+public class BaseSlidingActivity extends SlidingActivity {
 
 }

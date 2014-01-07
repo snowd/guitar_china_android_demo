@@ -19,16 +19,15 @@ package uk.co.senab.actionbarpulltorefresh.library;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.AbsListViewDelegate;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ScrollYDelegate;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.WebViewDelegate;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.AbsListViewDelegate;
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ScrollYDelegate;
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.WebViewDelegate;
 
 class InstanceCreationUtils {
 
@@ -56,7 +55,7 @@ class InstanceCreationUtils {
         for (final Map.Entry<Class, Class> entry : entries) {
             if (entry.getKey().isInstance(view)) {
                 return InstanceCreationUtils.newInstance(view.getContext(),
-                        entry.getValue(), VIEW_DELEGATE_CONSTRUCTOR_SIGNATURE, null);
+                        entry.getValue(), VIEW_DELEGATE_CONSTRUCTOR_SIGNATURE);
             }
         }
         return null;

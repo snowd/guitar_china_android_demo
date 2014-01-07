@@ -1,8 +1,5 @@
 package com.snowd.android.jimi.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.model.NavigatorMenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuNavigator extends ListView {
 

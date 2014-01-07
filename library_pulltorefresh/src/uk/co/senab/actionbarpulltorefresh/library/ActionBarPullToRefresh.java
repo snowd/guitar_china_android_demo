@@ -20,13 +20,12 @@ package uk.co.senab.actionbarpulltorefresh.library;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 public class ActionBarPullToRefresh {
 
@@ -38,6 +37,7 @@ public class ActionBarPullToRefresh {
         private final Activity mActivity;
         private Options mOptions;
         private int[] refreshableViewIds;
+        private View[] refreshableViews;
         private OnRefreshListener mOnRefreshListener;
         private ViewGroup mViewGroupToInsertInto;
         private HashMap<Class, ViewDelegate> mViewDelegates;
@@ -53,11 +53,19 @@ public class ActionBarPullToRefresh {
 
         public SetupWizard allChildrenArePullable() {
             refreshableViewIds = null;
+            refreshableViews = null;
             return this;
         }
 
         public SetupWizard theseChildrenArePullable(int... viewIds) {
             refreshableViewIds = viewIds;
+            refreshableViews = null;
+            return this;
+        }
+
+        public SetupWizard theseChildrenArePullable(View... views) {
+            refreshableViews = views;
+            refreshableViewIds = null;
             return this;
         }
 
@@ -93,6 +101,8 @@ public class ActionBarPullToRefresh {
             // First add the pullable child views
             if (refreshableViewIds != null) {
                 pullToRefreshLayout.addChildrenAsPullable(refreshableViewIds);
+            } else if (refreshableViews != null) {
+                pullToRefreshLayout.addChildrenAsPullable(refreshableViews);
             } else {
                 pullToRefreshLayout.addAllChildrenAsPullable();
             }

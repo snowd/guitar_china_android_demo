@@ -1,7 +1,5 @@
 package com.snowd.android.jimi.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-
-import com.snowd.android.jimi.fragment.BoardViewFragment;
 import com.snowd.android.jimi.view.PopoutDrawer;
 import com.snowd.android.jimi.view.PopoutDrawer.OnIndexChangedListener;
+
+import java.util.ArrayList;
 
 public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 		ViewPager.OnPageChangeListener {
@@ -54,12 +52,12 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 	}
 	
 	private void initPages() {
-		mPages = new ArrayList<Fragment>();
-		BoardViewFragment boardFragment = (BoardViewFragment) Fragment.instantiate(
-				mContext, BoardViewFragment.class.getName());
-		boardFragment.bindHostAdapter(this);
-		pushPage(boardFragment);
-		mCurPosition = 0;
+//		mPages = new ArrayList<Fragment>();
+//		BoardListFragment_old boardFragment = (BoardListFragment_old) Fragment.instantiate(
+//				mContext, BoardListFragment_old.class.getName());
+//		boardFragment.bindHostAdapter(this);
+//		pushPage(boardFragment);
+//		mCurPosition = 0;
 	}
 	
 	private Fragment popPage() {
@@ -71,7 +69,9 @@ public class ForumNavigatorAdapter extends FragmentPagerAdapter implements
 	}
 	
 	private void pushPage(Fragment f) {
-		mPages.add(f);
+        if (mFragmentManager != null && f != null) {
+            mPages.add(f);
+        }
 	}
 	
 	public void setPopouDrawer(PopoutDrawer p) {

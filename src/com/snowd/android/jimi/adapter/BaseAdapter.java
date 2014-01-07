@@ -1,10 +1,10 @@
 package com.snowd.android.jimi.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 
 public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
@@ -56,15 +56,15 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		convertView = preparedView(position, convertView);
+		convertView = preparedView(position, convertView, parent);
 		T item = getItem(position);
-		bindData(position, convertView, item);
+		bindData(position, convertView, parent, item);
 		return convertView;
 	}
 	
-	protected abstract View preparedView(int position, View convertView);
+	protected abstract View preparedView(int position, View convertView, ViewGroup parent);
 	
-	protected abstract void bindData(int position, View contentView, T item);
+	protected abstract void bindData(int position, View contentView, ViewGroup parent, T item);
 	
 
 }

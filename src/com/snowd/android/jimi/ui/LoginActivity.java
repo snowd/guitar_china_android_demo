@@ -7,17 +7,6 @@
  */
 package com.snowd.android.jimi.ui;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import net.shopnc.android.common.MyApp;
-import net.shopnc.android.model.ResponseData;
-
-import org.apache.http.HttpStatus;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,11 +17,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.snowd.android.jimi.R;
+import com.snowd.android.jimi.common.MyApp;
 import com.snowd.android.jimi.model.LoginQuestion;
-import com.snowd.android.jimi.rpc.RpcHandler;
-import com.snowd.android.jimi.rpc.RpcHandler.Callback;
+import com.snowd.android.jimi.model.ResponseData;
+import com.snowd.android.jimi.rpc.RemoteHandler;
+import com.snowd.android.jimi.rpc.RemoteHandler.Callback;
+import org.apache.http.HttpStatus;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 登录
@@ -112,42 +109,42 @@ public class LoginActivity extends BaseActivity {
 //			myApp.setAuto_login(false);
 //		}
 //		RemoteDataHandler.asyncLogin(author, md5_pwd, new Callback() {
-		RpcHandler.asyncLogin(author, pwd, new Callback() {
-			@Override
-			public Serializable dataPrepared(int code, String resp) {
-				return null;
-			}
+		RemoteHandler.asyncLogin(author, pwd, new Callback() {
+            @Override
+            public Serializable dataPrepared(int code, String resp) {
+                return null;
+            }
 
-			@Override
-			public void dataLoaded(ResponseData data, Object dataObj) {
-				if (data.getCode() == HttpStatus.SC_OK
-						&& !TextUtils.isEmpty(String.valueOf(dataObj))) {
-					try {
-						JSONObject json = new JSONObject(String.valueOf(dataObj));
-						String user = json.getString("username");
-						String loginauth = json.getString("loginauth");
-						JSONArray arr = json.getJSONArray("question");
-						if (TextUtils.isEmpty(user) || TextUtils.isEmpty(loginauth) || arr.length() < 1) {
-							Toast.makeText(LoginActivity.this, "登陆失败，请重试！", Toast.LENGTH_SHORT).show();
-							return;
-						}
-						ArrayList<LoginQuestion> questions = new ArrayList<LoginQuestion>();
-						for (int i = 0; i < arr.length(); i++) {
-							JSONObject item = arr.getJSONObject(i);
-							LoginQuestion q = new LoginQuestion();
-							q.id = item.getString("id");
-							q.value = item.getString("value");
-							questions.add(q);
-						}
-						Intent intent = new Intent(LoginActivity.this, LoginQuestionActivity.class);
-						intent.putExtra("username", user);
-						intent.putExtra("loginauth", loginauth);
-						intent.putExtra("question", questions);
-						startActivityForResult(intent, REQUEST_CODE_LOGIN_QUESTION);
-					} catch (JSONException e) {
-						Toast.makeText(LoginActivity.this, "网络错误，请重试！", Toast.LENGTH_SHORT).show();
-						e.printStackTrace();
-					}
+            @Override
+            public void dataLoaded(ResponseData data, Object dataObj) {
+                if (data.getCode() == HttpStatus.SC_OK
+                        && !TextUtils.isEmpty(String.valueOf(dataObj))) {
+                    try {
+                        JSONObject json = new JSONObject(String.valueOf(dataObj));
+                        String user = json.getString("username");
+                        String loginauth = json.getString("loginauth");
+                        JSONArray arr = json.getJSONArray("question");
+                        if (TextUtils.isEmpty(user) || TextUtils.isEmpty(loginauth) || arr.length() < 1) {
+                            Toast.makeText(LoginActivity.this, "登陆失败，请重试！", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        ArrayList<LoginQuestion> questions = new ArrayList<LoginQuestion>();
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject item = arr.getJSONObject(i);
+                            LoginQuestion q = new LoginQuestion();
+                            q.id = item.getString("id");
+                            q.value = item.getString("value");
+                            questions.add(q);
+                        }
+                        Intent intent = new Intent(LoginActivity.this, LoginQuestionActivity.class);
+                        intent.putExtra("username", user);
+                        intent.putExtra("loginauth", loginauth);
+                        intent.putExtra("question", questions);
+                        startActivityForResult(intent, REQUEST_CODE_LOGIN_QUESTION);
+                    } catch (JSONException e) {
+                        Toast.makeText(LoginActivity.this, "网络错误，请重试！", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
 //					String json = data.getJson();
 //					User user = User.newInstance(json);
 //					String sessionid = user.getSessionid();
@@ -169,7 +166,7 @@ public class LoginActivity extends BaseActivity {
 //								userDao.save(user);
 //							}
 //							//QIUJY 还需要更新版块列表的权限
-////							myApp.setSubBoardMap(RpcHandler.loadSubBoardMap(user.getAuthorid()));
+////							myApp.setSubBoardMap(RemoteHandler.loadSubBoardMap(user.getAuthorid()));
 //							
 //							LoginActivity.this.setResult(200);
 //							LoginActivity.this.finish();
@@ -183,14 +180,14 @@ public class LoginActivity extends BaseActivity {
 //						//myApp.setGroupid("");
 //						Toast.makeText(LoginActivity.this, "登陆失败，请重试！", Toast.LENGTH_SHORT).show();
 //					}
-				} else {
-					Toast.makeText(LoginActivity.this, "网络错误，请重试！", Toast.LENGTH_SHORT).show();
-				}
+                } else {
+                    Toast.makeText(LoginActivity.this, "网络错误，请重试！", Toast.LENGTH_SHORT).show();
+                }
 //				dismissDialog(Constants.DIALOG_LOGIN_ID);
-				if (progress != null && progress.isShowing())
-					progress.dismiss();
-			}
-		});
+                if (progress != null && progress.isShowing())
+                    progress.dismiss();
+            }
+        });
 		//this.dismissDialog(Constants.DIALOG_LOGIN_ID);
 	}
 	
