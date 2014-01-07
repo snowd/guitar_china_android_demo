@@ -28,11 +28,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
         setContentView(R.layout.main);
-//        Log.turnOn();
-//        Log.d("", "activity content=" + findViewById(android.R.id.content));
         getSupportActionBar().setHomeButtonEnabled(true);
         initBoardList();
-        initSlidingMenu();
+//        initSlidingMenu();
 	}
 
     private void initBoardList() {
@@ -40,6 +38,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_content_frame, boards)
                 .commit();
+//        getSupportActionBar().setTitle(R.string.app_name);
     }
 	
 	private void initSlidingMenu() {

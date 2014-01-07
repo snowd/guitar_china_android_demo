@@ -136,6 +136,7 @@ public class TopicListFragment extends AbsForumListFragment<Topic> implements Rp
         Topic topic = (Topic) l.getAdapter().getItem(position);
         Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
         intent.putExtra("_key_tid", topic.getTid());
+        intent.putExtra("_key_title", topic.getSubject());
         startActivity(intent);
     }
 

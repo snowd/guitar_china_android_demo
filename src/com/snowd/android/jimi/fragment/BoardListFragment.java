@@ -115,6 +115,7 @@ public class BoardListFragment extends AbsForumListFragment<Board> implements Rp
         Board board = (Board) l.getAdapter().getItem(position);
         Intent intent = new Intent(getActivity(), TopicListActivity.class);
         intent.putExtra("_key_fid", board.getFid());
+        intent.putExtra("_key_title", board.getName());
         startActivity(intent);
     }
 }
