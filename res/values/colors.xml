@@ -7,4 +7,10 @@
     <color name="listview_bg_gray">#ffecedef</color>
     <color name="listview_txt_gray">#ff8a8a8a</color>
     <color name="checkbox_fg_gray">#ff8a8a8a</color>
+
+    <color name="font_title">#ff000000</color>
+    <color name="font_hint">#ff0099cc</color>
+    <color name="font_summary">#ff000000</color>
+    <color name="font_quote">#ffff8800</color>
+    <color name="font_tag">#ff929292</color>
 </resources>

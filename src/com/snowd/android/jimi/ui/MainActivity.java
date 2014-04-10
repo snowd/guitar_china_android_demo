@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.snowd.android.jimi.R;
 import com.snowd.android.jimi.adapter.ForumNavigatorAdapter;
 import com.snowd.android.jimi.fragment.BoardListFragment;
@@ -18,7 +17,7 @@ import com.snowd.android.jimi.view.MenuNavigator;
 
 public class MainActivity extends BaseActivity implements OnItemClickListener {
 
-    private SlidingMenu mMasterMenu;
+//    private SlidingMenu mMasterMenu;
 	private MenuNavigator mMenuNavigator;
 //	private static final String sTitle = "论坛";
 	private ViewPager mNavigatorPager;
@@ -41,27 +40,27 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 //        getSupportActionBar().setTitle(R.string.app_name);
     }
 	
-	private void initSlidingMenu() {
-		mMasterMenu = new SlidingMenu(this);
-		mMasterMenu.setMode(SlidingMenu.LEFT);
-		mMasterMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		// left
-		mMasterMenu.setShadowDrawable(R.drawable.shadow_left);
-		mMasterMenu.setShadowWidth(10);;
-		mMasterMenu.setBehindOffset(200);
-		mMasterMenu.setFadeDegree(0.35f);
-
-		mMenuNavigator = (MenuNavigator) LayoutInflater.from(this).inflate(
-				R.layout.menu_nav, null);
-		mMenuNavigator.setOnItemClickListener(this);
-		mMasterMenu.setMenu(mMenuNavigator);
-		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-	}
+//	private void initSlidingMenu() {
+//		mMasterMenu = new SlidingMenu(this);
+//		mMasterMenu.setMode(SlidingMenu.LEFT);
+//		mMasterMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+//		// left
+//		mMasterMenu.setShadowDrawable(R.drawable.shadow_left);
+//		mMasterMenu.setShadowWidth(10);;
+//		mMasterMenu.setBehindOffset(200);
+//		mMasterMenu.setFadeDegree(0.35f);
+//
+//		mMenuNavigator = (MenuNavigator) LayoutInflater.from(this).inflate(
+//				R.layout.menu_nav, null);
+//		mMenuNavigator.setOnItemClickListener(this);
+//		mMasterMenu.setMenu(mMenuNavigator);
+//		mMasterMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+//	}
 
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
     	if (item.getItemId() == android.R.id.home) {
-			mMasterMenu.showMenu();
+//			mMasterMenu.showMenu();
     	};
 		return super.onOptionsItemSelected(item);
 	}

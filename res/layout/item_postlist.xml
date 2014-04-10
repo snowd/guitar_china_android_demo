@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 帖子详情ListView Item -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:background="@color/listview_bg_gray"
-    android:orientation="horizontal" >
-
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:orientation="vertical" >
+<!--
     <TextView
         android:id="@+id/topic_id"
         android:layout_width="wrap_content"
@@ -14,92 +16,88 @@
         android:layout_marginLeft="3.0dip"
         android:text="@string/topic_id"
         android:visibility="gone" />
+        -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ly_topic_info"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="#ffeeeeee"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/author_avatar"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:scaleType="centerCrop" />
+                android:id="@+id/author_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="5dp"
+                android:scaleType="centerCrop" />
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/author_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/author_avatar"
+            android:singleLine="true"
+            android:layout_marginBottom="4dp"
+            android:text="作者昵称"
+            android:textColor="#ff0066cc"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/author_floor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/author_id"
+            android:layout_toRightOf="@+id/author_avatar"
+            android:singleLine="true"
+            android:text="1楼"
+            android:textColor="#ff696969"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/dateline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/view_replies"
+            android:layout_below="@+id/author_id"
+            android:text="发表时间"
+            android:textColor="#ff696969"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/view_replies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@+id/anchor_right"
+            android:layout_below="@+id/author_id"
+            android:text="1/200"
+            android:textColor="#ff696969"
+            android:textSize="12.0sp" />
+
+        <View
+            android:id="@+id/anchor_right"
+            android:layout_alignParentRight="true"
+            android:layout_width="0dp"
+            android:layout_height="12dp" />
+
+    </RelativeLayout>
+
+    <View
+            android:background="@android:color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/author_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="作者昵称"
-                android:textColor="#ff0066cc"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/author_floor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/author_id"
-                android:singleLine="true"
-                android:text="1楼"
-                android:textColor="#ff696969"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/dateline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/view_replies"
-                android:layout_below="@+id/author_id"
-                android:text="发表时间"
-                android:textColor="#ff696969"
-                android:textSize="12dp" />
-	
-            <TextView
-                android:id="@+id/view_replies"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_toLeftOf="@+id/anchor_right"
-                android:layout_below="@+id/author_id"
-                android:text="1/200"
-                android:textColor="#ff696969"
-                android:textSize="12.0sp" />
-            
-            <View
-                android:id="@+id/anchor_right"
-                android:layout_alignParentRight="true"
-                android:layout_width="0dp"
-                android:layout_height="12dp" />
-            
-        </RelativeLayout>
-        
-    </LinearLayout>
+            android:layout_height="1px" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ly_topic_info"
-        android:background="#ffeeeeee"
+        android:layout_marginTop="4dp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="10.0dip"
-        android:paddingTop="10.0dip" >
+        android:orientation="vertical" >
     
         <TextView
             android:id="@+id/view_huifu"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="6.0dip"
             android:text="回复内容:引用。。。。"
             android:visibility="gone"
             android:textColor="#000000"
@@ -113,7 +111,8 @@
             android:lineSpacingExtra="5dp"
             android:autoLink="web|email"
             android:clickable="true"
-            android:paddingLeft="6.0dip"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
             android:textColor="@color/black"
             android:textSize="16dp" />
         
@@ -154,4 +153,4 @@
 		
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

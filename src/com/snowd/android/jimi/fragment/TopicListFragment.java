@@ -91,7 +91,7 @@ public class TopicListFragment extends AbsForumListFragment<Topic> implements Rp
         if (convertView == null) {
             convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_threadlist, parent, false);
             ViewHolder holder = new ViewHolder();
-            holder.txt_id = (TextView) convertView.findViewById(R.id.topic_id);
+//            holder.txt_id = (TextView) convertView.findViewById(R.id.topic_id);
             holder.txt_title = (TextView) convertView.findViewById(R.id.topic_title);
             holder.txt_author = (TextView) convertView.findViewById(R.id.topic_author);
             holder.txt_visit_replies = (TextView) convertView.findViewById(R.id.topic_visits_replies);
@@ -105,7 +105,7 @@ public class TopicListFragment extends AbsForumListFragment<Topic> implements Rp
     protected void bindData(int position, View contentView, ViewGroup parent, Object item) {
         ViewHolder holder = (ViewHolder) contentView.getTag();
         Topic topic = (Topic) item;
-        holder.txt_id.setText(String.valueOf(topic.getTid()));
+//        holder.txt_id.setText(String.valueOf(topic.getTid()));
         holder.txt_title.setText(topic.getSubject());
         holder.txt_author.setText(topic.getAuthor());
         if(null == topic.getViews() || "".equals(topic.getViews())){
@@ -123,7 +123,7 @@ public class TopicListFragment extends AbsForumListFragment<Topic> implements Rp
     }
 
     static class ViewHolder {
-        TextView txt_id;
+//        TextView txt_id;
         TextView txt_title;
         TextView txt_author;
         TextView txt_visit_replies;

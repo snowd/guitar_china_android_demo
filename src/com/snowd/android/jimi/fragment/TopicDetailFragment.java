@@ -104,7 +104,7 @@ public class TopicDetailFragment extends AbsForumListFragment<Topic> implements 
         if (convertView == null) {
             convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_postlist, null);
             ViewHolder holder = new ViewHolder();
-            holder.txt_id = (TextView) convertView.findViewById(R.id.topic_id);
+//            holder.txt_id = (TextView) convertView.findViewById(R.id.topic_id);
             holder.txt_floor = (TextView) convertView.findViewById(R.id.author_floor);
             holder.txt_author = (TextView) convertView.findViewById(R.id.author_id);
             holder.txt_visit_replies = (TextView) convertView.findViewById(R.id.view_replies);
@@ -262,7 +262,7 @@ public class TopicDetailFragment extends AbsForumListFragment<Topic> implements 
             holder.btn_view_image.setVisibility(View.GONE);
         }
 
-        holder.txt_id.setText(String.valueOf(topic.getTid()));
+//        holder.txt_id.setText(String.valueOf(topic.getTid()));
 
         long floor = (pageStart - 1) * PAGE_SIZE + position + 1;
 
@@ -289,7 +289,7 @@ public class TopicDetailFragment extends AbsForumListFragment<Topic> implements 
 
     static class ViewHolder {
         ImageView avatar;
-        TextView txt_id;
+//        TextView txt_id;
         TextView txt_floor;
         TextView txt_author;
         TextView txt_visit_replies;
