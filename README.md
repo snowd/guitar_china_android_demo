@@ -1,3 +1,5 @@
+@Deprecated
+api已经废弃，，无法使用
 guitar_china_android_demo
 =========================
 
